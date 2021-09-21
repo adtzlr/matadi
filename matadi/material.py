@@ -1,7 +1,7 @@
 import numpy as np
 import casadi as ca
 
-from .apply import apply
+from .apply import apply, modify as mdify
 
 
 class Material:
@@ -57,16 +57,24 @@ class Material:
                 if j >= i:
                     self._idx_hessian.append((*a, *b))
 
-    def grad(self, x):
+    def grad(self, x, modify=None, eps=1e-5):
         "Return list of gradients."
+        if modify is not None:
+            y = [mdify(y, m, eps) for y, m in zip(x, modify)]
+        else:
+            y = x
         return apply(
-            x, fun=self._grad, x_shape=self._idx_gradient, fun_shape=self._idx_gradient
+            y, fun=self._grad, x_shape=self._idx_gradient, fun_shape=self._idx_gradient
         )
 
-    def hessian(self, x):
+    def hessian(self, x, modify=None, eps=1e-5):
         "Return upper-triangle of hessian."
+        if modify is not None:
+            y = [mdify(y, m, eps) for y, m in zip(x, modify)]
+        else:
+            y = x
         return apply(
-            x,
+            y,
             fun=self._hessian,
             x_shape=self._idx_gradient,
             fun_shape=self._idx_hessian,

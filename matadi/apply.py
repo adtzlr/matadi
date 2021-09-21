@@ -24,3 +24,13 @@ def apply(x, fun, x_shape, fun_shape):
 
     # return 'i,j,...' reshaped output
     return [np.array(o).reshape(*f, *ax, order="F") for o, f in zip(out, fun_shape)]
+
+
+def modify(x, mdify=True, eps=1e-5):
+    if mdify:
+        y = x.copy()
+        y[0, 0] += eps
+        y[1, 1] -= eps
+    else:
+        y = x
+    return y
