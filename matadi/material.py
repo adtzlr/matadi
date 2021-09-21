@@ -20,6 +20,8 @@ class Material:
         self._h = []
         self._g = []
 
+        self.jacobian = self.gradient
+
         # generate list of diagonal hessian entries and gradients
         for y in self.x:
             _hy, _gy = ca.hessian(self._f, y)
@@ -36,7 +38,7 @@ class Material:
                         self._h.append(_h_diag[i])
 
         # generate casADi function objects
-        self._grad = ca.Function("g", self.x, self._g)
+        self._gradient = ca.Function("g", self.x, self._g)
         self._hessian = ca.Function("h", self.x, self._h)
 
         # generate indices
@@ -57,18 +59,21 @@ class Material:
                 if j >= i:
                     self._idx_hessian.append((*a, *b))
 
-    def grad(self, x, modify=None, eps=1e-5):
+    def gradient(self, x, modify=None, eps=1e-5):
         "Return list of gradients."
         if modify is not None:
             y = [mdify(y, m, eps) for y, m in zip(x, modify)]
         else:
             y = x
         return apply(
-            y, fun=self._grad, x_shape=self._idx_gradient, fun_shape=self._idx_gradient
+            y,
+            fun=self._gradient,
+            x_shape=self._idx_gradient,
+            fun_shape=self._idx_gradient,
         )
 
     def hessian(self, x, modify=None, eps=1e-5):
-        "Return upper-triangle of hessian."
+        "Return upper-triangle entries of hessian."
         if modify is not None:
             y = [mdify(y, m, eps) for y, m in zip(x, modify)]
         else:
