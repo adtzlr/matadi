@@ -6,7 +6,11 @@ def apply(x, fun, x_shape, fun_shape):
 
     # get shape of trailing axes
     trailing_axes = [len(y.shape) - len(y_shape) for y, y_shape in zip(x, x_shape)][0]
-    ax = x[0].shape[-trailing_axes:]
+
+    if trailing_axes == 0:
+        ax = [1]
+    else:
+        ax = x[0].shape[-trailing_axes:]
 
     def rshape(z):
         "Reshape array `z`: 'i,j,...->i,...'."
@@ -22,7 +26,13 @@ def apply(x, fun, x_shape, fun_shape):
     N = np.product(ax)
     out = fun.map(N)(*y)
 
+    if not isinstance(out, tuple):
+        out = (out,)
+
     # return 'i,j,...' reshaped output
+    if trailing_axes == 0:
+        ax = ()
+
     return [np.array(o).reshape(*f, *ax, order="F") for o, f in zip(out, fun_shape)]
 
 
