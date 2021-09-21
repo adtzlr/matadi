@@ -1,23 +1,24 @@
 import numpy as np
 import casadi as ca
 
-import matadi as mat
+from matadi import Variable, Material
+from matadi.math import det, transpose, trace
 
 
 def test_scalar():
 
     # variables
-    F = mat.Variable("F", 3, 3)
-    p = mat.Variable("p", 1)
-    J = mat.Variable("J", 1)
+    F = Variable("F", 3, 3)
+    p = Variable("p", 1)
+    J = Variable("J", 1)
 
     def neohooke(x, mu=1.0, bulk=200.0):
         "Strain energy function of nearly-incompressible Neo-Hookean material."
 
         F, p, theta = x
-        J = ca.det(F)
-        C = ca.transpose(F) @ F
-        I1 = J ** (-2 / 3) * ca.trace(C)
+        J = det(F)
+        C = transpose(F) @ F
+        I1 = J ** (-2 / 3) * trace(C)
 
         return mu * (I1 - 3) + bulk * (theta - 1) ** 2 / 2 + p * (J - theta)
 
@@ -27,7 +28,7 @@ def test_scalar():
     JJ = np.random.rand(5, 100)
 
     # functional
-    W = mat.Scalar(
+    W = Material(
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 
@@ -51,7 +52,7 @@ def test_scalar():
     JJ = np.random.rand(1, 5, 100)
 
     # functional
-    W = mat.Scalar(
+    W = Material(
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 
@@ -62,9 +63,9 @@ def test_scalar():
 def test_scalar_compress():
 
     # variables
-    F = mat.Variable("F", 3, 3)
-    p = mat.Variable("p", 1)
-    J = mat.Variable("J", 1)
+    F = Variable("F", 3, 3)
+    p = Variable("p", 1)
+    J = Variable("J", 1)
 
     def neohooke(x, mu=1.0, bulk=200.0):
         "Strain energy function of nearly-incompressible Neo-Hookean material."
@@ -82,7 +83,7 @@ def test_scalar_compress():
     JJ = np.random.rand(5, 100)
 
     # functional
-    W = mat.Material(
+    W = Material(
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=True
     )
 
@@ -106,7 +107,7 @@ def test_scalar_compress():
     JJ = np.random.rand(1, 5, 100)
 
     # functional
-    W = mat.Material(
+    W = Material(
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 
