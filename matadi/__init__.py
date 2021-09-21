@@ -1,3 +1,6 @@
+import casadi
+
 from .material import Material
-import casadi.SX.sym as Variable
-import casadi as math
+from . import math
+
+Variable = casadi.SX.sym
