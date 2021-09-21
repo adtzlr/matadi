@@ -7,9 +7,9 @@ import matadi as mat
 def test_scalar():
 
     # variables
-    F = ca.SX.sym("F", 3, 3)
-    p = ca.SX.sym("p", 1)
-    J = ca.SX.sym("J", 1)
+    F = mat.Variable("F", 3, 3)
+    p = mat.Variable("p", 1)
+    J = mat.Variable("J", 1)
 
     def neohooke(x, mu=1.0, bulk=200.0):
         "Strain energy function of nearly-incompressible Neo-Hookean material."
@@ -62,9 +62,9 @@ def test_scalar():
 def test_scalar_compress():
 
     # variables
-    F = ca.SX.sym("F", 3, 3)
-    p = ca.SX.sym("p", 1)
-    J = ca.SX.sym("J", 1)
+    F = mat.Variable("F", 3, 3)
+    p = mat.Variable("p", 1)
+    J = mat.Variable("J", 1)
 
     def neohooke(x, mu=1.0, bulk=200.0):
         "Strain energy function of nearly-incompressible Neo-Hookean material."
@@ -82,7 +82,7 @@ def test_scalar_compress():
     JJ = np.random.rand(5, 100)
 
     # functional
-    W = mat.Scalar(
+    W = mat.Material(
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=True
     )
 
@@ -106,7 +106,7 @@ def test_scalar_compress():
     JJ = np.random.rand(1, 5, 100)
 
     # functional
-    W = mat.Scalar(
+    W = mat.Material(
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 

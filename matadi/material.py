@@ -4,7 +4,7 @@ import casadi as ca
 from .apply import apply
 
 
-class Scalar:
+class Material:
     def __init__(self, x, fun, args=(), kwargs={}, compress=False):
 
         self.x = x
