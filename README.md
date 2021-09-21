@@ -40,7 +40,7 @@ def neohooke(x, mu=1.0, bulk=200.0):
     return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
 ```
 
-With this simple Python function we create an instance of a Material, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both gradient (stress) and hessian (elasticity) via automatic differentiation, optionally also on input data with trailing axes.
+With this simple Python function we create an instance of a **Material**, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both **gradient** (stress) and **hessian** (elasticity) via methods based on automatic differentiation - optionally also on input data containing trailing axes.
 
 ```python
 W = Material(
