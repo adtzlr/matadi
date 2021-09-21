@@ -1,5 +1,4 @@
 import numpy as np
-import casadi as ca
 
 from matadi import Variable, Material
 from matadi.math import det, transpose, trace
@@ -32,12 +31,15 @@ def test_scalar():
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 
-    dW = W.grad([FF, pp, JJ])
+    dW = W.gradient([FF, pp, JJ])
+    dW2 = W.jacobian([FF, pp, JJ])
     DW = W.hessian([FF, pp, JJ])
 
     assert dW[0].shape == (3, 3, 5, 100)
     assert dW[1].shape == (1, 1, 5, 100)
     assert dW[2].shape == (1, 1, 5, 100)
+
+    assert dW2[2].shape == dW2[2].shape
 
     assert DW[0].shape == (3, 3, 3, 3, 5, 100)
     assert DW[1].shape == (3, 3, 1, 1, 5, 100)
@@ -56,7 +58,7 @@ def test_scalar():
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 
-    dW = W.grad([FF, pp, JJ])
+    dW = W.gradient([FF, pp, JJ])
     DW = W.hessian([FF, pp, JJ])
 
 
@@ -71,9 +73,9 @@ def test_scalar_compress():
         "Strain energy function of nearly-incompressible Neo-Hookean material."
 
         F, p, theta = x
-        J = ca.det(F)
-        C = ca.transpose(F) @ F
-        I1 = J ** (-2 / 3) * ca.trace(C)
+        J = det(F)
+        C = transpose(F) @ F
+        I1 = J ** (-2 / 3) * trace(C)
 
         return mu * (I1 - 3) + bulk * (theta - 1) ** 2 / 2 + p * (J - theta)
 
@@ -87,7 +89,7 @@ def test_scalar_compress():
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=True
     )
 
-    dW = W.grad([FF, pp, JJ])
+    dW = W.gradient([FF, pp, JJ])
     DW = W.hessian([FF, pp, JJ])
 
     assert dW[0].shape == (3, 3, 5, 100)
@@ -111,7 +113,7 @@ def test_scalar_compress():
         x=[F, p, J], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=False
     )
 
-    dW = W.grad([FF, pp, JJ])
+    dW = W.gradient([FF, pp, JJ])
     DW = W.hessian([FF, pp, JJ])
 
 
