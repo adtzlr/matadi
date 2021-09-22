@@ -32,6 +32,8 @@ def apply(x, fun, x_shape, fun_shape):
     # return 'i,j,...' reshaped output
     if trailing_axes == 0:
         ax = ()
+        if fun_shape == [()]:
+            fun_shape = [(1,)]
 
     return [np.array(o).reshape(*f, *ax, order="F") for o, f in zip(out, fun_shape)]
 
