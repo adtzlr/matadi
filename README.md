@@ -60,5 +60,36 @@ P = Mat.gradient([defgrad])[0]
 A = Mat.hessian([defgrad])[0]
 ```
 
+## Templates
+matADi provides several template classes for hyperelastic materials. Some common isotropic hyperelastic material formulations are located in `matadi.models`. These strain energy functions have to be passed into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to the `ThreeFieldVariation` class.
+
+```python
+
+from matadi import MaterialHyperelastic, ThreeFieldVariation
+from matadi.models import neo_hooke
+
+# init some random data
+pressure = np.random.rand(5, 100)
+volratio = np.random.rand(5, 100) / 10 + 1
+
+NH = MaterialHyperelastic(neo_hooke, C10=0.5, bulk=20.0)
+
+W = NH.function([defgrad])[0]
+P = NH.gradient([defgrad])[0]
+A = NH.hessian([defgrad])[0]
+
+W_upJ = ThreeFieldVariation(NH).function([defgrad, pressure, volratio])
+P_upJ = ThreeFieldVariation(NH).gradient([defgrad, pressure, volratio])
+A_upJ = ThreeFieldVariation(NH).hessian([defgrad, pressure, volratio])
+```
+
+Available isotropic hyperelastic models:
+- [x] Neo-Hooke
+- [x] Mooney-Rivlin
+- [x] Yeoh
+- [x] Third-Order-Deformation
+- [x] Ogden
+- [x] Arruda-Boyce
+
 ## Hints
 Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-statements can't be used in combination with a symbolic boolean operation. If you use `eigvals` to symbolically calculate eigenvalues and their corresponding gradients please call gradient and hessian methods with `Mat.gradient([defgrad], modify=True, eps=1e-5)` to avoid the gradient to be filled with NaN's. This is because the gradient of the implemented eigenvalue calculation is not defined for the case of repeated equal eigenvalues. The `modify` argument adds a small number `eps=1e-5` to the diagonal entries of the input data.
