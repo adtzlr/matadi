@@ -8,12 +8,12 @@ class Material:
     def __init__(self, x, fun, args=(), kwargs={}, compress=False):
 
         self.x = x
-        self.fun = fun
+        self._fun = fun
 
         self.args = args
         self.kwargs = kwargs
 
-        self._f = self.fun(self.x, *self.args, **self.kwargs)
+        self._f = self._fun(self.x, *self.args, **self.kwargs)
 
         _h_diag = []
 
@@ -38,6 +38,7 @@ class Material:
                         self._h.append(_h_diag[i])
 
         # generate casADi function objects
+        self._function = ca.Function("f", self.x, [self._f])
         self._gradient = ca.Function("g", self.x, self._g)
         self._hessian = ca.Function("h", self.x, self._h)
 
@@ -58,6 +59,19 @@ class Material:
 
                 if j >= i:
                     self._idx_hessian.append((*a, *b))
+
+    def function(self, x, modify=None, eps=1e-5):
+        "Return the function."
+        if modify is not None:
+            y = [mdify(y, m, eps) for y, m in zip(x, modify)]
+        else:
+            y = x
+        return apply(
+            y,
+            fun=self._function,
+            x_shape=self._idx_gradient,
+            fun_shape=[()],
+        )
 
     def gradient(self, x, modify=None, eps=1e-5):
         "Return list of gradients."
