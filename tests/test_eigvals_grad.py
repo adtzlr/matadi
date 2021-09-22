@@ -52,6 +52,7 @@ def test_eigvals_single():
 
     def fun(x):
         F = x[0]
+
         return (sum1(eigvals(transpose(F) @ F))[0, 0] - 3) / 2
 
     # data
@@ -59,7 +60,7 @@ def test_eigvals_single():
 
     # init Material
     W = Material(x=[F], fun=fun)
-    
+
     WW = W.function([FF])
     WW = W.function([FF], modify=[True], eps=1e-6)
     dW = W.gradient([FF], modify=[True], eps=1e-6)

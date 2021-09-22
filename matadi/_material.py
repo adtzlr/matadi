@@ -1,7 +1,7 @@
 import numpy as np
 import casadi as ca
 
-from .apply import apply, modify as mdify
+from ._apply import apply, modify as mdify
 
 
 class Material:
