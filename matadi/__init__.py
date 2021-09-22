@@ -1,4 +1,5 @@
 import casadi
+
 Variable = casadi.SX.sym
 
 from ._material import Material

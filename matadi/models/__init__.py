@@ -4,5 +4,5 @@ from ._isotropic_hyperelasticity import (
     yeoh,
     third_order_deformation,
     ogden,
-    arruda_boyce
+    arruda_boyce,
 )
