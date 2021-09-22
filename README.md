@@ -72,7 +72,7 @@ from matadi.models import neo_hooke
 pressure = np.random.rand(5, 100)
 volratio = np.random.rand(5, 100) / 10 + 1
 
-NH = MaterialHyperelastic(neo_hooke, C10=0.5, bulk=20.0)
+NH = MaterialHyperelastic(fun=neo_hooke, C10=0.5, bulk=20.0)
 
 W = NH.function([defgrad])[0]
 P = NH.gradient([defgrad])[0]
