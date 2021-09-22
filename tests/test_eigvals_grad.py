@@ -52,6 +52,7 @@ def test_eigvals_single():
 
     def fun(x):
         F = x[0]
+        
         return (sum1(eigvals(transpose(F) @ F))[0, 0] - 3) / 2
 
     # data
