@@ -91,5 +91,13 @@ Available isotropic hyperelastic models:
 - [x] Ogden
 - [x] Arruda-Boyce
 
+Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of an instance of `MaterialHyperelastic` by using the following template:
+
+```python
+def fun(F, **kwargs):
+    # user code
+    return W
+```
+
 ## Hints
 Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-statements can't be used in combination with a symbolic boolean operation. If you use `eigvals` to symbolically calculate eigenvalues and their corresponding gradients please call gradient and hessian methods with `Mat.gradient([defgrad], modify=True, eps=1e-5)` to avoid the gradient to be filled with NaN's. This is because the gradient of the implemented eigenvalue calculation is not defined for the case of repeated equal eigenvalues. The `modify` argument adds a small number `eps=1e-5` to the diagonal entries of the input data.
