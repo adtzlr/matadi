@@ -40,10 +40,10 @@ def neohooke(x, mu=1.0, bulk=200.0):
     return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
 ```
 
-With this simple Python function we create an instance of a **Material**, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both **gradient** (stress) and **hessian** (elasticity) via methods based on automatic differentiation - optionally also on input data containing trailing axes.
+With this simple Python function we create an instance of a **Material**, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both **gradient** (stress) and **hessian** (elasticity) via methods based on automatic differentiation - optionally also on input data containing trailing axes. If necessary, the strain energy density function itself will be evaluated on input data with optional trailing axes by the **function** method.
 
 ```python
-W = Material(
+Mat = Material(
     x=[F],
     fun=neohooke,
     kwargs={"mu": 1.0, "bulk": 10.0},
@@ -55,9 +55,10 @@ defgrad = np.random.rand(3, 3, 5, 100) - 0.5
 for a in range(3):
     defgrad[a, a] += 1.0
 
-P = W.gradient([defgrad])[0]
-A = W.hessian([defgrad])[0]
+W = Mat.function([defgrad])[0]
+P = Mat.gradient([defgrad])[0]
+A = Mat.hessian([defgrad])[0]
 ```
 
 ## Hints
-Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-statements can't be used in combination with a symbolic boolean operation. If you use `eigvals` to symbolically calculate eigenvalues and their corresponding gradients please call gradient and hessian methods with `W.gradient([defgrad], modify=True, eps=1e-5)` to avoid the gradient to be filled with NaN's. This is because the gradient of the implemented eigenvalue calculation is not defined for the case of repeated equal eigenvalues. The `modify` argument adds a small number `eps=1e-5` to the diagonal entries of the input data.
+Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-statements can't be used in combination with a symbolic boolean operation. If you use `eigvals` to symbolically calculate eigenvalues and their corresponding gradients please call gradient and hessian methods with `Mat.gradient([defgrad], modify=True, eps=1e-5)` to avoid the gradient to be filled with NaN's. This is because the gradient of the implemented eigenvalue calculation is not defined for the case of repeated equal eigenvalues. The `modify` argument adds a small number `eps=1e-5` to the diagonal entries of the input data.
