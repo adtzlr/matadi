@@ -59,7 +59,8 @@ def test_eigvals_single():
 
     # init Material
     W = Material(x=[F], fun=fun)
-
+    
+    WW = W.function([FF])
     WW = W.function([FF], modify=[True], eps=1e-6)
     dW = W.gradient([FF], modify=[True], eps=1e-6)
     DW = W.hessian([FF], modify=[True], eps=1e-6)
