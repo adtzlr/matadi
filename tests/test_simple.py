@@ -6,7 +6,7 @@ from matadi.math import det, transpose, trace, invariants, sqrt
 
 def neohooke(x, mu=1.0, bulk=200.0):
     """Strain energy density function of nearly-incompressible
-        Neo-Hookean isotropic hyperelastic material formulation."""
+    Neo-Hookean isotropic hyperelastic material formulation."""
 
     F = x[0]
     C = transpose(F) @ F
@@ -30,7 +30,11 @@ def test_simple():
         FF[a, a] += 1
 
     # init Material
-    W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0},)
+    W = Material(
+        x=[F],
+        fun=neohooke,
+        kwargs={"mu": 1.0, "bulk": 10.0},
+    )
 
     W0 = W.function([FF])
     dW = W.gradient([FF])
