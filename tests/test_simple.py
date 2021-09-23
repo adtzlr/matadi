@@ -4,7 +4,7 @@ from matadi import Variable, Material
 from matadi.math import det, transpose, trace
 
 
-def test_modify():
+def test_simple():
 
     # variables
     F = Variable("F", 3, 3)
@@ -32,16 +32,10 @@ def test_modify():
     dW = W.gradient([FF])
     DW = W.hessian([FF])
 
-    dW2 = W.gradient([FF], modify=[True])
-    DW2 = W.hessian([FF], modify=[True])
-
     # dW and DW are always lists...
     assert dW[0].shape == (3, 3, 5, 100)
     assert DW[0].shape == (3, 3, 3, 3, 5, 100)
 
-    assert dW2[0].shape == (3, 3, 5, 100)
-    assert DW2[0].shape == (3, 3, 3, 3, 5, 100)
-
 
 if __name__ == "__main__":
-    test_modify()
+    test_simple()
