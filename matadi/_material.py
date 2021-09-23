@@ -66,12 +66,7 @@ class Material:
             y = [mdify(y, m, eps) for y, m in zip(x, modify)]
         else:
             y = x
-        return apply(
-            y,
-            fun=self._function,
-            x_shape=self._idx_gradient,
-            fun_shape=[()],
-        )
+        return apply(y, fun=self._function, x_shape=self._idx_gradient, fun_shape=[()],)
 
     def gradient(self, x, modify=None, eps=1e-5):
         "Return list of gradients."

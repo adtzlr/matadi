@@ -27,11 +27,7 @@ def test_modify():
         FF[a, a] += 1
 
     # init Material
-    W = Material(
-        x=[F],
-        fun=neohooke,
-        kwargs={"mu": 1.0, "bulk": 10.0},
-    )
+    W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0},)
 
     dW = W.gradient([FF])
     DW = W.hessian([FF])
