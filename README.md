@@ -13,7 +13,7 @@ pip install matadi
 ```
 
 ## Usage
-First, we have to define a symbolic variable on which our strain energy function will be based on.
+First, a symbolic variable on which our strain energy function will be based on has to be created.
 
 **Note**: *A variable of matADi is an instance of a symbolic variable of casADi (`casadi.SX.sym`). All `matadi.math` functions are simple links to (symbolic) casADi-functions.*
 
@@ -40,7 +40,7 @@ def neohooke(x, mu=1.0, bulk=200.0):
     return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
 ```
 
-With this simple Python function we create an instance of a **Material**, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both **gradient** (stress) and **hessian** (elasticity) via methods based on automatic differentiation - optionally also on input data containing trailing axes. If necessary, the strain energy density function itself will be evaluated on input data with optional trailing axes by the **function** method.
+With this simple Python function at hand, we create an instance of a **Material**, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both **gradient** (stress) and **hessian** (elasticity) via methods based on automatic differentiation - optionally also on input data containing trailing axes. If necessary, the strain energy density function itself will be evaluated on input data with optional trailing axes by the **function** method.
 
 ```python
 Mat = Material(
@@ -61,7 +61,7 @@ A = Mat.hessian([defgrad])[0]
 ```
 
 ## Template classes for hyperelasticity
-matADi provides several template classes for hyperelastic materials. Some common isotropic hyperelastic material formulations are located in `matadi.models`. These strain energy functions have to be passed into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to the `ThreeFieldVariation` class.
+matADi provides several simple template classes suitable for simple hyperelastic materials. Some common isotropic hyperelastic material formulations are located in `matadi.models` (see list below). These strain energy functions have to be passed as the `fun` argument into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to `ThreeFieldVariation`.
 
 ```python
 
@@ -72,7 +72,9 @@ from matadi.models import neo_hooke
 pressure = np.random.rand(5, 100)
 volratio = np.random.rand(5, 100) / 10 + 1
 
-NH = MaterialHyperelastic(fun=neo_hooke, C10=0.5, bulk=20.0)
+kwargs = {"C10": 0.5, "bulk": 20.0}
+
+NH = MaterialHyperelastic(fun=neo_hooke, **kwargs)
 
 W = NH.function([defgrad])[0]
 P = NH.gradient([defgrad])[0]
@@ -83,15 +85,15 @@ P_upJ = ThreeFieldVariation(NH).gradient([defgrad, pressure, volratio])
 A_upJ = ThreeFieldVariation(NH).hessian([defgrad, pressure, volratio])
 ```
 
-Available isotropic hyperelastic models:
-- [x] Neo-Hooke
-- [x] Mooney-Rivlin
-- [x] Yeoh
-- [x] Third-Order-Deformation
-- [x] Ogden
-- [x] Arruda-Boyce
+Available isotropic hyperelastic material models:
+- [Neo-Hooke](https://en.wikipedia.org/wiki/Neo-Hookean_solid)
+- [Mooney-Rivlin](https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid)
+- [Yeoh](https://en.wikipedia.org/wiki/Yeoh_(hyperelastic_model))
+- [Third-Order-Deformation (James-Green-Simpson)](https://onlinelibrary.wiley.com/doi/abs/10.1002/app.1975.070190723)
+- [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model))
+- [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model)
 
-Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of an instance of `MaterialHyperelastic` by using the following template:
+Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
 ```python
 def fun(F, **kwargs):
@@ -100,4 +102,4 @@ def fun(F, **kwargs):
 ```
 
 ## Hints
-Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-statements can't be used in combination with a symbolic boolean operation. If you use `eigvals` to symbolically calculate eigenvalues and their corresponding gradients please call gradient and hessian methods with `Mat.gradient([defgrad], modify=True, eps=1e-5)` to avoid the gradient to be filled with NaN's. This is because the gradient of the implemented eigenvalue calculation is not defined for the case of repeated equal eigenvalues. The `modify` argument adds a small number `eps=1e-5` to the diagonal entries of the input data.
+Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead).
