@@ -1,7 +1,20 @@
-from ..math import transpose, det, DM, exp, cos, sin, pi, sqrt, if_else
+from ..math import (
+    transpose,
+    det,
+    DM,
+    exp,
+    cos,
+    sin,
+    pi,
+    sqrt,
+    if_else,
+    invariants,
+    trace,
+)
 
 
 def fiber(F, E, angle, k=1, axis=2, compression=False):
+    "Fiber"
 
     a = angle * pi / 180
     plane = [(1, 2), (2, 0), (0, 1)][axis]
@@ -22,6 +35,7 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
 
 
 def fiber_family(F, E, angle, k=1, axis=2, compression=False):
+    "Fiber Family"
 
     f1 = fiber(F, E, k, angle, axis, compression)
     f2 = fiber(F, E, k, -angle, axis, compression)
@@ -29,7 +43,8 @@ def fiber_family(F, E, angle, k=1, axis=2, compression=False):
     return f1 + f2
 
 
-def holzapfel_gasser_ogden(F, c, k1, k2, angle, axis=2):
+def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, axis=2):
+    "Holzapfel-Gasser-Ogden"
 
     C = transpose(F) @ F
     J1, J2, J3 = invariants(C)
@@ -52,9 +67,9 @@ def holzapfel_gasser_ogden(F, c, k1, k2, angle, axis=2):
 
     W_iso = c / 2 * (I1 - 3)
 
-    w1 = exp(k2 * (I4 - 1) ** 2) - 1
-    w2 = exp(k2 * (I6 - 1) ** 2) - 1
+    w4 = exp(k2 * (kappa * I1 + (1 - 3 * kappa) * I4 - 1) ** 2) - 1
+    w6 = exp(k2 * (kappa * I1 + (1 - 3 * kappa) * I6 - 1) ** 2) - 1
 
-    W_aniso = k1 / (2 * k2) * (w1 + w2)
+    W_aniso = k1 / (2 * k2) * (w4 + w6)
 
     return W_iso + W_aniso
