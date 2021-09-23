@@ -33,11 +33,7 @@ def holzapfel_gasser_ogden(F, c, k1, k2, angle, axis=2):
 
     C = transpose(F) @ F
     J1, J2, J3 = invariants(C)
-
-    Cu = J3 ** (-1 / 3) * C
-
     I1 = J3 ** (-1 / 3) * J1
-    # I2 = J3 ** (-2 / 3) * J2
 
     alpha = angle * pi / 180
     plane = [(1, 2), (2, 0), (0, 1)][axis]
@@ -51,13 +47,8 @@ def holzapfel_gasser_ogden(F, c, k1, k2, angle, axis=2):
     A1 = N1 @ transpose(N1)
     A2 = N2 @ transpose(N2)
 
-    I4 = trace(Cu @ A1)
-    I6 = trace(Cu @ A2)
-
-    # I5 = trace(C @ C @ A1)
-    # I7 = trace(C @ C @ A2)
-
-    # I8 = (transpose(N1) @ N2) * transpose(N1) @ C @ N2
+    I4 = trace(J3 ** (-1 / 3) * C @ A1)
+    I6 = trace(J3 ** (-1 / 3) * C @ A2)
 
     W_iso = c / 2 * (I1 - 3)
 
