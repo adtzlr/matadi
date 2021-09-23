@@ -60,24 +60,32 @@ class Material:
                 if j >= i:
                     self._idx_hessian.append((*a, *b))
 
-    def function(self, x):
+    def function(self, x, threads=1):
         "Return the function."
-        return apply(x, fun=self._function, x_shape=self._idx_gradient, fun_shape=[()],)
+        return apply(
+            x,
+            fun=self._function,
+            x_shape=self._idx_gradient,
+            fun_shape=[()],
+            threads=threads,
+        )
 
-    def gradient(self, x):
+    def gradient(self, x, threads=1):
         "Return list of gradients."
         return apply(
             x,
             fun=self._gradient,
             x_shape=self._idx_gradient,
             fun_shape=self._idx_gradient,
+            threads=threads,
         )
 
-    def hessian(self, x):
+    def hessian(self, x, threads=1):
         "Return upper-triangle entries of hessian."
         return apply(
             x,
             fun=self._hessian,
             x_shape=self._idx_gradient,
             fun_shape=self._idx_hessian,
+            threads=threads,
         )
