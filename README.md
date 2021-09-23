@@ -96,6 +96,7 @@ Available isotropic hyperelastic material models:
 Available anisotropic hyperelastic material models:
 - Fiber
 - Fiber-family (+/- combination of single Fiber)
+- [Holzapfel Gasser Ogden](https://link.springer.com/article/10.1023/A:1010835316564)
 
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
