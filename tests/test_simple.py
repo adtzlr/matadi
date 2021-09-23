@@ -1,25 +1,28 @@
 import numpy as np
 
 from matadi import Variable, Material
-from matadi.math import det, transpose, trace
+from matadi.math import det, transpose, trace, invariants, sqrt
+
+
+def neohooke(x, mu=1.0, bulk=200.0):
+        """Strain energy density function of nearly-incompressible
+        Neo-Hookean isotropic hyperelastic material formulation."""
+
+        F = x[0]
+        C = transpose(F) @ F
+        
+        I1, I2, I3 = invariants(C)
+        J = sqrt(I3)
+        
+        I1_iso = I3 ** (-1 / 3) * trace(C)
+
+        return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
 
 
 def test_simple():
 
     # variables
     F = Variable("F", 3, 3)
-
-    def neohooke(x, mu=1.0, bulk=200.0):
-        """Strain energy density function of nearly-incompressible
-        Neo-Hookean isotropic hyperelastic material formulation."""
-
-        F = x[0]
-
-        J = det(F)
-        C = transpose(F) @ F
-        I1_iso = J ** (-2 / 3) * trace(C)
-
-        return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
 
     # data
     FF = np.random.rand(3, 3, 5, 100)
