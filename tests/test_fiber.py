@@ -25,8 +25,6 @@ def test_fiber():
         assert dW[0].shape == (3, 3, 2,)
         assert DW[0].shape == (3, 3, 3, 3, 2,)
 
-        print(dW[0])
-
 
 if __name__ == "__main__":
     test_fiber()
