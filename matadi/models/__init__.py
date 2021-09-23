@@ -10,4 +10,5 @@ from ._isotropic_hyperelasticity import (
 from ._anisotropic_hyperelasticity import (
     fiber,
     fiber_family,
+    holzapfel_gasser_ogden,
 )
