@@ -93,6 +93,10 @@ Available isotropic hyperelastic material models:
 - [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model))
 - [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model)
 
+Available anisotropic hyperelastic material models:
+- Fiber
+- Fiber-family (+/- combination of single Fiber)
+
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
 ```python

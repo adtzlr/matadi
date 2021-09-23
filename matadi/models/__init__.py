@@ -6,3 +6,8 @@ from ._isotropic_hyperelasticity import (
     ogden,
     arruda_boyce,
 )
+
+from ._anisotropic_hyperelasticity import (
+    fiber,
+    fiber_family,
+)
