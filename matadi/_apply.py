@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def apply(x, fun, x_shape, fun_shape):
+def apply(x, fun, x_shape, fun_shape, threads=1):
     "Helper function for the calculation of fun(x)."
 
     # get shape of trailing axes
@@ -22,9 +22,15 @@ def apply(x, fun, x_shape, fun_shape):
     # apply reshape on input
     y = [rshape(z) for z in x]
 
+    # threads dict
+    if threads > 1:
+        parallel = ("thread", threads)
+    else:
+        parallel = ()
+
     # map function `N` times on reshaped input
     N = np.product(ax)
-    out = fun.map(N)(*y)
+    out = fun.map(N, *parallel)(*y)
 
     if not isinstance(out, tuple):
         out = (out,)
