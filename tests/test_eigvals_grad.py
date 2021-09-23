@@ -4,14 +4,15 @@ from matadi import Variable, Material
 from matadi.math import transpose, eigvals, sum1, trace
 
 
+def fun(x):
+    F = x[0]
+    return (sum1(eigvals(transpose(F) @ F))[0, 0] - 3) / 2
+
+
 def test_eigvals():
 
     # variables
     F = Variable("F", 3, 3)
-
-    def fun(x):
-        F = x[0]
-        return (sum1(eigvals(transpose(F) @ F)) - 3) / 2
 
     # data
     np.random.seed(2345537)
@@ -19,14 +20,16 @@ def test_eigvals():
     for a in range(3):
         FF[a, a] += 1
 
-    FF[:, :, 0, 1] = np.diag([1.2, 0.7, 1.2])
+    # input with repeated equal eigenvalues
+    FF[:, :, 0, 1] = np.diag(2.4 * np.ones(3))
+    FF[:, :, 0, 2] = np.diag([2.4, 1.2, 2.4])
 
     # init Material
     W = Material(x=[F], fun=fun)
 
-    WW = W.function([FF], modify=[True], eps=1e-6)
-    dW = W.gradient([FF], modify=[True], eps=1e-6)
-    DW = W.hessian([FF], modify=[True], eps=1e-6)
+    WW = W.function([FF])
+    dW = W.gradient([FF])
+    DW = W.hessian([FF])
 
     Eye = np.eye(3)
     Eye4 = np.einsum("ij,kl->ikjl", Eye, Eye)
@@ -39,10 +42,12 @@ def test_eigvals():
     # check gradient
     assert np.allclose(dW[0][:, :, 0, 0], FF[:, :, 0, 0])
     assert np.allclose(dW[0][:, :, 0, 1], FF[:, :, 0, 1])
+    assert np.allclose(dW[0][:, :, 0, 2], FF[:, :, 0, 2])
 
     # check hessian
     assert np.allclose(DW[0][:, :, :, :, 0, 0], Eye4)
     assert np.allclose(DW[0][:, :, :, :, 0, 1], Eye4)
+    assert np.allclose(DW[0][:, :, :, :, 0, 2], Eye4)
 
 
 def test_eigvals_single():
@@ -50,21 +55,16 @@ def test_eigvals_single():
     # variables
     F = Variable("F", 3, 3)
 
-    def fun(x):
-        F = x[0]
-
-        return (sum1(eigvals(transpose(F) @ F))[0, 0] - 3) / 2
-
     # data
-    FF = np.diag([1.2, 0.7, 1.2])
+    FF = np.diag(2.4 * np.ones(3))
 
     # init Material
     W = Material(x=[F], fun=fun)
 
     WW = W.function([FF])
-    WW = W.function([FF], modify=[True], eps=1e-6)
-    dW = W.gradient([FF], modify=[True], eps=1e-6)
-    DW = W.hessian([FF], modify=[True], eps=1e-6)
+    WW = W.function([FF])
+    dW = W.gradient([FF])
+    DW = W.hessian([FF])
 
     Eye = np.eye(3)
     Eye4 = np.einsum("ij,kl->ikjl", Eye, Eye)
