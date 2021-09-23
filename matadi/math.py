@@ -25,6 +25,7 @@ from casadi import (
     asinh,
     acosh,
     # math
+    exp,
     sqrt,
     sum1,
     sum2,
