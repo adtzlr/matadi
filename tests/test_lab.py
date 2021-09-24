@@ -20,6 +20,7 @@ def test_lab():
     data = lab.run(ux=False, bx=False, ps=False, num=20)
     data = lab.run(ux=True, bx=False, ps=False, num=20)
     data = lab.run(ux=True, bx=True, ps=False, num=20)
+    data = lab.run(ux=True, bx=True, ps=True, num=20)
     fig, ax = lab.plot(data)
 
     plt.close(fig)
