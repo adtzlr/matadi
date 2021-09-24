@@ -107,7 +107,7 @@ def fun(F, **kwargs):
 ```
 
 ## Lab
-A simple `Lab` is included where experiments on homogenous loadcases can be performed. Let's take the above neo-hookean material formulation and run **uniaxial**, **biaxial** and **planar shear** tests.
+In the `Lab` experiments on homogenous loadcases can be performed. Let's take the above neo-hookean material formulation and run **uniaxial**, **biaxial** and **planar shear** tests.
 
 ```python
 from matadi import Lab
