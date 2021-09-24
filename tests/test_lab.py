@@ -1,5 +1,5 @@
 from matadi import MaterialHyperelastic, Lab
-from matadi.models import third_order_deformation
+from matadi.models import neo_hooke
 
 import matplotlib.pyplot as plt
 
@@ -7,13 +7,9 @@ import matplotlib.pyplot as plt
 def test_lab():
 
     mat = MaterialHyperelastic(
-        third_order_deformation,
+        neo_hooke,
         C10=0.5,
-        C01=0.1,
-        C11=0.02,
-        C20=-0.05,
-        C30=0.01,
-        bulk=5000.0,
+        bulk=20.0,
     )
 
     lab = Lab(mat)
@@ -23,7 +19,7 @@ def test_lab():
     data = lab.run(ux=True, bx=True, ps=True, num=20)
     fig, ax = lab.plot(data)
 
-    plt.close(fig)
+    #plt.close(fig)
 
     # dW and DW are always lists...
     assert len(data[0].stress) == 20
