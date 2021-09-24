@@ -25,8 +25,8 @@ def test_lab():
     plt.close(fig)
 
     # dW and DW are always lists...
-    assert len(data[0].stress) == 50
-    assert len(data[0].stretch) == 50
+    assert len(data[0].stress) == 20
+    assert len(data[0].stretch) == 20
 
 
 if __name__ == "__main__":
