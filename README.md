@@ -106,5 +106,18 @@ def fun(F, **kwargs):
     return W
 ```
 
+## Lab
+In the `Lab` experiments on homogenous loadcases can be performed. Let's take the above neo-hookean material formulation and run **uniaxial**, **biaxial** and **planar shear** tests.
+
+```python
+from matadi import Lab
+
+lab = Lab(NH)
+data = lab.run(ux=True, bx=True, ps=True)
+fix, ax = lab.plot(data)
+```
+
+![Lab experiments(Neo-Hooke)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-nh.svg)
+
 ## Hints
 Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead).

@@ -1,3 +1,60 @@
+[project]
+name = "matadi"
+version = "0.0.8"
+description = "Material Definition with Automatic Differentiation"
+readme = "README.md"
+requires-python = ">=3.6"
+license = {file = "LICENSE"}
+keywords = [
+  "python", 
+  "constitution", 
+  "automatic-differentiation", 
+  "scientific-computing", 
+  "fem", 
+  "finite-elements-analysis", 
+  "algorithmic-differentiation", 
+  "hyperelasticity", 
+  "constitutive-model"
+]
+
+authors = [
+  {email = "a.dutzler@gmail.com"},
+  {name = "Andreas Dutzler"}
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Topic :: Scientific/Engineering",
+  "Topic :: Scientific/Engineering :: Mathematics",
+  "Topic :: Utilities"
+]
+
+dependencies = [
+  "casadi",
+  "numpy"
+]
+
+[project.optional-dependencies]
+all = [
+    "matplotlib",
+    "scipy"
+]
+
+[project.urls]
+homepage = "https://github.com/adtzlr/matadi"
+code = "https://github.com/adtzlr/matadi"
+issues = "https://github.com/adtzlr/matadi/issues"
+
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"

@@ -43,8 +43,11 @@ def fiber_family(F, E, angle, k=1, axis=2, compression=False):
     return f1 + f2
 
 
-def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, axis=2):
+def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, bulk=None, axis=2):
     "Holzapfel-Gasser-Ogden"
+
+    if bulk is None:
+        bulk = 5000.0 * c
 
     C = transpose(F) @ F
     J1, J2, J3 = invariants(C)
@@ -72,4 +75,4 @@ def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, axis=2):
 
     W_aniso = k1 / (2 * k2) * (w4 + w6)
 
-    return W_iso + W_aniso
+    return W_iso + W_aniso + bulk * (sqrt(J3) - 1) ** 2 / 2

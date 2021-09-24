@@ -6,3 +6,4 @@ from ._material import Material
 from . import models
 from . import math
 from ._templates import ThreeFieldVariation, MaterialHyperelastic
+from ._lab import Lab
