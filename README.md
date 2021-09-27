@@ -109,7 +109,7 @@ def fun(F, **kwargs):
     return W
 ```
 
-In order to apply the above material model only on the isochoric part of the deformation gradient, use the decorator [`@isochoric_volumetric_split`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L7-L31). If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
+In order to apply the above material model only on the isochoric part of the deformation gradient [[2](https://doi.org/10.1016/0045-7825(85)90033-7)], use the decorator [`@isochoric_volumetric_split`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L7-L31). If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
 
 ```python
 from matadi.models import isochoric_volumetric_split
@@ -145,3 +145,5 @@ Please have a look at [casADi's documentation](https://web.casadi.org/). It is v
 
 ## References
 [1] J. A. E. Andersson, J. Gillis, G. Horn, J. B. Rawlings, and M. Diehl, *CasADi - A software framework for nonlinear optimization and optimal control*, Math. Prog. Comp., vol. 11, no. 1, pp. 1–36, 2019, [![DOI:10.1007/s12532-018-0139-4](https://zenodo.org/badge/DOI/10.1007/s12532-018-0139-4.svg)](https://doi.org/10.1007/s12532-018-0139-4)
+
+[2] J. C. Simo, R. L. Taylor, and K. S. Pister, *Variational and projection methods for the volume constraint in finite deformation elasto-plasticity*, Computer Methods in Applied Mechanics and Engineering, vol. 51, no. 1–3, pp. 177–208, Sep. 1985, [![DOI:10.1016/0045-7825(85)90033-7](https://zenodo.org/badge/DOI/10.1016/0045-7825(85)90033-7.svg)](https://doi.org/10.1016/0045-7825(85)90033-7)
