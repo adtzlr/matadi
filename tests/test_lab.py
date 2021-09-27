@@ -9,7 +9,11 @@ def test_lab():
     # test material without bulk modulus
     mat = MaterialHyperelastic(neo_hooke, C10=0.5)
 
-    mat = MaterialHyperelastic(neo_hooke, C10=0.5, bulk=5000.0,)
+    mat = MaterialHyperelastic(
+        neo_hooke,
+        C10=0.5,
+        bulk=5000.0,
+    )
 
     lab = Lab(mat)
     data = lab.run(ux=False, bx=False, ps=False, num=20)

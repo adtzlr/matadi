@@ -25,8 +25,18 @@ def test_fiber():
         DW = M.hessian([FF])
 
         assert W0[0].shape == (2,)
-        assert dW[0].shape == (3, 3, 2,)
-        assert DW[0].shape == (3, 3, 3, 3, 2,)
+        assert dW[0].shape == (
+            3,
+            3,
+            2,
+        )
+        assert DW[0].shape == (
+            3,
+            3,
+            3,
+            3,
+            2,
+        )
 
 
 def test_hgo():
@@ -60,8 +70,18 @@ def test_hgo():
         DW = M.hessian([FF])
 
         assert W0[0].shape == (2,)
-        assert dW[0].shape == (3, 3, 2,)
-        assert DW[0].shape == (3, 3, 3, 3, 2,)
+        assert dW[0].shape == (
+            3,
+            3,
+            2,
+        )
+        assert DW[0].shape == (
+            3,
+            3,
+            3,
+            3,
+            2,
+        )
 
 
 if __name__ == "__main__":

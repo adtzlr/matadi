@@ -5,7 +5,7 @@ from ..math import det
 
 
 def isochoric_volumetric_split(fun):
-    """Apply the material formulation only on the isochoric part of the 
+    """Apply the material formulation only on the isochoric part of the
     multiplicative split of the deformation gradient. Optionally, if
     the bulk keyword is passed, add a volumetric term."""
 

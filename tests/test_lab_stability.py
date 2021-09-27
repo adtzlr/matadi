@@ -6,7 +6,12 @@ import matplotlib.pyplot as plt
 
 def test_lab_stab():
 
-    mat = MaterialHyperelastic(mooney_rivlin, C10=0.0, C01=0.5, bulk=2000.0,)
+    mat = MaterialHyperelastic(
+        mooney_rivlin,
+        C10=0.0,
+        C01=0.5,
+        bulk=2000.0,
+    )
 
     lab = Lab(mat)
     data = lab.run(ux=True, bx=True, ps=True, num=50, stretch_max=2.5)

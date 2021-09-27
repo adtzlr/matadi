@@ -24,6 +24,7 @@ def test_models():
         matadi.models.ogden,
         matadi.models.arruda_boyce,
         matadi.models.extended_tube,
+        matadi.models.van_der_waals,
     ]
 
     parameters = [
