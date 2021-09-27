@@ -12,7 +12,7 @@ def test_lab():
     data = lab.run(ux=True, bx=True, ps=True, num=50)
 
     fig, ax = lab.plot(data, stability=True)
-    # plt.close(fig)
+    plt.close(fig)
 
     # dW and DW are always lists...
     assert len(data[0].stress) == 50
