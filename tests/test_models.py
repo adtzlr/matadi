@@ -15,6 +15,8 @@ def test_models():
     JJ = 1 + np.random.rand(5, 100) / 10
 
     models = [
+        matadi.models.saint_venant_kirchhoff,
+        matadi.models.neo_hooke,
         matadi.models.neo_hooke,
         matadi.models.mooney_rivlin,
         matadi.models.yeoh,
@@ -24,6 +26,8 @@ def test_models():
     ]
 
     parameters = [
+        {"mu": 1.0, "lmbda": 20.0},
+        {"C10": 1.0},
         {"C10": 1.0, "bulk": 1.0},
         {"C10": 1.0, "C01": 0.1, "bulk": 1.0},
         {"C10": 1.0, "C20": 0.1, "C30": 0.01, "bulk": 1.0},

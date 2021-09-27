@@ -1,3 +1,4 @@
+from ._helpers import isochoric_volumetric_split
 from ..math import (
     transpose,
     det,
@@ -13,6 +14,7 @@ from ..math import (
 )
 
 
+@isochoric_volumetric_split
 def fiber(F, E, angle, k=1, axis=2, compression=False):
     "Fiber"
 
@@ -23,9 +25,8 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
     N[plane, :] = DM([cos(a), sin(a)])
 
     C = transpose(F) @ F
-    Cu = det(C) ** (-1 / 3) * C
 
-    stretch = sqrt((transpose(N) @ Cu @ N))[0, 0]
+    stretch = sqrt((transpose(N) @ C @ N))[0, 0]
     strain = 1 / k * (stretch ** k - 1)
 
     if not compression:
@@ -34,6 +35,7 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
     return E * strain ** 2 / 2
 
 
+@isochoric_volumetric_split
 def fiber_family(F, E, angle, k=1, axis=2, compression=False):
     "Fiber Family"
 
@@ -43,15 +45,12 @@ def fiber_family(F, E, angle, k=1, axis=2, compression=False):
     return f1 + f2
 
 
-def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, bulk=None, axis=2):
+@isochoric_volumetric_split
+def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, axis=2):
     "Holzapfel-Gasser-Ogden"
 
-    if bulk is None:
-        bulk = 5000.0 * c
-
     C = transpose(F) @ F
-    J1, J2, J3 = invariants(C)
-    I1 = J3 ** (-1 / 3) * J1
+    I1, I2, I3 = invariants(C)
 
     alpha = angle * pi / 180
     plane = [(1, 2), (2, 0), (0, 1)][axis]
@@ -65,8 +64,8 @@ def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, bulk=None, axis=2):
     A1 = N1 @ transpose(N1)
     A2 = N2 @ transpose(N2)
 
-    I4 = trace(J3 ** (-1 / 3) * C @ A1)
-    I6 = trace(J3 ** (-1 / 3) * C @ A2)
+    I4 = trace(C @ A1)
+    I6 = trace(C @ A2)
 
     W_iso = c / 2 * (I1 - 3)
 
@@ -75,4 +74,4 @@ def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, bulk=None, axis=2):
 
     W_aniso = k1 / (2 * k2) * (w4 + w6)
 
-    return W_iso + W_aniso + bulk * (sqrt(J3) - 1) ** 2 / 2
+    return W_iso + W_aniso

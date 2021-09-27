@@ -6,6 +6,9 @@ import matplotlib.pyplot as plt
 
 def test_lab():
 
+    # test material without bulk modulus
+    mat = MaterialHyperelastic(neo_hooke, C10=0.5)
+
     mat = MaterialHyperelastic(neo_hooke, C10=0.5, bulk=5000.0,)
 
     lab = Lab(mat)
