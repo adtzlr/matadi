@@ -37,6 +37,7 @@ def test_models():
         {"mu": (1.0, 0.2), "alpha": (2.0, -1.5), "bulk": 5000.0},
         {"C1": 1.0, "limit": 3.2, "bulk": 5000.0},
         {"Gc": 0.1867, "Ge": 0.2169, "beta": 0.2, "delta": 0.09693, "bulk": 5000.0},
+        {"mu": 1.0, "beta": 0.1, "a": 20, "limit": 5.0, "bulk": 5000.0},
     ]
 
     for model, kwargs in zip(models, parameters):
