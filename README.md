@@ -98,6 +98,7 @@ Available [isotropic hyperelastic material models](https://github.com/adtzlr/mat
 - [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L49-L59))
 - [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L62-L75))
 - [Extended-Tube](https://meridian.allenpress.com/rct/article-abstract/72/4/602/92819/An-Extended-Tube-Model-for-Rubber-Elasticity?redirectedFrom=fulltext) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L78-L86))
+- [Van-der-Waals (Kilian)](https://doi.org/10.1016/0032-3861(81)90200-7) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L89-L98))
 
 Available [anisotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py):
 - Fiber ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L17-L35))
