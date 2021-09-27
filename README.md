@@ -123,7 +123,7 @@ NH = MaterialHyperelastic(fun_iso, C10=0.5, bulk=200)
 ```
 
 ## Lab
-In the `Lab` experiments on homogenous loadcases can be performed. Let's take the above neo-hookean material formulation and run **uniaxial**, **biaxial** and **planar shear** tests.
+In the `Lab` :lab_coat: experiments on homogenous loadcases can be performed. Let's take the above neo-hookean material formulation and run **uniaxial**, **biaxial** and **planar shear** tests.
 
 ```python
 from matadi import Lab
