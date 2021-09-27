@@ -1,5 +1,5 @@
 from ._helpers import isochoric_volumetric_split
-from ..math import det, transpose, trace, eigvals, sum1, log
+from ..math import det, transpose, trace, eigvals, sum1, log, inv, sqrt
 
 
 def saint_venant_kirchhoff(F, mu, lmbda):
