@@ -4,8 +4,8 @@ from ..math import det, transpose, trace, eigvals, sum1
 
 def saint_venant_kirchhoff(F, mu, lmbda):
     C = transpose(F) @ F
-    I1 = trace(C)
-    I2 = trace(C @ C)
+    I1 = trace(C) / 2 - 3 / 2
+    I2 = trace(C @ C) / 4 - trace(C) / 2 + 3 / 4
     return mu * I2 + lmbda * I1 ** 2 / 2
 
 
