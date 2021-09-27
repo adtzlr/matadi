@@ -50,6 +50,8 @@ Mat = Material(
 )
 
 # init some random deformation gradients
+import numpy as np
+
 defgrad = np.random.rand(3, 3, 5, 100) - 0.5
 
 for a in range(3):
@@ -105,6 +107,19 @@ Any user-defined isotropic hyperelastic strain energy density function may be pa
 def fun(F, **kwargs):
     # user code
     return W
+```
+
+In order to apply the above material model only on the isochoric part of the deformation gradient, use the decorator `@isochoric_volumetric_split`. If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
+
+```python
+from matadi.models import isochoric_volumetric_split
+
+@isochoric_volumetric_split
+def fun_iso(F, **kwargs):
+    # user code
+    return W
+
+NH = MaterialHyperelastic(fun_iso, C10=0.5, bulk=200)
 ```
 
 ## Lab
