@@ -119,7 +119,10 @@ fig, ax = lab.plot(data)
 
 ![Lab experiments(Neo-Hooke)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-nh.svg)
 
-Unstable states of deformation can be indicated 
+Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks if 
+a) the volume ratio is greater zero,
+b) the slope of stress vs. stretch and
+c) the sign of the resulting stretch from a small superposed force in one direction.
 
 ## Hints
 Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead).
