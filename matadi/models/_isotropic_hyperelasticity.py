@@ -12,7 +12,7 @@ def mooney_rivlin(F, C10, C01, bulk):
     J = det(F)
     C = transpose(F) @ F
     I1 = J ** (-2 / 3) * trace(C)
-    I2 = J ** (-4 / 3) * trace(C @ C)
+    I2 = J ** (-4 / 3) * (trace(C) ** 2 - trace(C @ C)) / 2
     return C10 * (I1 - 3) + C01 * (I2 - 3) + bulk * (J - 1) ** 2 / 2
 
 
@@ -32,7 +32,7 @@ def third_order_deformation(F, C10, C01, C11, C20, C30, bulk):
     J = det(F)
     C = transpose(F) @ F
     I1 = J ** (-2 / 3) * trace(C)
-    I2 = J ** (-4 / 3) * trace(C @ C)
+    I2 = J ** (-4 / 3) * (trace(C) ** 2 - trace(C @ C)) / 2
     return (
         C10 * (I1 - 3)
         + C01 * (I2 - 3)

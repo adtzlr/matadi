@@ -3,7 +3,7 @@ Material Definition with Automatic Differentiation (AD)
 
 [![PyPI version shields.io](https://img.shields.io/pypi/v/matadi.svg)](https://pypi.python.org/pypi/matadi/) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Made with love in Graz (Austria)](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20in-Graz%20(Austria)-0c674a) [![codecov](https://codecov.io/gh/adtzlr/matadi/branch/main/graph/badge.svg?token=2EY2U4ZL35)](https://codecov.io/gh/adtzlr/matadi) [![DOI](https://zenodo.org/badge/408564756.svg)](https://zenodo.org/badge/latestdoi/408564756) ![Codestyle black](https://img.shields.io/badge/code%20style-black-black) ![GitHub Repo stars](https://img.shields.io/github/stars/adtzlr/matadi?logo=github) ![PyPI - Downloads](https://img.shields.io/pypi/dm/matadi)
 
-matADi is a simple Python module which acts as a wrapper on top of [casADi](https://web.casadi.org/) for easy definitions of hyperelastic strain energy functions. Gradients (stresses) and hessians (elasticity tensors) are carried out by casADi's powerful and fast **Automatic Differentiation (AD)** capabilities. It is designed to handle inputs with trailing axes which is especially useful for the application in Python-based finite element modules like [scikit-fem](https://scikit-fem.readthedocs.io/en/latest/) or [FElupe](https://adtzlr.github.io/felupe/). Mixed-field formulations are supported as well as single-field formulations.
+matADi is a simple Python module which acts as a wrapper on top of [casADi](https://web.casadi.org/) [1] for easy definitions of hyperelastic strain energy functions. Gradients (stresses) and hessians (elasticity tensors) are carried out by casADi's powerful and fast **Automatic Differentiation (AD)** capabilities. It is designed to handle inputs with trailing axes which is especially useful for the application in Python-based finite element modules like [scikit-fem](https://scikit-fem.readthedocs.io/en/latest/) or [FElupe](https://adtzlr.github.io/felupe/). Mixed-field formulations are supported as well as single-field formulations.
 
 ## Installation
 Install `matADi` from PyPI via pip.
@@ -114,10 +114,18 @@ from matadi import Lab
 
 lab = Lab(NH)
 data = lab.run(ux=True, bx=True, ps=True)
-fix, ax = lab.plot(data)
+fig, ax = lab.plot(data)
 ```
 
 ![Lab experiments(Neo-Hooke)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-nh.svg)
 
+Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks if 
+a) the volume ratio is greater zero,
+b) the slope of stress vs. stretch and
+c) the sign of the resulting stretch from a small superposed force in one direction.
+
 ## Hints
 Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead).
+
+## References
+[1] J. A. E. Andersson, J. Gillis, G. Horn, J. B. Rawlings, and M. Diehl, *CasADi - A software framework for nonlinear optimization and optimal control*, Math. Prog. Comp., vol. 11, no. 1, pp. 1–36, 2019, [![DOI:10.1007/s12532-018-0139-4](https://zenodo.org/badge/10.1007/s12532-018-0139-4.svg)](https://doi.org/10.1007/s12532-018-0139-4)
