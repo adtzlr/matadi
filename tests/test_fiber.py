@@ -14,8 +14,11 @@ def test_fiber():
 
     for model in [fiber, fiber_family]:
 
-        # init Material
+        # init Material without bulk
         M = MaterialHyperelastic(model, E=1, angle=30, axis=2)
+
+        # init Material
+        M = MaterialHyperelastic(model, E=1, angle=30, axis=2, bulk=5000)
 
         W0 = M.function([FF])
         dW = M.gradient([FF])
@@ -35,9 +38,21 @@ def test_hgo():
 
     for model in [holzapfel_gasser_ogden]:
 
-        # init Material
+        # init Material without bulk
         M = MaterialHyperelastic(
             model, c=0.0764, k1=996.6, k2=524.6, kappa=0.2, angle=49.98, axis=2
+        )
+
+        # init Material
+        M = MaterialHyperelastic(
+            model,
+            c=0.0764,
+            k1=996.6,
+            k2=524.6,
+            kappa=0.2,
+            angle=49.98,
+            axis=2,
+            bulk=5000,
         )
 
         W0 = M.function([FF])
