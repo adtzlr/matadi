@@ -140,8 +140,10 @@ a) the volume ratio is greater zero,
 b) the slope of stress vs. stretch and
 c) the sign of the resulting stretch from a small superposed force in one direction.
 
-## Hints
+## Hints and usage in FEM modules
 Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead).
+
+Simple examples for using `matadi` in [`scikit-fem`](https://github.com/adtzlr/matadi/discussions/14#) as well as in [`felupe`](https://github.com/adtzlr/matadi/discussions/22) are shown in the Discussion section.
 
 ## References
 [1] J. A. E. Andersson, J. Gillis, G. Horn, J. B. Rawlings, and M. Diehl, *CasADi - A software framework for nonlinear optimization and optimal control*, Math. Prog. Comp., vol. 11, no. 1, pp. 1–36, 2019, [![DOI:10.1007/s12532-018-0139-4](https://zenodo.org/badge/DOI/10.1007/s12532-018-0139-4.svg)](https://doi.org/10.1007/s12532-018-0139-4)
