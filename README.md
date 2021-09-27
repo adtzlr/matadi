@@ -95,9 +95,9 @@ Available [isotropic hyperelastic material models](https://github.com/adtzlr/mat
 - [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L62-L75))
 
 Available anisotropic hyperelastic material models:
-- Fiber
-- Fiber-family (+/- combination of single Fiber)
-- [Holzapfel Gasser Ogden](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2005.0073)
+- Fiber ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L17-L35))
+- Fiber-family (+/- combination of single Fiber) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L38-L45))
+- [Holzapfel Gasser Ogden](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2005.0073) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L48-L77))
 
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
