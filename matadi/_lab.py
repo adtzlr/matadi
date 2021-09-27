@@ -25,16 +25,16 @@ class Lab:
             G = np.diag([stretch + 1e-6, *stretches_23_eps])
             A = self.material.hessian([F])[0]
 
-            # convert hessian to (6,6) matrix
-            B = np.zeros((6, 6))
-            c = [(0, 0), (1, 1), (2, 2), (0, 1), (1, 2), (2, 0)]
+            # convert hessian to (3, 3) matrix
+            B = np.zeros((3, 3))
+            c = [(0, 0), (1, 1), (2, 2)]
 
             for i, a in enumerate(c):
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
             # init unit force in direction 1
-            df = np.zeros(6)
+            df = np.zeros(3)
             df[0] = 1
 
             # calculate linear solution of stretch 1 resulting from unit load
@@ -54,7 +54,16 @@ class Lab:
             return [s[1, 1], s[2, 2]]
 
         res = root(stress_free, np.ones(2), args=(stretch,))
+        if not res.success:
+            res = root(stress_free, np.ones(2) * 1 / np.sqrt(stretch), args=(stretch,))
+
         res_eps = root(stress_free, np.ones(2), args=(stretch + 1e-6,))
+        if not res_eps.success:
+            res_eps = root(
+                stress_free,
+                np.ones(2) * 1 / np.sqrt(stretch + 1e-6),
+                args=(stretch + 1e-6,),
+            )
 
         return (
             stress(stretch, *res.x)[0, 0],
@@ -72,16 +81,16 @@ class Lab:
             G = np.diag([stretch + 1e-6, stretch + 1e-6, stretch_3_eps])
             A = self.material.hessian([F])[0]
 
-            # convert hessian to (6,6) matrix
-            B = np.zeros((6, 6))
-            c = [(0, 0), (1, 1), (2, 2), (0, 1), (1, 2), (2, 0)]
+            # convert hessian to (3, 3) matrix
+            B = np.zeros((3, 3))
+            c = [(0, 0), (1, 1), (2, 2)]
 
             for i, a in enumerate(c):
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
             # init unit force in direction 1
-            df = np.zeros(6)
+            df = np.zeros(3)
             df[0] = 1
 
             # calculate linear solution of stretch 1 resulting from unit load
@@ -122,16 +131,16 @@ class Lab:
             G = np.diag([stretch + 1e-6, 1, stretch_3_eps])
             A = self.material.hessian([F])[0]
 
-            # convert hessian to (6,6) matrix
-            B = np.zeros((6, 6))
-            c = [(0, 0), (1, 1), (2, 2), (0, 1), (1, 2), (2, 0)]
+            # convert hessian to (3, 3) matrix
+            B = np.zeros((3, 3))
+            c = [(0, 0), (1, 1), (2, 2)]
 
             for i, a in enumerate(c):
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
             # init unit force in direction 1
-            df = np.zeros(6)
+            df = np.zeros(3)
             df[0] = 1
 
             # calculate linear solution of stretch 1 resulting from unit load
@@ -162,14 +171,17 @@ class Lab:
             stability(stretch, stretch_3, stretch_3_eps),
         )
 
-    def run(self, ux=True, bx=True, ps=True, stretch_max=2.5, num=50):
+    def run(self, ux=True, bx=True, ps=True, stretch_min=None, stretch_max=2.5, num=50):
 
         out = []
 
         Data = namedtuple("Data", "label stretch stretch_2 stretch_3 stress stability")
 
         if ux:
-            stretch_ux = np.linspace(1 - (stretch_max - 1) / 5, stretch_max, num)
+            if stretch_min is None:
+                stretch_min = max(0, 1 - (stretch_max - 1) / 5)
+
+            stretch_ux = np.linspace(stretch_min, stretch_max, num)
             stress_ux, stretch_2_ux, stretch_3_ux, stability_ux = np.array(
                 [self._uniaxial(s11) for s11 in stretch_ux]
             ).T
