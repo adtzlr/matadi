@@ -109,7 +109,7 @@ def fun(F, **kwargs):
     return W
 ```
 
-In order to apply the above material model only on the isochoric part of the deformation gradient, use the decorator `@isochoric_volumetric_split`. If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
+In order to apply the above material model only on the isochoric part of the deformation gradient, use the decorator [`@isochoric_volumetric_split`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L7-L31). If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
 
 ```python
 from matadi.models import isochoric_volumetric_split
