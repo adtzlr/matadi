@@ -84,3 +84,15 @@ def extended_tube(F, Gc, delta, Ge, beta):
     Wc = Gc / 2 * (g + log(1 - delta ** 2 * (D - 3)))
     We = 2 * Ge / beta ** 2 * sum1(wC ** (-beta / 2) - 1)
     return Wc + We
+
+
+@isochoric_volumetric_split
+def van_der_waals(F, mu, limit, a, beta):
+    C = transpose(F) @ F
+    I1 = trace(C)
+    I2 = trace(inv(C))
+    I = (1 - beta) * I1 + beta * I2
+    eta = sqrt((I - 3) / (limit ** 2 - 3))
+    return mu * (
+        -(limit ** 2 - 3) * (log(1 - eta) + eta) - 2 / 3 * a * ((I - 3) / 2) ** (3 / 2)
+    )
