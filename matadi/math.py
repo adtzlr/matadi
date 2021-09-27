@@ -26,6 +26,7 @@ from casadi import (
     acosh,
     # math
     exp,
+    log,
     sqrt,
     sum1,
     sum2,

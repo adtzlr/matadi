@@ -1,5 +1,5 @@
 from ._helpers import isochoric_volumetric_split
-from ..math import det, transpose, trace, eigvals, sum1
+from ..math import det, transpose, trace, eigvals, sum1, log
 
 
 def saint_venant_kirchhoff(F, mu, lmbda):
@@ -73,3 +73,14 @@ def arruda_boyce(F, C1, limit):
         out += a * beta ** (2 * j - 2) * (I1 ** j - 3 ** j)
 
     return C1 * out
+
+
+@isochoric_volumetric_split
+def extended_tube(F, Gc, delta, Ge, beta):
+    C = transpose(F) @ F
+    D = trace(C)
+    wC = eigvals(C)
+    g = (1 - delta ** 2) * (D - 3) / (1 - delta ** 2 * (D - 3))
+    Wc = Gc / 2 * (g + log(1 - delta ** 2 * (D - 3)))
+    We = 2 * Ge / beta ** 2 * sum1(wC ** (-beta / 2) - 1)
+    return Wc + We

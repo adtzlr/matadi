@@ -11,6 +11,7 @@ from ._hyperelasticity_isotropic import (
     third_order_deformation,
     ogden,
     arruda_boyce,
+    extended_tube,
 )
 
 from ._hyperelasticity_anisotropic import (
