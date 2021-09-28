@@ -254,10 +254,7 @@ class Lab:
 
                 ax.plot(d.stretch, stress_stable, **lineargs[d.label], label=d.label)
                 ax.plot(
-                    d.stretch,
-                    stress_unstable,
-                    **lineargs[d.label],
-                    linestyle="--",
+                    d.stretch, stress_unstable, **lineargs[d.label], linestyle="--",
                 )
 
             else:
