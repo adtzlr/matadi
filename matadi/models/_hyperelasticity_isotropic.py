@@ -90,7 +90,7 @@ def extended_tube(F, Gc, delta, Ge, beta):
 def van_der_waals(F, mu, limit, a, beta):
     C = transpose(F) @ F
     I1 = trace(C)
-    I2 = trace(inv(C))
+    I2 = (trace(C) ** 2 - trace(C @ C)) / 2
     I = (1 - beta) * I1 + beta * I2
     eta = sqrt((I - 3) / (limit ** 2 - 3))
     return mu * (
