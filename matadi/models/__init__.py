@@ -12,6 +12,7 @@ from ._hyperelasticity_isotropic import (
     ogden,
     arruda_boyce,
     extended_tube,
+    van_der_waals,
 )
 
 from ._hyperelasticity_anisotropic import (

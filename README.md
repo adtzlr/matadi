@@ -84,10 +84,14 @@ W = NH.function([defgrad])[0]
 P = NH.gradient([defgrad])[0]
 A = NH.hessian([defgrad])[0]
 
-W_upJ = ThreeFieldVariation(NH).function([defgrad, pressure, volratio])
-P_upJ = ThreeFieldVariation(NH).gradient([defgrad, pressure, volratio])
-A_upJ = ThreeFieldVariation(NH).hessian([defgrad, pressure, volratio])
+NH_upJ = ThreeFieldVariation(NH)
+
+W_upJ = NH_upJ.function([defgrad, pressure, volratio])
+P_upJ = NH_upJ.gradient([defgrad, pressure, volratio])
+A_upJ = NH_upJ.hessian([defgrad, pressure, volratio])
 ```
+
+The output of `NH_upJ.gradient([defgrad, pressure, volratio])` is a list with gradients of the functional as `[dWdF, dWdp, dWdJ]`. Hessian entries are provided as list of the upper triangle entries, e.g. `NH_upJ.hessian([defgrad, pressure, volratio])` returns `[d2WdFdF, d2WdFdp, d2WdFdJ, d2Wdpdp, d2WdpdJ, d2WdJdJ]`.
 
 Available [isotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py):
 - [Saint Venant Kirchhoff](https://en.wikipedia.org/wiki/Hyperelastic_material#Saint_Venant%E2%80%93Kirchhoff_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L5-L9))
@@ -98,6 +102,7 @@ Available [isotropic hyperelastic material models](https://github.com/adtzlr/mat
 - [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L49-L59))
 - [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L62-L75))
 - [Extended-Tube](https://meridian.allenpress.com/rct/article-abstract/72/4/602/92819/An-Extended-Tube-Model-for-Rubber-Elasticity?redirectedFrom=fulltext) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L78-L86))
+- [Van-der-Waals (Kilian)](https://doi.org/10.1016/0032-3861(81)90200-7) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L89-L98))
 
 Available [anisotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py):
 - Fiber ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L17-L35))
