@@ -78,7 +78,7 @@ def pre(
 def test_lab():
 
     data = pre(neo_hooke, test_without_bulk=True)
-    data = pre(neo_hooke, run_all=True)
+    data = pre(neo_hooke, run_all=True, plot=True, close=True)
 
     run_kwargs = {"stretch_min": 0.1, "stretch_max": 1.0}
 
