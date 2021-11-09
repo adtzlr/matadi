@@ -5,6 +5,7 @@ from casadi import (
     dot,
     transpose,
     trace,
+    diag,
     adj,
     cofactor,
     cross,
@@ -24,6 +25,7 @@ from casadi import (
     atan2,
     asinh,
     acosh,
+    atanh,
     # math
     exp,
     log,
