@@ -127,11 +127,12 @@ In order to apply the above material model only on the isochoric part of the def
 
 ```python
 from matadi.models import isochoric_volumetric_split
+from matadi.math import trace, transpose
 
 @isochoric_volumetric_split
-def fun_iso(F, **kwargs):
-    # user code
-    return W
+def fun_iso(F, C10):
+    # user code of strain energy function, e.g. neo-hooke
+    return C10 * (trace(transpose(F) @ F) - 3)
 
 NH = MaterialHyperelastic(fun_iso, C10=0.5, bulk=200)
 ```
