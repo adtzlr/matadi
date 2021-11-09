@@ -1,5 +1,5 @@
 from ..._helpers import isochoric_volumetric_split
-from ....math import transpose, sum1, diag, sqrt, inv
+from ....math import transpose, sum1, diag, sqrt, inv, det
 
 
 @isochoric_volumetric_split
@@ -22,7 +22,8 @@ def microsphere_affine_tube(F, quadrature, f, kwargs):
     r = quadrature.points
     w = quadrature.weights
 
-    C = transpose(F) @ F
-    areastretch = sqrt(diag(r.T @ inv(C) @ r))
+    Fs = det(F) * transpose(inv(F))
+    Cs = transpose(Fs) @ Fs
+    areastretch = sqrt(diag(r.T @ Cs @ r))
 
     return sum1(f(areastretch, **kwargs) * w)
