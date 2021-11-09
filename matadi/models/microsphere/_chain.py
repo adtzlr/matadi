@@ -8,7 +8,7 @@ def langevin(stretch, mu, N):
     return mu * (stretch + 2 * sqrt(N) * atanh(stretch / sqrt(N)))
 
 
-def gauss(stretch, mu, N):
+def gauss(stretch, mu):
     """Gaussian model given by the free energy
     of a single chain as a function of the stretch."""
 
