@@ -30,7 +30,11 @@ def test_simple():
         FF[a, a] += 1
 
     # init Material
-    W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0},)
+    W = Material(
+        x=[F],
+        fun=neohooke,
+        kwargs={"mu": 1.0, "bulk": 10.0},
+    )
 
     W0 = W.function([FF])
     dW = W.gradient([FF])
