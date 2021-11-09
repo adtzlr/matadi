@@ -87,7 +87,7 @@ def test_cof():
     F = Variable("F", 3, 3)
 
     # data
-    FF = np.diag(2.4 * np.ones(3))
+    FF = np.diag(2.4 * np.ones(3)).reshape(3, 3, 1, 1)
 
     # fun
     def g(x):
@@ -106,7 +106,7 @@ def test_cof():
     DW = W.jacobian([FF])
 
     assert np.allclose(dW, DW)
-    assert np.allclose(dW[0], Eye4)
+    assert np.allclose(dW[0][:, :, :, :, 0, 0], Eye4)
 
 
 if __name__ == "__main__":
