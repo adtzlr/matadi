@@ -109,7 +109,7 @@ Available [anisotropic hyperelastic material models](https://github.com/adtzlr/m
 - Fiber-family (+/- combination of single Fiber) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L38-L45))
 - [Holzapfel Gasser Ogden](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2005.0073) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L48-L77))
 
-Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
+Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
 - [affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L5-L15))
 - [affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L18-L28))
 - [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L5-L15))
