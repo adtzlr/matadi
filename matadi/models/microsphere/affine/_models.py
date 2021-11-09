@@ -3,8 +3,11 @@ from ....math import transpose, sum1, diag, sqrt, inv
 
 
 @isochoric_volumetric_split
-def microsphere_affine_stretch(F, r, w, f, kwargs):
+def microsphere_affine_stretch(F, quadrature, f, kwargs):
     "Micro-sphere model: Non-affine stretch part."
+
+    r = quadrature.points
+    w = quadrature.weights
 
     C = transpose(F) @ F
     stretch = sqrt(diag(r.T @ C @ r))
@@ -13,8 +16,11 @@ def microsphere_affine_stretch(F, r, w, f, kwargs):
 
 
 @isochoric_volumetric_split
-def microsphere_affine_tube(F, r, w, f, kwargs):
+def microsphere_affine_tube(F, quadrature, f, kwargs):
     "Micro-sphere model: Non-affine tube part."
+
+    r = quadrature.points
+    w = quadrature.weights
 
     C = transpose(F) @ F
     areastretch = sqrt(diag(r.T @ inv(C) @ r))
