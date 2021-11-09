@@ -1,7 +1,7 @@
 import numpy as np
 
-from matadi import Variable, Material
-from matadi.math import transpose, eigvals, sum1, trace
+from matadi import Variable, Material, MaterialTensor
+from matadi.math import transpose, eigvals, sum1, trace, cof, inv, det, SX
 
 
 def fun(x):
@@ -81,6 +81,35 @@ def test_eigvals_single():
     assert np.allclose(DW[0], Eye4)
 
 
+def test_cof():
+
+    # variables
+    F = Variable("F", 3, 3)
+
+    # data
+    FF = np.diag(2.4 * np.ones(3))
+
+    # fun
+    def g(x):
+        F = x[0]
+        return cof(F)
+
+    # init Material
+    W = MaterialTensor(x=[F], fun=g, compress=True)
+    W = MaterialTensor(x=[F], fun=lambda x: x[0])
+
+    Eye = np.eye(3)
+    Eye4 = np.einsum("ij,kl->ikjl", Eye, Eye)
+
+    WW = W.function([FF])
+    dW = W.gradient([FF])
+    DW = W.jacobian([FF])
+
+    assert np.allclose(dW, DW)
+    assert np.allclose(dW[0], Eye4)
+
+
 if __name__ == "__main__":
     test_eigvals()
     test_eigvals_single()
+    test_cof()
