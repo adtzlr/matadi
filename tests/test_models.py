@@ -11,6 +11,8 @@ def get_title(model):
 def library():
     "Library with models and parameters."
 
+    q = md.microsphere.quadrature.BazantOh(n=21)
+
     database = {
         md.saint_venant_kirchhoff: {"mu": 1.0, "lmbda": 20.0},
         md.neo_hooke: {"C10": 0.5},
@@ -27,6 +29,33 @@ def library():
         md.arruda_boyce: {"C1": 1.0, "limit": 3.2},
         md.extended_tube: {"Gc": 0.1867, "Ge": 0.2169, "beta": 0.2, "delta": 0.09693},
         md.van_der_waals: {"mu": 1.0, "beta": 0.1, "a": 0.5, "limit": 5.0},
+        md.microsphere.affine.stretch: {
+            "quadrature": q,
+            "f": md.microsphere.gauss,
+            "kwargs": {"mu": 1},
+        },
+        md.microsphere.affine.stretch: {
+            "quadrature": q,
+            "f": md.microsphere.langevin,
+            "kwargs": {"mu": 1, "N": 10},
+        },
+        md.microsphere.affine.tube: {
+            "quadrature": q,
+            "f": md.microsphere.langevin,
+            "kwargs": {"mu": 1, "N": 10},
+        },
+        md.microsphere.nonaffine.stretch: {
+            "quadrature": q,
+            "p": 2.7,
+            "f": md.microsphere.langevin,
+            "kwargs": {"mu": 1, "N": 10},
+        },
+        md.microsphere.nonaffine.tube: {
+            "quadrature": q,
+            "q": 2.7,
+            "f": md.microsphere.langevin,
+            "kwargs": {"mu": 1, "N": 10},
+        },
     }
 
     return database
