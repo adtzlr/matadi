@@ -95,7 +95,7 @@ def test_cof():
         return cof(F)
 
     # init Material
-    W = MaterialTensor(x=[F], fun=g, compress=True)
+    W = MaterialTensor(x=[F], fun=g)
     W = MaterialTensor(x=[F], fun=lambda x: x[0])
 
     Eye = np.eye(3)

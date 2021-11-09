@@ -59,9 +59,11 @@ def test_tensor():
 
     # variables
     F = Variable("F", 3, 3)
+    p = Variable("p", 1, 1)
 
     # data
     FF = np.random.rand(3, 3, 8, 1000)
+
     for a in range(3):
         FF[a, a] += 1
 
@@ -85,6 +87,20 @@ def test_tensor():
     assert W0[0].shape == (3, 3, 8, 1000)
     assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
     assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
+
+    # init Material
+    pp = np.random.rand(8, 1000)
+    W = MaterialTensor(x=[p], fun=lambda x: x[0], compress=True)
+    W0 = W.function([pp], threads=2)
+
+    assert W0[0].shape == (8, 1000)
+
+    # init Material
+    pp = np.random.rand(1, 1, 8, 1000)
+    W = MaterialTensor(x=[p], fun=lambda x: x[0])
+    W0 = W.function([pp], threads=2)
+
+    assert W0[0].shape == (1, 1, 8, 1000)
 
 
 if __name__ == "__main__":
