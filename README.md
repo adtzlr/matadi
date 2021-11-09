@@ -113,7 +113,7 @@ Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/
 - [affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L5-15))
 - [affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L18-28))
 - [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L5-15))
-- [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L18-28))
+- [non-affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L18-28))
 
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
