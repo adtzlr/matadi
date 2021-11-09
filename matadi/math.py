@@ -61,3 +61,8 @@ def eigvals(T, eps=1e-5):
     wT = eig_symbolic(T)
 
     return wT
+
+
+def cof(T):
+
+    return det(T) * transpose(inv(T))
