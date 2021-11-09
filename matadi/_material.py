@@ -89,3 +89,60 @@ class Material:
             fun_shape=self._idx_hessian,
             threads=threads,
         )
+
+
+class MaterialTensor:
+    def __init__(self, x, fun, args=(), kwargs={}, compress=False):
+
+        self.x = x
+        self._fun = fun
+
+        self.args = args
+        self.kwargs = kwargs
+
+        self._f = self._fun(self.x, *self.args, **self.kwargs)
+        self._g = [ca.jacobian(self._f, y) for y in self.x]
+
+        # alias
+        self.jacobian = self.gradient
+
+        # generate casADi function objects
+        self._function = ca.Function("f", self.x, [self._f])
+        self._gradient = ca.Function("g", self.x, self._g)
+
+        # generate indices
+        self._idx_function = [y.shape for y in x]
+        self._idx_gradient = []
+
+        if compress:
+            for i in range(len(self._idx_function)):
+                if np.all(np.array(self._idx_function[i]) == 1):
+                    self._idx_function[i] = ()
+
+        for i in range(len(self._idx_function)):
+            a = self._idx_function[i]
+
+            for j in range(len(self._idx_function)):
+                b = self._idx_function[j]
+
+                self._idx_gradient.append((*a, *b))
+
+    def function(self, x, threads=1):
+        "Return the function."
+        return apply(
+            x,
+            fun=self._function,
+            x_shape=self._idx_function,
+            fun_shape=self._idx_function,
+            threads=threads,
+        )
+
+    def gradient(self, x, threads=1):
+        "Return list of gradients."
+        return apply(
+            x,
+            fun=self._gradient,
+            x_shape=self._idx_function,
+            fun_shape=self._idx_gradient,
+            threads=threads,
+        )
