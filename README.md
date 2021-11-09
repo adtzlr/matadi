@@ -29,7 +29,7 @@ F = Variable("F", 3, 3)
 Next, take your favorite paper on hyperelasticity or be creative and define your own strain energy density function as a function of some variables `x` (where `x` is always a **list** of variables).
 
 ```python
-def neohooke(x, mu=1.0, bulk=200.0):
+def neohooke(x, C10=0.5, bulk=200.0):
     """Strain energy density function of a nearly-incompressible 
     Neo-Hookean isotropic hyperelastic material formulation."""
 
@@ -37,9 +37,8 @@ def neohooke(x, mu=1.0, bulk=200.0):
     
     J = det(F)
     C = transpose(F) @ F
-    I1_iso = J ** (-2 / 3) * trace(C)
 
-    return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
+    return C10 * (J ** (-2 / 3) * trace(C) - 3) + bulk * (J - 1) ** 2 / 2
 ```
 
 With this simple Python function at hand, we create an instance of a **Material**, which allows extra `args` and `kwargs` to be passed to our strain energy function. This instance now enables the evaluation of both **gradient** (stress) and **hessian** (elasticity) via methods based on automatic differentiation - optionally also on input data containing trailing axes. If necessary, the strain energy density function itself will be evaluated on input data with optional trailing axes by the **function** method.
@@ -48,7 +47,7 @@ With this simple Python function at hand, we create an instance of a **Material*
 Mat = Material(
     x=[F],
     fun=neohooke,
-    kwargs={"mu": 1.0, "bulk": 10.0},
+    kwargs={"C10": 0.5, "bulk": 10.0},
 )
 
 # init some random deformation gradients
@@ -130,11 +129,11 @@ from matadi.models import isochoric_volumetric_split
 from matadi.math import trace, transpose
 
 @isochoric_volumetric_split
-def fun_iso(F, C10):
+def nh(F, C10=0.5):
     # user code of strain energy function, e.g. neo-hooke
     return C10 * (trace(transpose(F) @ F) - 3)
 
-NH = MaterialHyperelastic(fun_iso, C10=0.5, bulk=200)
+NH = MaterialHyperelastic(nh, C10=0.5, bulk=200.0)
 ```
 
 ## Lab
