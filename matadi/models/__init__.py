@@ -20,3 +20,5 @@ from ._hyperelasticity_anisotropic import (
     fiber_family,
     holzapfel_gasser_ogden,
 )
+
+from . import microsphere
