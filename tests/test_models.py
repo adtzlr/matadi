@@ -37,7 +37,7 @@ def library():
         md.microsphere.nonaffine.stretch: {
             "quadrature": q,
             "p": 2.7,
-            "f": md.microsphere.gauss,
+            "f": md.microsphere.langevin2,
             "kwargs": {"mu": 1},
         },
         md.microsphere.affine.stretch: {
