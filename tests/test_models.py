@@ -31,30 +31,19 @@ def library():
         md.van_der_waals: {"mu": 1.0, "beta": 0.1, "a": 0.5, "limit": 5.0},
         md.microsphere.affine.stretch: {
             "quadrature": q,
-            "f": md.microsphere.gauss,
-            "kwargs": {"mu": 1},
-        },
-        md.microsphere.nonaffine.stretch: {
-            "quadrature": q,
-            "p": 2.7,
-            "f": md.microsphere.langevin2,
-            "kwargs": {"mu": 1},
-        },
-        md.microsphere.affine.stretch: {
-            "quadrature": q,
             "f": md.microsphere.langevin,
             "kwargs": {"mu": 1, "N": 10},
         },
         md.microsphere.affine.tube: {
             "quadrature": q,
-            "f": md.microsphere.langevin,
+            "f": md.microsphere.langevin2,
             "kwargs": {"mu": 1, "N": 10},
         },
         md.microsphere.nonaffine.stretch: {
             "quadrature": q,
             "p": 2.7,
-            "f": md.microsphere.langevin,
-            "kwargs": {"mu": 1, "N": 10},
+            "f": md.microsphere.gauss,
+            "kwargs": {"mu": 1},
         },
         md.microsphere.nonaffine.tube: {
             "quadrature": q,
