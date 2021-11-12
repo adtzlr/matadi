@@ -93,6 +93,32 @@ def test_models():
         assert len(P) == 3
         assert len(A) == 6
 
+    nh = matadi.MaterialHyperelastic(md.neo_hooke, **lib[md.neo_hooke])
+    mr = matadi.MaterialHyperelastic(md.mooney_rivlin, **lib[md.mooney_rivlin])
+
+    comp = matadi.MaterialComposite([nh, mr])
+
+    W = comp.function([FF])
+    P = comp.gradient([FF])
+    A = comp.hessian([FF])
+
+    assert len(W) == 1
+    assert len(P) == 1
+    assert len(A) == 1
+
+    nh_mixed = matadi.ThreeFieldVariation(nh)
+    mr_mixed = matadi.ThreeFieldVariation(mr)
+
+    comp = matadi.MaterialComposite([nh_mixed, mr_mixed])
+
+    W = comp.function([FF, pp, JJ])
+    P = comp.gradient([FF, pp, JJ])
+    A = comp.hessian([FF, pp, JJ])
+
+    assert len(W) == 1
+    assert len(P) == 3
+    assert len(A) == 6
+
 
 if __name__ == "__main__":
     test_models()
