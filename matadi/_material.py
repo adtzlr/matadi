@@ -146,3 +146,18 @@ class MaterialTensor:
             fun_shape=self._idx_gradient,
             threads=threads,
         )
+
+
+class MaterialComposite:
+    def __init__(self, materials):
+        "Composite Material as a sum of a list of materials."
+        self.materials = materials
+
+    def function(self, x):
+        return list(np.sum([m.function(x) for m in self.materials], 0))
+
+    def gradient(self, x):
+        return list(np.sum([m.gradient(x) for m in self.materials], 0))
+
+    def hessian(self, x):
+        return list(np.sum([m.hessian(x) for m in self.materials], 0))
