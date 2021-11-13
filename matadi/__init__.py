@@ -10,8 +10,8 @@ from ._material import (
 from . import models
 from . import math
 from ._templates import (
-    ThreeFieldVariation, 
-    MaterialHyperelastic, 
+    ThreeFieldVariation,
+    MaterialHyperelastic,
     MaterialComposite,
 )
 from ._lab import Lab

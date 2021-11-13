@@ -30,3 +30,10 @@ def gauss(stretch, mu):
     of a single chain as a function of the stretch."""
 
     return 3 * mu / 2 * (stretch ** 2 - 1)
+
+
+def linear(stretch, mu):
+    """Linear model given by the free energy
+    of a single chain as a function of the stretch."""
+
+    return mu * (stretch - 1)
