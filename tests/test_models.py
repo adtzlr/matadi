@@ -48,8 +48,8 @@ def library():
         md.microsphere.nonaffine.tube: {
             "quadrature": q,
             "q": 2.7,
-            "f": md.microsphere.langevin,
-            "kwargs": {"mu": 1, "N": 10},
+            "f": md.microsphere.linear,
+            "kwargs": {"mu": 1},
         },
     }
 
