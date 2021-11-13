@@ -42,7 +42,7 @@ class MaterialComposite:
         "Composite Material as a sum of a list of materials."
         self.materials = materials
         self.fun = self.composite
-    
+
     def composite(self):
         "Dummy function for plot title."
         return

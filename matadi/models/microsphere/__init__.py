@@ -5,4 +5,5 @@ from ._chain import (
     langevin,
     langevin2,
     gauss,
+    linear,
 )
