@@ -1,3 +1,5 @@
+import numpy as np
+
 from . import Material, Variable
 from .math import det
 
@@ -33,3 +35,26 @@ class MaterialHyperelastic:
 
     def _fun_wrapper(self, x, **kwargs):
         return self.fun(x[0], **kwargs)
+
+
+class MaterialComposite:
+    def __init__(self, materials):
+        "Composite Material as a sum of a list of materials."
+        self.materials = materials
+        self.fun = self.composite
+    
+    def composite(self):
+        "Dummy function for plot title."
+        return
+
+    def function(self, x):
+        fun = [m.function(x) for m in self.materials]
+        return [np.sum([f[a] for f in fun], 0) for a in range(len(fun[0]))]
+
+    def gradient(self, x):
+        grad = [m.gradient(x) for m in self.materials]
+        return [np.sum([g[a] for g in grad], 0) for a in range(len(grad[0]))]
+
+    def hessian(self, x):
+        hess = [m.hessian(x) for m in self.materials]
+        return [np.sum([h[a] for h in hess], 0) for a in range(len(hess[0]))]
