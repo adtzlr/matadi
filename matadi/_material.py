@@ -154,10 +154,13 @@ class MaterialComposite:
         self.materials = materials
 
     def function(self, x):
-        return list(np.sum([m.function(x) for m in self.materials], 0))
+        fun = [m.function(x) for m in self.materials]
+        return [np.sum([f[a] for f in fun], 0) for a in range(len(fun[0]))]
 
     def gradient(self, x):
-        return list(np.sum([m.gradient(x) for m in self.materials], 0))
+        grad = [m.gradient(x) for m in self.materials]
+        return [np.sum([g[a] for g in grad], 0) for a in range(len(grad[0]))]
 
     def hessian(self, x):
-        return list(np.sum([m.hessian(x) for m in self.materials], 0))
+        hess = [m.hessian(x) for m in self.materials]
+        return [np.sum([h[a] for h in hess], 0) for a in range(len(hess[0]))]
