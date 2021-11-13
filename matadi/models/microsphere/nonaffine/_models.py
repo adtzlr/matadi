@@ -1,9 +1,10 @@
 from ..._helpers import isochoric_volumetric_split
 from ....math import transpose, sum1, diag, sqrt, inv, det
+from ..quadrature._bazant_oh import BazantOh
 
 
 @isochoric_volumetric_split
-def microsphere_nonaffine_stretch(F, quadrature, p, f, kwargs):
+def microsphere_nonaffine_stretch(F, p, f, kwargs, quadrature=BazantOh(n=21)):
     "Micro-sphere model: Non-affine stretch part."
 
     r = quadrature.points
@@ -16,7 +17,7 @@ def microsphere_nonaffine_stretch(F, quadrature, p, f, kwargs):
 
 
 @isochoric_volumetric_split
-def microsphere_nonaffine_tube(F, quadrature, q, f, kwargs):
+def microsphere_nonaffine_tube(F, q, f, kwargs, quadrature=BazantOh(n=21)):
     "Micro-sphere model: Non-affine tube part."
 
     r = quadrature.points
