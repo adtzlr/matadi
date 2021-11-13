@@ -97,6 +97,7 @@ def test_models():
     mr = matadi.MaterialHyperelastic(md.mooney_rivlin, **lib[md.mooney_rivlin])
 
     comp = matadi.MaterialComposite([nh, mr])
+    comp.fun()
 
     W = comp.function([FF])
     P = comp.gradient([FF])
