@@ -24,6 +24,6 @@ def microsphere_nonaffine_tube(F, quadrature, q, f, kwargs):
 
     Fs = det(F) * transpose(inv(F))
     Cs = transpose(Fs) @ Fs
-    areastretch = sum1(sqrt(diag(r.T @ Cs @ r)) ** q * w) ** (1 / q)
+    areastretch = sum1(sqrt(diag(r.T @ Cs @ r)) ** q * w)
 
     return f(areastretch, **kwargs)
