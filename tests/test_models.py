@@ -51,7 +51,7 @@ def library():
             "f": md.microsphere.linear,
             "kwargs": {"mu": 1},
         },
-        matadi.models.microsphere.nonaffine.miehe: {
+        matadi.models.miehe_goektepe_lulei: {
             "mu": 0.1475,
             "N": 3.273,
             "p": 9.31,
