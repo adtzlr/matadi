@@ -33,7 +33,7 @@ def microsphere_nonaffine_tube(F, q, f, kwargs, quadrature=BazantOh(n=21)):
 
 
 @isochoric_volumetric_split
-def microsphere_nonaffine_miehe(F, mu, N, U, p, q):
+def microsphere_nonaffine_miehe_goektepe_lulei(F, mu, N, U, p, q):
     """Micro-sphere model: Combined non-affine stretch and
     tube model (for details see Miehe, Goektepe and Lulei (2004))."""
 
