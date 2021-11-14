@@ -5,26 +5,26 @@ from ..quadrature._bazant_oh import BazantOh
 
 @isochoric_volumetric_split
 def microsphere_affine_stretch(F, f, kwargs, quadrature=BazantOh(n=21)):
-    "Micro-sphere model: Non-affine stretch part."
+    "Micro-sphere model: Affine stretch part."
 
     r = quadrature.points
     w = quadrature.weights
 
     C = transpose(F) @ F
-    stretch = sqrt(diag(r.T @ C @ r))
+    affine_stretch = sqrt(diag(r.T @ C @ r))
 
-    return sum1(f(stretch, **kwargs) * w)
+    return sum1(f(affine_stretch, **kwargs) * w)
 
 
 @isochoric_volumetric_split
 def microsphere_affine_tube(F, f, kwargs, quadrature=BazantOh(n=21)):
-    "Micro-sphere model: Non-affine tube part."
+    "Micro-sphere model: Affine area-stretch part."
 
     r = quadrature.points
     w = quadrature.weights
 
     Fs = det(F) * transpose(inv(F))
     Cs = transpose(Fs) @ Fs
-    areastretch = sqrt(diag(r.T @ Cs @ r))
+    affine_areastretch = sqrt(diag(r.T @ Cs @ r))
 
-    return sum1(f(areastretch, **kwargs) * w)
+    return sum1(f(affine_areastretch, **kwargs) * w)

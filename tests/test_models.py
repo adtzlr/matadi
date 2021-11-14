@@ -51,6 +51,13 @@ def library():
             "f": md.microsphere.linear,
             "kwargs": {"mu": 1},
         },
+        matadi.models.microsphere.nonaffine.miehe: {
+            "mu": 0.1475,
+            "N": 3.273,
+            "p": 9.31,
+            "U": 9.94,
+            "q": 0.567,
+        },
     }
 
     return database
