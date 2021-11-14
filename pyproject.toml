@@ -1,6 +1,6 @@
 [project]
 name = "matadi"
-version = "0.0.16"
+version = "0.0.17"
 description = "Material Definition with Automatic Differentiation"
 readme = "README.md"
 requires-python = ">=3.6"
