@@ -115,7 +115,7 @@ Available [micro-sphere hyperelastic frameworks](https://github.com/adtzlr/matad
 - [non-affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L20-L32))
 
 Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
-- [non-affine micro-sphere](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L35-L49))
+- [Miehe Göktepe Lulei](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L35-L49))
 
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
@@ -144,10 +144,10 @@ In the `Lab` :lab_coat: experiments on homogenous loadcases can be performed. Le
 
 ```python
 from matadi import Lab, MaterialHyperelastic
-from matadi.models import microsphere
+from matadi.models import miehe_goektepe_lulei
 
 mat = MaterialHyperelastic(
-    microsphere.nonaffine.miehe, 
+    miehe_goektepe_lulei, 
     mu=0.1475, 
     N=3.273, 
     p=9.31, 
