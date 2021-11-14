@@ -22,4 +22,4 @@ from ._hyperelasticity_anisotropic import (
 )
 
 from . import microsphere
-from ._microsphere.nonaffine import miehe_goektepe_lulei
+from .microsphere.nonaffine import miehe_goektepe_lulei
