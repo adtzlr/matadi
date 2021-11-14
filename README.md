@@ -108,11 +108,14 @@ Available [anisotropic hyperelastic material models](https://github.com/adtzlr/m
 - Fiber-family (+/- combination of single Fiber) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L38-L45))
 - [Holzapfel Gasser Ogden](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2005.0073) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L48-L77))
 
+Available [micro-sphere hyperelastic frameworks](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
+- [affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L6-L16))
+- [affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L19-L30))
+- [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L7-L17))
+- [non-affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L20-L32))
+
 Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
-- [affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L5-L15))
-- [affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L18-L29))
-- [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L5-L15))
-- [non-affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L18-L29))
+- [non-affine micro-sphere](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L35-L49))
 
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
@@ -137,17 +140,28 @@ NH = MaterialHyperelastic(nh, C10=0.5, bulk=200.0)
 ```
 
 ## Lab
-In the `Lab` :lab_coat: experiments on homogenous loadcases can be performed. Let's take the above neo-hookean material formulation and run **uniaxial**, **biaxial** and **planar shear** tests.
+In the `Lab` :lab_coat: experiments on homogenous loadcases can be performed. Let's take the non-affine micro-sphere material model suitable for rubber elasticity with parameters from [[2](https://doi.org/10.1016/j.jmps.2004.03.011), Fig. 19] and run **uniaxial**, **biaxial** and **planar shear** tests.
 
 ```python
-from matadi import Lab
+from matadi import Lab, MaterialHyperelastic
+from matadi.models import microsphere
 
-lab = Lab(NH)
-data = lab.run(ux=True, bx=True, ps=True)
-fig, ax = lab.plot(data)
+mat = MaterialHyperelastic(
+    microsphere.nonaffine.miehe, 
+    mu=0.1475, 
+    N=3.273, 
+    p=9.31, 
+    U=9.94, 
+    q=0.567, 
+    bulk=5000.0
+)
+
+lab = Lab(mat)
+data = lab.run(ux=True, bx=True, ps=True, stretch_min=1.0, stretch_max=2.0)
+fig, ax = lab.plot(data, stability=True)
 ```
 
-![Lab experiments(Neo-Hooke)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-nh.svg)
+![Lab experiments(Microsphere)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-microsphere.svg)
 
 Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks if 
 a) the volume ratio is greater zero,
