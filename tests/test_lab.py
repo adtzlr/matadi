@@ -4,6 +4,8 @@ from matadi.models import neo_hooke, extended_tube, van_der_waals, mooney_rivlin
 
 import matplotlib.pyplot as plt
 
+import pytest
+
 
 def library():
     "Library with models and parameters."
@@ -83,6 +85,10 @@ def pre(
     # dW and DW are lists
     assert len(data[0].stress) == num
     assert len(data[0].stretch) == num
+    
+    data_x = lab.run(ux=True, bx=True, ps=True, shear=False, num=num, **run_kwargs)
+    with pytest.raises(TypeError):
+        fig, ax = lab.plot_shear(data_x)
 
     return data
 
