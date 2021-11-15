@@ -85,7 +85,7 @@ def test_models():
         HM_mixed = matadi.ThreeFieldVariation(HM)
 
         W = HM.function([FF])
-        P = HM.gradient([FF])
+        P = HM.gradient([FF], threads=1)
         A = HM.hessian([FF])
 
         assert len(W) == 1
