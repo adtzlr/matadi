@@ -1,3 +1,5 @@
+from multiprocessing import cpu_count
+
 import numpy as np
 import casadi as ca
 
@@ -60,7 +62,7 @@ class Material:
                 if j >= i:
                     self._idx_hessian.append((*a, *b))
 
-    def function(self, x, threads=1):
+    def function(self, x, threads=cpu_count()):
         "Return the function."
         return apply(
             x,
@@ -70,7 +72,7 @@ class Material:
             threads=threads,
         )
 
-    def gradient(self, x, threads=1):
+    def gradient(self, x, threads=cpu_count()):
         "Return list of gradients."
         return apply(
             x,
@@ -80,7 +82,7 @@ class Material:
             threads=threads,
         )
 
-    def hessian(self, x, threads=1):
+    def hessian(self, x, threads=cpu_count()):
         "Return upper-triangle entries of hessian."
         return apply(
             x,
@@ -127,7 +129,7 @@ class MaterialTensor:
 
                 self._idx_gradient.append((*a, *b))
 
-    def function(self, x, threads=1):
+    def function(self, x, threads=cpu_count()):
         "Return the function."
         return apply(
             x,
@@ -137,7 +139,7 @@ class MaterialTensor:
             threads=threads,
         )
 
-    def gradient(self, x, threads=1):
+    def gradient(self, x, threads=cpu_count()):
         "Return list of gradients."
         return apply(
             x,
