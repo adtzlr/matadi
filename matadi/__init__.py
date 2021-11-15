@@ -1,3 +1,5 @@
+from .__about__ import __version__
+
 import casadi
 
 Variable = casadi.SX.sym
@@ -15,3 +17,7 @@ from ._templates import (
     MaterialComposite,
 )
 from ._lab import Lab
+
+__all__ = [
+    "__version__",
+]
