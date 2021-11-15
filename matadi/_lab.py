@@ -318,7 +318,7 @@ class Lab:
                 ax.plot(d.stretch, d.stress, **lineargs[d.label], label=d.label)
 
         ax.grid()
-        ax.set_title(self.title)
+        ax.set_title(self.title, fontsize=10)
         ax.set_xlabel(r"stretch $\lambda_1 \quad \longrightarrow$")
         ax.set_ylabel(r"force per undeformed area $P_{11} \quad \longrightarrow$")
         ax.legend()
@@ -343,7 +343,7 @@ class Lab:
         ax.plot(d.shear, d.stress, **lineargs[d.label], label=d.label)
 
         ax.grid()
-        ax.set_title(self.title)
+        ax.set_title(self.title, fontsize=10)
         ax.set_xlabel(r"shear deformation $F_{12}=\gamma \quad \longrightarrow$")
         ax.set_ylabel(r"force per undeformed area $P_{21} \quad \longrightarrow$")
         ax.legend()
