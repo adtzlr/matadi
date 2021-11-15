@@ -171,11 +171,42 @@ class Lab:
             stability(stretch, stretch_3, stretch_3_eps),
         )
 
-    def run(self, ux=True, bx=True, ps=True, stretch_min=None, stretch_max=2.5, num=50):
+    def _shear(self, shear):
+        def stress(shear, stretch_2, stretch_3):
+            F = np.diag([1, stretch_2, stretch_3])
+            F[0, 1] = shear
+            return self.material.gradient([F])[0]
+
+        def stress_free(stretches, shear):
+            return [stress(shear, *stretches)[1, 1], stress(shear, *stretches)[2, 2]]
+
+        res = root(stress_free, np.ones(2), args=(shear,))
+        stretches = res.x
+
+        return (
+            stress(shear, *stretches)[1, 0],
+            stretches[0],
+            stretches[1],
+            None,
+        )
+
+    def run(
+        self,
+        ux=True,
+        bx=True,
+        ps=True,
+        shear=True,
+        stretch_min=None,
+        stretch_max=2.5,
+        shear_max=1.0,
+        num=50,
+    ):
 
         out = []
 
-        Data = namedtuple("Data", "label stretch stretch_2 stretch_3 stress stability")
+        Data = namedtuple(
+            "Data", "label stretch stretch_2 stretch_3 shear stress stability"
+        )
 
         if ux:
             if stretch_min is None:
@@ -190,6 +221,7 @@ class Lab:
                 stretch_ux,
                 stretch_2_ux,
                 stretch_3_ux,
+                0,
                 stress_ux,
                 stability_ux,
             )
@@ -205,6 +237,7 @@ class Lab:
                 stretch_bx,
                 stretch_2_bx,
                 stretch_3_bx,
+                0,
                 stress_bx,
                 stability_bx,
             )
@@ -220,10 +253,27 @@ class Lab:
                 stretch_ps,
                 stretch_2_ps,
                 stretch_3_ps,
+                0,
                 stress_ps,
                 stability_ps,
             )
             out.append(ps_data)
+
+        if shear:
+            deformation_sh = np.linspace(0, shear_max, num)
+            stress_shear, stretch_2_sh, stretch_3_sh, stability_sh = np.array(
+                [self._shear(g) for g in deformation_sh]
+            ).T
+            shear_data = Data(
+                "shear",
+                1,
+                stretch_2_sh,
+                stretch_3_sh,
+                deformation_sh,
+                stress_shear,
+                stability_sh,
+            )
+            out.append(shear_data)
 
         return out
 
@@ -236,6 +286,9 @@ class Lab:
             "biaxial": {"color": "C1"},
             "planar": {"color": "C2"},
         }
+
+        if data[-1].label == "shear":
+            data = data[:-1]
 
         for d in data:
 
@@ -268,6 +321,31 @@ class Lab:
         ax.set_title(self.title)
         ax.set_xlabel(r"stretch $\lambda_1 \quad \longrightarrow$")
         ax.set_ylabel(r"force per undeformed area $P_{11} \quad \longrightarrow$")
+        ax.legend()
+
+        fig.tight_layout()
+
+        return fig, ax
+
+    def plot_shear(self, data):
+
+        fig, ax = plt.subplots()
+
+        lineargs = {
+            "shear": {"color": "C3"},
+        }
+
+        if data[-1].label == "shear":
+            d = data[-1]
+        else:
+            raise TypeError("No shear data found.")
+
+        ax.plot(d.shear, d.stress, **lineargs[d.label], label=d.label)
+
+        ax.grid()
+        ax.set_title(self.title)
+        ax.set_xlabel(r"shear deformation $F_{12}=\gamma \quad \longrightarrow$")
+        ax.set_ylabel(r"force per undeformed area $P_{21} \quad \longrightarrow$")
         ax.legend()
 
         fig.tight_layout()
