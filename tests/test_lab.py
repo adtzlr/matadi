@@ -4,6 +4,8 @@ from matadi.models import neo_hooke, extended_tube, van_der_waals, mooney_rivlin
 
 import matplotlib.pyplot as plt
 
+import pytest
+
 
 def library():
     "Library with models and parameters."
@@ -35,6 +37,7 @@ def pre(
     test_without_bulk=False,
     stability=False,
     plot=False,
+    plot_shear=False,
     close=True,
     run_all=False,
     run_kwargs={},
@@ -55,11 +58,15 @@ def pre(
 
     # run experiments
     if run_all:
-        data = lab.run(ux=False, bx=False, ps=False, num=num, **run_kwargs)
-        data = lab.run(ux=True, bx=False, ps=False, num=num, **run_kwargs)
-        data = lab.run(ux=True, bx=True, ps=False, num=num, **run_kwargs)
+        data = lab.run(ux=False, bx=False, ps=False, shear=False, num=num, **run_kwargs)
+        data = lab.run(ux=True, bx=False, ps=False, shear=False, num=num, **run_kwargs)
+        data = lab.run(ux=True, bx=True, ps=False, shear=False, num=num, **run_kwargs)
 
-    data = lab.run(ux=True, bx=True, ps=True, num=num, **run_kwargs)
+        data = lab.run(ux=False, bx=False, ps=False, shear=True, num=num, **run_kwargs)
+        data = lab.run(ux=True, bx=False, ps=False, shear=True, num=num, **run_kwargs)
+        data = lab.run(ux=True, bx=True, ps=False, shear=True, num=num, **run_kwargs)
+
+    data = lab.run(ux=True, bx=True, ps=True, shear=True, num=num, **run_kwargs)
 
     if plot:
         # plot stress vs. stretch
@@ -68,9 +75,22 @@ def pre(
         if close:
             plt.close(fig)
 
+    if plot_shear:
+        # plot stress vs. stretch
+        fig, ax = lab.plot_shear(data)
+
+        if close:
+            plt.close(fig)
+
     # dW and DW are lists
     assert len(data[0].stress) == num
     assert len(data[0].stretch) == num
+    
+    with pytest.raises(TypeError):
+        data_x = lab.run(
+            ux=True, bx=True, ps=True, shear=False, num=num, **run_kwargs
+        )
+        lab.plot_shear(data_x)
 
     return data
 
@@ -78,14 +98,14 @@ def pre(
 def test_lab():
 
     data = pre(neo_hooke, test_without_bulk=True)
-    data = pre(neo_hooke, run_all=True, plot=True, close=True)
+    data = pre(neo_hooke, run_all=True, plot=True, plot_shear=True, close=True)
 
-    run_kwargs = {"stretch_min": 0.1, "stretch_max": 1.0}
+    run_kwargs = {"stretch_min": 0.1, "stretch_max": 1.0, "shear_max": 0.8}
 
     data = pre(neo_hooke, run_kwargs=run_kwargs)
     data = pre(extended_tube)
     data = pre(van_der_waals)
-    data = pre(mooney_rivlin, close=True, stability=True, plot=True)
+    data = pre(mooney_rivlin, close=True, stability=True, plot=True, plot_shear=True)
 
     del data
 
