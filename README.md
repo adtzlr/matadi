@@ -172,9 +172,11 @@ fig2, ax2 = lab.plot_shear(data)
 
 ![Lab experiments(Microsphere)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-microsphere.svg)
 
-Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks if 
+![Lab experiments shear(Microsphere)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_shear_lab-microsphere.svg)
+
+Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks whether if 
 a) the volume ratio is greater zero,
-b) the slope of stress vs. stretch and
+b) the monotonic increasing slope of force per undeformed area vs. stretch and
 c) the sign of the resulting stretch from a small superposed force in one direction.
 
 ## Hints and usage in FEM modules
