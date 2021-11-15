@@ -86,9 +86,11 @@ def pre(
     assert len(data[0].stress) == num
     assert len(data[0].stretch) == num
     
-    data_x = lab.run(ux=True, bx=True, ps=True, shear=False, num=num, **run_kwargs)
     with pytest.raises(TypeError):
-        fig, ax = lab.plot_shear(data_x)
+        data_x = lab.run(
+            ux=True, bx=True, ps=True, shear=False, num=num, **run_kwargs
+        )
+        lab.plot_shear(data_x)
 
     return data
 
