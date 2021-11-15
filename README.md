@@ -153,12 +153,21 @@ mat = MaterialHyperelastic(
     p=9.31, 
     U=9.94, 
     q=0.567, 
-    bulk=5000.0
+    bulk=5000.0,
 )
 
 lab = Lab(mat)
-data = lab.run(ux=True, bx=True, ps=True, stretch_min=1.0, stretch_max=2.0)
+data = lab.run(
+    ux=True, 
+	bx=True, 
+	ps=True, 
+	shear=True, 
+	stretch_min=1.0, 
+	stretch_max=2.0, 
+	shear_max=1.0,
+)
 fig, ax = lab.plot(data, stability=True)
+fig2, ax2 = lab.plot_shear(data)
 ```
 
 ![Lab experiments(Microsphere)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_lab-microsphere.svg)
