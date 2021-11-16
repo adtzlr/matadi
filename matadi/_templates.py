@@ -1,3 +1,5 @@
+from multiprocessing import cpu_count
+
 import numpy as np
 
 from . import Material, Variable
@@ -47,14 +49,14 @@ class MaterialComposite:
         "Dummy function for plot title."
         return
 
-    def function(self, x):
-        fun = [m.function(x) for m in self.materials]
+    def function(self, x, **kwargs):
+        fun = [m.function(x, **kwargs) for m in self.materials]
         return [np.sum([f[a] for f in fun], 0) for a in range(len(fun[0]))]
 
-    def gradient(self, x):
-        grad = [m.gradient(x) for m in self.materials]
+    def gradient(self, x, **kwargs):
+        grad = [m.gradient(x, **kwargs) for m in self.materials]
         return [np.sum([g[a] for g in grad], 0) for a in range(len(grad[0]))]
 
-    def hessian(self, x):
-        hess = [m.hessian(x) for m in self.materials]
+    def hessian(self, x, **kwargs):
+        hess = [m.hessian(x, **kwargs) for m in self.materials]
         return [np.sum([h[a] for h in hess], 0) for a in range(len(hess[0]))]
