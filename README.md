@@ -159,12 +159,12 @@ mat = MaterialHyperelastic(
 lab = Lab(mat)
 data = lab.run(
     ux=True, 
-	bx=True, 
-	ps=True, 
-	shear=True, 
-	stretch_min=1.0, 
-	stretch_max=2.0, 
-	shear_max=1.0,
+    bx=True, 
+    ps=True, 
+    shear=True, 
+    stretch_min=1.0, 
+    stretch_max=2.0, 
+    shear_max=1.0,
 )
 fig, ax = lab.plot(data, stability=True)
 fig2, ax2 = lab.plot_shear(data)
