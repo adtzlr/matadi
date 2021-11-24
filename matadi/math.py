@@ -43,6 +43,10 @@ from casadi import (
     MX,
 )
 
+eye = SX.eye
+ones = SX.ones
+zeros = SX.zeros
+
 
 def invariants(T):
 
@@ -66,3 +70,8 @@ def eigvals(T, eps=1e-5):
 def cof(T):
 
     return det(T) * transpose(inv(T))
+
+
+def sym(T):
+
+    return (T + transpose(T)) / 2
