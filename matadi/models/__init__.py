@@ -4,6 +4,7 @@ from ._helpers import (
 )
 
 from ._hyperelasticity_isotropic import (
+    linear_elastic,
     saint_venant_kirchhoff,
     neo_hooke,
     mooney_rivlin,
