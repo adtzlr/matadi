@@ -1,5 +1,10 @@
 from ._helpers import isochoric_volumetric_split
-from ..math import det, transpose, trace, eigvals, sum1, log, inv, sqrt
+from ..math import det, transpose, trace, eigvals, sum1, log, sqrt, eye, sym
+
+
+def linear_elastic(F, mu, lmbda):
+    strain = sym(F - eye(3))
+    return mu * trace(strain @ strain) + lmbda / 2 * trace(strain) ** 2
 
 
 def saint_venant_kirchhoff(F, mu, lmbda):
