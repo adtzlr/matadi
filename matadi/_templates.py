@@ -3,7 +3,7 @@ from multiprocessing import cpu_count
 import numpy as np
 
 from . import Material, Variable
-from .math import det
+from .math import det, horzcat, vertcat, zeros
 
 
 class ThreeFieldVariation:
@@ -37,6 +37,33 @@ class MaterialHyperelastic:
 
     def _fun_wrapper(self, x, **kwargs):
         return self.fun(x[0], **kwargs)
+
+
+class MaterialHyperelasticPlaneStrain:
+    def __init__(self, fun, **kwargs):
+        F = Variable("F", 2, 2)
+        self.x = [F]
+        self.fun = fun
+        self.kwargs = kwargs
+        self.W = Material(self.x, self._fun_wrapper, kwargs=self.kwargs)
+        self.function = self.W.function
+        self.gradient = self.W.gradient
+        self.hessian = self.W.hessian
+
+    def _fun_wrapper(self, x, **kwargs):
+        F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
+        F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
+        return self.fun(F, **kwargs)
+
+
+class MaterialHyperelasticPlaneStressIncompressible(MaterialHyperelasticPlaneStrain):
+    def __init__(self, fun, **kwargs):
+        super().__init__(fun, **kwargs)
+
+    def _fun_wrapper(self, x, **kwargs):
+        F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
+        F[2, 2] = 1 / det(x[0])  # thickness ratio `h / H = 1 / (a / A)`
+        return self.fun(F, **kwargs)
 
 
 class MaterialComposite:

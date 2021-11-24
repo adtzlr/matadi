@@ -64,7 +64,7 @@ A = Mat.hessian([defgrad])[0]
 ```
 
 ## Template classes for hyperelasticity
-matADi provides several simple template classes suitable for simple hyperelastic materials. Some common isotropic hyperelastic material formulations are located in `matadi.models` (see list below). These strain energy functions have to be passed as the `fun` argument into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to `ThreeFieldVariation`.
+matADi provides several simple template classes suitable for simple hyperelastic materials. Some isotropic hyperelastic material formulations are located in `matadi.models` (see list below). These strain energy functions have to be passed as the `fun` argument into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to `ThreeFieldVariation`. For *plane strain* or *plane stress* use `MaterialHyperelasticPlaneStrain` or `MaterialHyperelasticPlaneStressIncompressible` instead of `MaterialHyperelastic`.
 
 ```python
 
