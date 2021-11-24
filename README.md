@@ -93,15 +93,16 @@ A_upJ = NH_upJ.hessian([defgrad, pressure, volratio])
 The output of `NH_upJ.gradient([defgrad, pressure, volratio])` is a list with gradients of the functional as `[dWdF, dWdp, dWdJ]`. Hessian entries are provided as list of the upper triangle entries, e.g. `NH_upJ.hessian([defgrad, pressure, volratio])` returns `[d2WdFdF, d2WdFdp, d2WdFdJ, d2Wdpdp, d2WdpdJ, d2WdJdJ]`.
 
 Available [isotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py):
-- [Saint Venant Kirchhoff](https://en.wikipedia.org/wiki/Hyperelastic_material#Saint_Venant%E2%80%93Kirchhoff_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L5-L9))
-- [Neo-Hooke](https://en.wikipedia.org/wiki/Neo-Hookean_solid) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L12-L16))
-- [Mooney-Rivlin](https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L19-L24))
-- [Yeoh](https://en.wikipedia.org/wiki/Yeoh_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L27-L32))
-- [Third-Order-Deformation (James-Green-Simpson)](https://onlinelibrary.wiley.com/doi/abs/10.1002/app.1975.070190723) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L35-L46))
-- [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L49-L59))
-- [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L62-L75))
-- [Extended-Tube](https://meridian.allenpress.com/rct/article-abstract/72/4/602/92819/An-Extended-Tube-Model-for-Rubber-Elasticity?redirectedFrom=fulltext) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L78-L86))
-- [Van-der-Waals (Kilian)](https://doi.org/10.1016/0032-3861(81)90200-7) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L89-L98))
+- [Linear Elastic](https://en.wikipedia.org/wiki/Linear_elasticity) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L5-L7))
+- [Saint Venant Kirchhoff](https://en.wikipedia.org/wiki/Hyperelastic_material#Saint_Venant%E2%80%93Kirchhoff_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L10-L14))
+- [Neo-Hooke](https://en.wikipedia.org/wiki/Neo-Hookean_solid) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L17-L21))
+- [Mooney-Rivlin](https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L24-L29))
+- [Yeoh](https://en.wikipedia.org/wiki/Yeoh_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L32-L37))
+- [Third-Order-Deformation (James-Green-Simpson)](https://onlinelibrary.wiley.com/doi/abs/10.1002/app.1975.070190723) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L40-L51))
+- [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L54-L64))
+- [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L67-L80))
+- [Extended-Tube](https://meridian.allenpress.com/rct/article-abstract/72/4/602/92819/An-Extended-Tube-Model-for-Rubber-Elasticity?redirectedFrom=fulltext) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L83-L91))
+- [Van-der-Waals (Kilian)](https://doi.org/10.1016/0032-3861(81)90200-7) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L94-L103))
 
 Available [anisotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py):
 - Fiber ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L17-L35))
