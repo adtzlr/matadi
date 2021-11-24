@@ -52,7 +52,6 @@ from casadi import (
     logic_not,
     floor,
     ceil,
-    
     SX,
     DM,
     MX,
