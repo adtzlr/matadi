@@ -58,6 +58,10 @@ def library():
             "U": 9.94,
             "q": 0.567,
         },
+        matadi.models.linear_elastic: {
+            "mu": 1.0,
+            "lmbda": 2.0,
+        },
     }
 
     return database
@@ -78,7 +82,7 @@ def test_models():
 
     for model, kwargs in lib.items():
 
-        if model is not md.saint_venant_kirchhoff:
+        if model not in [md.saint_venant_kirchhoff, md.linear_elastic]:
             kwargs["bulk"] = 5000.0
 
         HM = matadi.MaterialHyperelastic(model, **kwargs)
