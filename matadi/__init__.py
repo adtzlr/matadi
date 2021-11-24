@@ -15,6 +15,8 @@ from ._templates import (
     ThreeFieldVariation,
     MaterialHyperelastic,
     MaterialComposite,
+    MaterialHyperelasticPlaneStrain,
+    MaterialHyperelasticPlaneStressIncompressible,
 )
 from ._lab import Lab
 
