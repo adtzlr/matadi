@@ -36,11 +36,32 @@ from casadi import (
     pi,
     fabs,
     linspace,
+    erf,
+    erfinv,
+    norm_1,
+    sign,
+    fmin,
+    fmax,
+    mmin,
+    mmax,
+    find,
     #
     if_else,
+    logic_and,
+    logic_or,
+    logic_not,
+    floor,
+    ceil,
+    
     SX,
     DM,
     MX,
+    #
+    vertcat,
+    horzcat,
+    vertsplit,
+    horzsplit,
+    reshape,
 )
 
 eye = SX.eye
