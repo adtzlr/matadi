@@ -66,6 +66,22 @@ class MaterialHyperelasticPlaneStressIncompressible(MaterialHyperelasticPlaneStr
         return self.fun(F, **kwargs)
 
 
+class MaterialHyperelasticPlaneStressLinearElastic(MaterialHyperelasticPlaneStrain):
+    def __init__(self, fun, **kwargs):
+        super().__init__(fun, **kwargs)
+
+    def _fun_wrapper(self, x, **kwargs):
+        F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
+        # stress-free thickness ratio for linear elastic material
+        # s_33 != 0 = 2 mu e_33 + lmbda (e_11 + e_22 + e_33)
+        # e_33 = - (e_11 + e_22) * lmbda / (2 mu + lmbda)
+        # F_33 = 1 + e_33
+        F[2, 2] = 1 - (F[0, 0] + F[1, 1] - 2) * (
+            kwargs["lmbda"] / (2 * kwargs["mu"] + kwargs["lmbda"])
+        )
+        return self.fun(F, **kwargs)
+
+
 class MaterialComposite:
     def __init__(self, materials):
         "Composite Material as a sum of a list of materials."
