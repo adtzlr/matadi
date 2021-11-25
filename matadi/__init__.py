@@ -17,6 +17,7 @@ from ._templates import (
     MaterialComposite,
     MaterialHyperelasticPlaneStrain,
     MaterialHyperelasticPlaneStressIncompressible,
+    MaterialHyperelasticPlaneStressLinearElastic,
 )
 from ._lab import Lab
 

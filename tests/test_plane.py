@@ -3,8 +3,9 @@ import numpy as np
 from matadi import (
     MaterialHyperelasticPlaneStrain,
     MaterialHyperelasticPlaneStressIncompressible,
+    MaterialHyperelasticPlaneStressLinearElastic,
 )
-from matadi.models import neo_hooke
+from matadi.models import neo_hooke, linear_elastic
 
 
 def pre():
@@ -40,7 +41,7 @@ def test_plane_strain():
     assert DW[0].shape == (2, 2, 2, 2, 8, 1000)
 
 
-def test_plane_stress():
+def test_plane_stress_incompr():
 
     # data
     FF = pre()
@@ -64,6 +65,32 @@ def test_plane_stress():
     assert DW[0].shape == (2, 2, 2, 2, 8, 1000)
 
 
+def test_plane_stress_linear():
+
+    # data
+    FF = pre()
+
+    # init Material
+    W = MaterialHyperelasticPlaneStressLinearElastic(
+        fun=linear_elastic,
+        mu=1.0,
+        lmbda=200.0,
+    )
+
+    W0 = W.function([FF])
+    dW = W.gradient([FF])
+    DW = W.hessian([FF])
+
+    assert W0[0].shape == (8, 1000)
+    assert dW[0].shape == (2, 2, 8, 1000)
+    assert DW[0].shape == (2, 2, 2, 2, 8, 1000)
+
+    assert W0[0].shape == (8, 1000)
+    assert dW[0].shape == (2, 2, 8, 1000)
+    assert DW[0].shape == (2, 2, 2, 2, 8, 1000)
+
+
 if __name__ == "__main__":
     test_plane_strain()
-    test_plane_stress()
+    test_plane_stress_incompr()
+    test_plane_stress_linear()
