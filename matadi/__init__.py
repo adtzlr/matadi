@@ -13,6 +13,7 @@ from . import models
 from . import math
 from ._templates import (
     ThreeFieldVariation,
+    ThreeFieldVariationPlaneStrain,
     MaterialHyperelastic,
     MaterialComposite,
     MaterialHyperelasticPlaneStrain,

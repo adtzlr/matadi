@@ -24,6 +24,26 @@ class ThreeFieldVariation:
         return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
 
 
+class ThreeFieldVariationPlaneStrain:
+    def __init__(self, material):
+        self.material = material
+        p = Variable("p", 1, 1)
+        J = Variable("J", 1, 1)
+        self.x = [self.material.x[0], p, J]
+        self.W = Material(self.x, self._fun)
+        self.function = self.W.function
+        self.gradient = self.W.gradient
+        self.hessian = self.W.hessian
+
+    def _fun(self, x):
+        F, p, J = x
+        F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
+        F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
+        detF = det(F)
+        Fmod = (J / detF) ** (1 / 3) * F
+        return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
+
+
 class MaterialHyperelastic:
     def __init__(self, fun, **kwargs):
         F = Variable("F", 3, 3)
