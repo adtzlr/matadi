@@ -4,6 +4,7 @@ from ..math import (
     det,
     DM,
     exp,
+    log,
     cos,
     sin,
     pi,
@@ -27,7 +28,11 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
     C = transpose(F) @ F
 
     stretch = sqrt((transpose(N) @ C @ N))[0, 0]
-    strain = 1 / k * (stretch ** k - 1)
+
+    if k == 0:
+        strain = log(stretch)
+    else:
+        strain = 1 / k * (stretch ** k - 1)
 
     if not compression:
         strain = if_else(strain < 0, 0, strain)
@@ -39,8 +44,8 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
 def fiber_family(F, E, angle, k=1, axis=2, compression=False):
     "Fiber Family"
 
-    f1 = fiber(F, E, k, angle, axis, compression)
-    f2 = fiber(F, E, k, -angle, axis, compression)
+    f1 = fiber(F, E, angle=angle, k=k, axis=axis, compression=compression)
+    f2 = fiber(F, E, angle=-angle, k=k, axis=axis, compression=compression)
 
     return f1 + f2
 
