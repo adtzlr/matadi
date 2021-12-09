@@ -4,6 +4,7 @@ from ..math import (
     det,
     DM,
     exp,
+    log,
     cos,
     sin,
     pi,
@@ -23,12 +24,15 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
 
     N = DM.zeros(3)
     N[plane, :] = DM([cos(a), sin(a)])
-    print(plane)
 
     C = transpose(F) @ F
 
     stretch = sqrt((transpose(N) @ C @ N))[0, 0]
-    strain = 1 / k * (stretch ** k - 1)
+    
+    if k == 0:
+        strain = log(stretch)
+    else:
+        strain = 1 / k * (stretch ** k - 1)
 
     if not compression:
         strain = if_else(strain < 0, 0, strain)
