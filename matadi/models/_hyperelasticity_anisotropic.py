@@ -23,6 +23,7 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
 
     N = DM.zeros(3)
     N[plane, :] = DM([cos(a), sin(a)])
+    print(plane)
 
     C = transpose(F) @ F
 
@@ -39,8 +40,8 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
 def fiber_family(F, E, angle, k=1, axis=2, compression=False):
     "Fiber Family"
 
-    f1 = fiber(F, E, k, angle, axis, compression)
-    f2 = fiber(F, E, k, -angle, axis, compression)
+    f1 = fiber(F, E, angle=angle, k=k, axis=axis, compression=compression)
+    f2 = fiber(F, E, angle=-angle, k=k, axis=axis, compression=compression)
 
     return f1 + f2
 
