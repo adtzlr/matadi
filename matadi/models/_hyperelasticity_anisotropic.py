@@ -28,7 +28,7 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
     C = transpose(F) @ F
 
     stretch = sqrt((transpose(N) @ C @ N))[0, 0]
-    
+
     if k == 0:
         strain = log(stretch)
     else:

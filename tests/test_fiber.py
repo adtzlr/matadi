@@ -15,7 +15,10 @@ def test_fiber():
     for model in [fiber, fiber_family]:
 
         # init Material without bulk
-        M = MaterialHyperelastic(model, E=1, angle=30, axis=2)
+        M = MaterialHyperelastic(model, E=1, angle=30, axis=2, k=0)
+
+        W0 = M.function([FF])
+        assert W0[0].shape == (2,)
 
         # init Material
         M = MaterialHyperelastic(model, E=1, angle=30, axis=2, bulk=5000)
