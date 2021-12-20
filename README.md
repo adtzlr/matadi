@@ -5,7 +5,7 @@ Material Definition with Automatic Differentiation (AD)
 
 [![PyPI version shields.io](https://img.shields.io/pypi/v/matadi.svg)](https://pypi.python.org/pypi/matadi/) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Made with love in Graz (Austria)](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20in-Graz%20(Austria)-0c674a) [![codecov](https://codecov.io/gh/adtzlr/matadi/branch/main/graph/badge.svg?token=2EY2U4ZL35)](https://codecov.io/gh/adtzlr/matadi) [![DOI](https://zenodo.org/badge/408564756.svg)](https://zenodo.org/badge/latestdoi/408564756) ![Codestyle black](https://img.shields.io/badge/code%20style-black-black) ![GitHub Repo stars](https://img.shields.io/github/stars/adtzlr/matadi?logo=github) ![PyPI - Downloads](https://img.shields.io/pypi/dm/matadi)
 
-matADi is a simple Python module which acts as a wrapper on top of [casADi](https://web.casadi.org/) [[1](https://doi.org/10.1007/s12532-018-0139-4)] for easy definitions of hyperelastic strain energy functions. [Gradients](https://en.wikipedia.org/wiki/Gradient) (stresses) and [hessians](https://en.wikipedia.org/wiki/Hessian_matrix) (elasticity tensors) are carried out by casADi's powerful and fast [**Automatic Differentiation (AD)**](https://en.wikipedia.org/wiki/Automatic_differentiation) capabilities. It is designed to handle inputs with trailing axes which is especially useful for the application in Python-based finite element modules like [scikit-fem](https://scikit-fem.readthedocs.io/en/latest/) or [FElupe](https://adtzlr.github.io/felupe/). Mixed-field formulations are supported as well as single-field formulations.
+matADi is a simple Python module which acts as a wrapper on top of [casADi](https://web.casadi.org/) [[1](https://doi.org/10.1007/s12532-018-0139-4)] for easy definitions of hyperelastic strain energy functions. [Gradients](https://en.wikipedia.org/wiki/Gradient) (stresses) and [hessians](https://en.wikipedia.org/wiki/Hessian_matrix) (elasticity tensors) are carried out by casADi's powerful and fast [**Automatic Differentiation (AD)**](https://en.wikipedia.org/wiki/Automatic_differentiation) capabilities. It is designed to handle inputs with trailing axes which is especially useful for the application in Python-based finite element modules like [scikit-fem](https://scikit-fem.readthedocs.io/en/latest/) or [FElupe](https://github.com/adtzlr/felupe). Mixed-field formulations are supported as well as single-field formulations.
 
 ## Installation
 Install `matADi` from PyPI via pip.
@@ -17,7 +17,7 @@ pip install matadi
 ## Usage
 First, a symbolic variable on which our strain energy function will be based on has to be created.
 
-**Note**: *A variable of matADi is an instance of a symbolic variable of casADi (`casadi.SX.sym`). All `matadi.math` functions are simple links to (symbolic) casADi-functions.*
+**Note**: *A variable of matADi is an instance of a symbolic variable of casADi (`casadi.SX.sym`). Most of `matadi.math` functions are simple links to (symbolic) casADi-functions.*
 
 ```python
 from matadi import Variable, Material
@@ -64,7 +64,7 @@ A = Mat.hessian([defgrad])[0]
 ```
 
 ## Template classes for hyperelasticity
-matADi provides several simple template classes suitable for simple hyperelastic materials. Some isotropic hyperelastic material formulations are located in `matadi.models` (see list below). These strain energy functions have to be passed as the `fun` argument into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to `ThreeFieldVariation`. For *plane strain* or *plane stress* use `MaterialHyperelasticPlaneStrain`, `MaterialHyperelasticPlaneStressIncompressible` or `MaterialHyperelasticPlaneStressLinearElastic` instead of `MaterialHyperelastic`. For plane strain *displacements*, *pressure* and *volume ratio* mixed-field formulations use `ThreeFieldVariationPlaneStrain`.
+matADi provides several template classes suitable for hyperelastic materials. Some isotropic hyperelastic material formulations are located in `matadi.models` (see list below). These strain energy functions have to be passed as the `fun` argument into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to `ThreeFieldVariation`. For *plane strain* or *plane stress* use `MaterialHyperelasticPlaneStrain`, `MaterialHyperelasticPlaneStressIncompressible` or `MaterialHyperelasticPlaneStressLinearElastic` instead of `MaterialHyperelastic`. For plane strain *displacements*, *pressure* and *volume ratio* mixed-field formulations use `ThreeFieldVariationPlaneStrain`.
 
 ```python
 

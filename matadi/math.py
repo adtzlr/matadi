@@ -2,7 +2,7 @@ from casadi import (
     # tensor and vector operations
     det,
     inv,
-    dot,
+    dot as _dot,
     transpose,
     trace,
     diag,
@@ -95,3 +95,8 @@ def cof(T):
 def sym(T):
 
     return (T + transpose(T)) / 2
+
+
+def dot(A, B):
+
+    return _dot(transpose(A), B)
