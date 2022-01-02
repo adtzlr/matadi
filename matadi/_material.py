@@ -6,7 +6,7 @@ import casadi as ca
 from ._apply import apply
 
 
-class Material:
+class Function:
     def __init__(self, x, fun, args=(), kwargs={}, compress=False):
 
         self.x = x
@@ -15,13 +15,68 @@ class Material:
         self.args = args
         self.kwargs = kwargs
 
+        # generate function
         self._f = self._fun(self.x, *self.args, **self.kwargs)
+
+        # generate casADi function objects
+        self._function = ca.Function("f", self.x, [self._f])
+
+        # generate indices
+        self._idx_function = [()]
+        self._idx_gradient = [y.shape for y in x]
+
+    def function(self, x, threads=cpu_count()):
+        "Return the function."
+        return apply(
+            x,
+            fun=self._function,
+            x_shape=self._idx_gradient,
+            fun_shape=self._idx_function,
+            threads=threads,
+        )
+
+
+class FunctionTensor:
+    def __init__(self, x, fun, args=(), kwargs={}, compress=False):
+
+        self.x = x
+        self._fun = fun
+
+        self.args = args
+        self.kwargs = kwargs
+
+        # generate function
+        self._f = self._fun(self.x, *self.args, **self.kwargs)
+
+        # generate casADi function objects
+        self._function = ca.Function("f", self.x, [self._f])
+
+        # generate indices
+        self._idx_function = [y.shape for y in x]
+
+    def function(self, x, threads=cpu_count()):
+        "Return the function."
+        return apply(
+            x,
+            fun=self._function,
+            x_shape=self._idx_function,
+            fun_shape=self._idx_function,
+            threads=threads,
+        )
+
+
+class Material(Function):
+    def __init__(self, x, fun, args=(), kwargs={}, compress=False):
+
+        # init Function
+        super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
 
         _h_diag = []
 
         self._h = []
         self._g = []
 
+        # alias
         self.jacobian = self.gradient
 
         # generate list of diagonal hessian entries and gradients
@@ -40,12 +95,10 @@ class Material:
                         self._h.append(_h_diag[i])
 
         # generate casADi function objects
-        self._function = ca.Function("f", self.x, [self._f])
         self._gradient = ca.Function("g", self.x, self._g)
         self._hessian = ca.Function("h", self.x, self._h)
 
         # generate indices
-        self._idx_gradient = [y.shape for y in x]
         self._idx_hessian = []
 
         if compress:
@@ -61,16 +114,6 @@ class Material:
 
                 if j >= i:
                     self._idx_hessian.append((*a, *b))
-
-    def function(self, x, threads=cpu_count()):
-        "Return the function."
-        return apply(
-            x,
-            fun=self._function,
-            x_shape=self._idx_gradient,
-            fun_shape=[()],
-            threads=threads,
-        )
 
     def gradient(self, x, threads=cpu_count()):
         "Return list of gradients."
@@ -93,16 +136,13 @@ class Material:
         )
 
 
-class MaterialTensor:
+class MaterialTensor(FunctionTensor):
     def __init__(self, x, fun, args=(), kwargs={}, compress=False):
 
-        self.x = x
-        self._fun = fun
+        # init Function
+        super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
 
-        self.args = args
-        self.kwargs = kwargs
-
-        self._f = self._fun(self.x, *self.args, **self.kwargs)
+        # generate gradients
         self._g = [ca.jacobian(self._f, y) for y in self.x]
 
         # alias
@@ -113,7 +153,6 @@ class MaterialTensor:
         self._gradient = ca.Function("g", self.x, self._g)
 
         # generate indices
-        self._idx_function = [y.shape for y in x]
         self._idx_gradient = []
 
         if compress:
@@ -128,16 +167,6 @@ class MaterialTensor:
                 b = self._idx_function[j]
 
                 self._idx_gradient.append((*a, *b))
-
-    def function(self, x, threads=cpu_count()):
-        "Return the function."
-        return apply(
-            x,
-            fun=self._function,
-            x_shape=self._idx_function,
-            fun_shape=self._idx_function,
-            threads=threads,
-        )
 
     def gradient(self, x, threads=cpu_count()):
         "Return list of gradients."

@@ -5,6 +5,9 @@ import casadi
 Variable = casadi.SX.sym
 
 from ._material import (
+    Function,
+    Function as FunctionScalar,
+    FunctionTensor,
     Material,
     Material as MaterialScalar,
     MaterialTensor,
