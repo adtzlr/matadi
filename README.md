@@ -63,7 +63,7 @@ P = Mat.gradient([defgrad])[0]
 A = Mat.hessian([defgrad])[0]
 ```
 
-In a similar way, gradient-vector-products and hessian-vector-products are accesible via **gradient_vector_product** and **hessian_vector_product** methods, respectively.
+In a similar way, gradient-vector-products and hessian-vector-products are accessible via **gradient_vector_product** and **hessian_vector_product** methods, respectively.
 
 ```python
 v = np.random.rand(3, 3, 5, 100) - 0.5
