@@ -63,6 +63,17 @@ P = Mat.gradient([defgrad])[0]
 A = Mat.hessian([defgrad])[0]
 ```
 
+In a similar way, gradient-vector-products and hessian-vector-products are accesible via **gradient_vector_product** and **hessian_vector_product** methods, respectively.
+
+```python
+v = np.random.rand(3, 3, 5, 100) - 0.5
+u = np.random.rand(3, 3, 5, 100) - 0.5
+
+W   = Mat.function([defgrad])[0]
+dW  = Mat.gradient_vector_product([defgrad], [v])[0]
+DdW = Mat.hessian_vector_product([defgrad], [v], [u])[0]
+```
+
 ## Template classes for hyperelasticity
 matADi provides several template classes suitable for hyperelastic materials. Some isotropic hyperelastic material formulations are located in `matadi.models` (see list below). These strain energy functions have to be passed as the `fun` argument into an instance of `MaterialHyperelastic`. Usage is exactly the same as described above. To convert a hyperelastic material based on the deformation gradient into a mixed three-field formulation suitable for nearly-incompressible behavior (*displacements*, *pressure* and *volume ratio*) an instance of a `MaterialHyperelastic` class has to be passed to `ThreeFieldVariation`. For *plane strain* or *plane stress* use `MaterialHyperelasticPlaneStrain`, `MaterialHyperelasticPlaneStressIncompressible` or `MaterialHyperelasticPlaneStressLinearElastic` instead of `MaterialHyperelastic`. For plane strain *displacements*, *pressure* and *volume ratio* mixed-field formulations use `ThreeFieldVariationPlaneStrain`.
 
