@@ -16,6 +16,8 @@ class ThreeFieldVariation:
         self.function = self.W.function
         self.gradient = self.W.gradient
         self.hessian = self.W.hessian
+        self.gradient_vector_product = self.W.gradient_vector_product
+        self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun(self, x):
         F, p, J = x
@@ -34,6 +36,8 @@ class ThreeFieldVariationPlaneStrain:
         self.function = self.W.function
         self.gradient = self.W.gradient
         self.hessian = self.W.hessian
+        self.gradient_vector_product = self.W.gradient_vector_product
+        self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun(self, x):
         F, p, J = x
@@ -54,6 +58,8 @@ class MaterialHyperelastic:
         self.function = self.W.function
         self.gradient = self.W.gradient
         self.hessian = self.W.hessian
+        self.gradient_vector_product = self.W.gradient_vector_product
+        self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun_wrapper(self, x, **kwargs):
         return self.fun(x[0], **kwargs)
@@ -69,6 +75,8 @@ class MaterialHyperelasticPlaneStrain:
         self.function = self.W.function
         self.gradient = self.W.gradient
         self.hessian = self.W.hessian
+        self.gradient_vector_product = self.W.gradient_vector_product
+        self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun_wrapper(self, x, **kwargs):
         F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
