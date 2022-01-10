@@ -71,12 +71,19 @@ def test_models():
 
     # data
     np.random.seed(2345537)
-    FF = np.random.rand(3, 3, 5, 100)
+    dF = np.random.rand(3, 3, 5, 100) - 0.5
+    DF = np.random.rand(3, 3, 5, 100) - 0.5
+    FF = np.random.rand(3, 3, 5, 100) - 0.5
     for a in range(3):
         FF[a, a] += 1
 
     pp = np.random.rand(5, 100)
+    dp = np.random.rand(5, 100)
+    Dp = np.random.rand(5, 100)
+
     JJ = 1 + np.random.rand(5, 100) / 10
+    dJ = np.random.rand(5, 100) / 10
+    DJ = np.random.rand(5, 100) / 10
 
     lib = library()
 
@@ -92,9 +99,18 @@ def test_models():
         P = HM.gradient([FF], threads=1)
         A = HM.hessian([FF])
 
+        dW = HM.gradient_vector_product([FF], [dF])
+        DW = HM.hessian_vector_product([FF], [dF], [DF])
+
         assert len(W) == 1
         assert len(P) == 1
         assert len(A) == 1
+
+        dW_check = np.einsum("ij...,ij...->...", P[0], dF)
+        DW_check = np.einsum("ij...,ijkl...,kl...->...", dF, A[0], DF)
+
+        assert np.allclose(dW_check, dW[0])
+        assert np.allclose(DW_check, DW[0])
 
         W = HM_mixed.function([FF, pp, JJ])
         P = HM_mixed.gradient([FF, pp, JJ])
@@ -103,6 +119,36 @@ def test_models():
         assert len(W) == 1
         assert len(P) == 3
         assert len(A) == 6
+
+        dW = HM_mixed.gradient_vector_product([FF, pp, JJ], [dF, dp, dJ])
+        DW = HM_mixed.hessian_vector_product([FF, pp, JJ], [dF, dp, dJ], [DF, Dp, DJ])
+
+        dWF = np.einsum("ij...,ij...->...", P[0], dF)
+        dWp = P[1] * dp
+        dWJ = P[2] * dJ
+
+        assert np.allclose(dWF, dW[0])
+        assert np.allclose(dWp, dW[1])
+        assert np.allclose(dWJ, dW[2])
+
+        dWdFdF = np.einsum("ij...,ijkl...,kl...->...", dF, A[0], DF)
+        dWdpdp = dp * A[3][0, 0, 0, 0] * Dp
+        dWdJdJ = dJ * A[5][0, 0, 0, 0] * DJ
+
+        assert np.allclose(dWdFdF, DW[0])
+        assert np.allclose(dWdpdp, DW[3])
+        assert np.allclose(dWdJdJ, DW[5])
+
+        dWdFdp = np.einsum("ij...,ij...,...->...", dF, A[1][:, :, 0, 0], Dp)
+        dWdFdJ = np.einsum("ij...,ij...,...->...", dF, A[2][:, :, 0, 0], DJ)
+        dWdpdJ = dp * A[4][0, 0, 0, 0] * DJ
+
+        assert np.allclose(dWdFdF, DW[0])
+        assert np.allclose(dWdFdp, DW[1])
+        assert np.allclose(dWdFdJ, DW[2])
+        assert np.allclose(dWdpdp, DW[3])
+        assert np.allclose(dWdpdJ, DW[4])
+        assert np.allclose(dWdJdJ, DW[5])
 
     nh = matadi.MaterialHyperelastic(md.neo_hooke, **lib[md.neo_hooke])
     mr = matadi.MaterialHyperelastic(md.mooney_rivlin, **lib[md.mooney_rivlin])
