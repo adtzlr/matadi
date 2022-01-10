@@ -88,6 +88,7 @@ def test_cof():
 
     # data
     FF = np.diag(2.4 * np.ones(3)).reshape(3, 3, 1, 1)
+    dF = np.diag(0.2 * np.ones(3)).reshape(3, 3, 1, 1)
 
     # fun
     def g(x):
@@ -104,6 +105,10 @@ def test_cof():
     WW = W.function([FF])
     dW = W.gradient([FF])
     DW = W.jacobian([FF])
+
+    dW_gvp = W.gradient_vector_product([FF, dF])
+
+    assert np.allclose(np.einsum("ij...,ij...->...", dW[0], dF), dW_gvp)
 
     assert np.allclose(dW, DW)
     assert np.allclose(dW[0][:, :, :, :, 0, 0], Eye4)
