@@ -190,7 +190,7 @@ class MaterialTensor(FunctionTensor):
 
         # generate gradient and gradient-vector-product
         self._g = [ca.jacobian(self._f, x) for x in self.x]
-        self._gvp = [ca.jtimes(self._f, x) for x in self.x]
+        self._gvp = [ca.jtimes(self._f, x, v) for x, v in zip(self.x, self.v)]
 
         # alias
         self.jacobian = self.gradient
@@ -234,6 +234,6 @@ class MaterialTensor(FunctionTensor):
             x,
             fun=self._gradient_vector_product,
             x_shape=self._idx_function,
-            fun_shape=self._idx_function,
+            fun_shape=self._idx_function * len(self._gvp),
             threads=threads,
         )
