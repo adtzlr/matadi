@@ -23,7 +23,14 @@ from ._templates import (
     MaterialHyperelasticPlaneStressIncompressible,
     MaterialHyperelasticPlaneStressLinearElastic,
 )
-from ._lab import Lab
+from ._lab_compressible import (
+    LabCompressible,
+    LabCompressible as Lab,
+)
+from ._lab_incompressible import (
+    LabIncompressible,
+)
+
 
 __all__ = [
     "__version__",
