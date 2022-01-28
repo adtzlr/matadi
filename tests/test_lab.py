@@ -1,4 +1,4 @@
-from matadi import MaterialHyperelastic, Lab
+from matadi import MaterialHyperelastic, Lab, LabCompressible, LabIncompressible
 import matadi.models as md
 from matadi.models import neo_hooke, extended_tube, van_der_waals, mooney_rivlin
 
@@ -41,6 +41,7 @@ def pre(
     close=True,
     run_all=False,
     run_kwargs={},
+    LabClass=Lab,
 ):
 
     lib = library()
@@ -54,7 +55,7 @@ def pre(
     mat = MaterialHyperelastic(model, **kwargs, bulk=5000.0)
 
     # init lab
-    lab = Lab(mat)
+    lab = LabClass(mat)
 
     # run experiments
     if run_all:
@@ -95,17 +96,33 @@ def pre(
 
 def test_lab():
 
-    data = pre(neo_hooke, test_without_bulk=True)
-    data = pre(neo_hooke, run_all=True, plot=True, plot_shear=True, close=True)
+    for LabClass in [LabIncompressible, LabCompressible, Lab]:
 
-    run_kwargs = {"stretch_min": 0.1, "stretch_max": 1.0, "shear_max": 0.8}
+        data = pre(neo_hooke, test_without_bulk=True, LabClass=LabClass)
+        data = pre(
+            neo_hooke,
+            run_all=True,
+            plot=True,
+            plot_shear=True,
+            close=True,
+            LabClass=LabClass,
+        )
 
-    data = pre(neo_hooke, run_kwargs=run_kwargs)
-    data = pre(extended_tube)
-    data = pre(van_der_waals)
-    data = pre(mooney_rivlin, close=True, stability=True, plot=True, plot_shear=True)
+        run_kwargs = {"stretch_min": 0.1, "stretch_max": 1.0, "shear_max": 0.8}
 
-    del data
+        data = pre(neo_hooke, run_kwargs=run_kwargs, LabClass=LabClass)
+        data = pre(extended_tube, LabClass=LabClass)
+        data = pre(van_der_waals, LabClass=LabClass)
+        data = pre(
+            mooney_rivlin,
+            close=True,
+            stability=True,
+            plot=True,
+            plot_shear=True,
+            LabClass=LabClass,
+        )
+
+        del data
 
 
 if __name__ == "__main__":
