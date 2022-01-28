@@ -152,7 +152,7 @@ NH = MaterialHyperelastic(nh, C10=0.5, bulk=200.0)
 ```
 
 ## Lab
-In matADi's `Lab` :lab_coat: numeric experiments on homogenous loadcases can be performed. Let's take the non-affine micro-sphere material model suitable for rubber elasticity with parameters from [[2](https://doi.org/10.1016/j.jmps.2004.03.011), Fig. 19] and run **uniaxial**, **biaxial** and **planar shear** tests.
+In matADi's `Lab` :lab_coat: numeric experiments on homogenous loadcases on compressible or nearly-incompressible material formulations are performed. For incompressible materials use `LabIncompressible` instead. Let's take the non-affine micro-sphere material model suitable for rubber elasticity with parameters from [[2](https://doi.org/10.1016/j.jmps.2004.03.011), Fig. 19] and run **uniaxial**, **biaxial** and **planar shear** tests.
 
 ```python
 from matadi import Lab, MaterialHyperelastic
