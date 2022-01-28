@@ -258,7 +258,7 @@ class LabIncompressible:
         ax.grid()
         ax.set_title(self.title, fontsize=10)
         ax.set_xlabel(r"shear deformation $F_{12}=\gamma \quad \longrightarrow$")
-        ax.set_ylabel(r"force per undeformed area $P_{21} \quad \longrightarrow$")
+        ax.set_ylabel(r"force per undeformed area $P_{12} \quad \longrightarrow$")
         ax.legend()
 
         fig.tight_layout()
