@@ -4,7 +4,7 @@ from collections import namedtuple
 from scipy.optimize import root
 
 
-class Lab:
+class LabCompressible:
     def __init__(self, material):
 
         self.material = material
@@ -16,7 +16,10 @@ class Lab:
         )
 
     def _uniaxial(self, stretch):
+        "Load case `uniaxial`."
+
         def stress(stretch, stretch_2, stretch_3):
+            "Evaluate the first Piola-Kirchhoff stress tensor."
             F = np.diag([stretch, stretch_2, stretch_3])
             return self.material.gradient([F])[0]
 
@@ -72,7 +75,10 @@ class Lab:
         )
 
     def _biaxial(self, stretch):
+        "Load case `equi-biaxial`."
+
         def stress(stretch, stretch_3):
+            "Evaluate the first Piola-Kirchhoff stress tensor."
             F = np.diag([stretch, stretch, stretch_3])
             return self.material.gradient([F])[0]
 
@@ -122,7 +128,10 @@ class Lab:
         )
 
     def _planar(self, stretch):
+        "Load case `planar shear`."
+
         def stress(stretch, stretch_3):
+            "Evaluate the first Piola-Kirchhoff stress tensor."
             F = np.diag([stretch, 1, stretch_3])
             return self.material.gradient([F])[0]
 
@@ -172,6 +181,8 @@ class Lab:
         )
 
     def _shear(self, shear):
+        "Load case `Shear`."
+
         def stress(shear, stretch_2, stretch_3):
             F = np.diag([1, stretch_2, stretch_3])
             F[0, 1] = shear
@@ -184,7 +195,7 @@ class Lab:
         stretches = res.x
 
         return (
-            stress(shear, *stretches)[1, 0],
+            stress(shear, *stretches)[0, 1],
             stretches[0],
             stretches[1],
             None,
@@ -201,6 +212,7 @@ class Lab:
         shear_max=1.0,
         num=50,
     ):
+        "Run load cases `UX/BX/PS/Simple-Shear (Incompressible)`."
 
         out = []
 
@@ -278,6 +290,7 @@ class Lab:
         return out
 
     def plot(self, data, stability=False):
+        "Plot results of UX/BX/PS load cases."
 
         fig, ax = plt.subplots()
 
@@ -328,6 +341,7 @@ class Lab:
         return fig, ax
 
     def plot_shear(self, data):
+        "Plot results of shear load case."
 
         fig, ax = plt.subplots()
 
