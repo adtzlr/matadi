@@ -68,26 +68,27 @@ def test_tensor():
         FF[a, a] += 1
 
     # init Material
-    W = MaterialTensor(x=[F], fun=lambda x: x[0])
-
-    W0 = W.function([FF])
-    dW = W.gradient([FF])
-    DW = W.jacobian([FF])
-
-    # dW and DW are always lists...
-    assert W0[0].shape == (3, 3, 8, 1000)
-    assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
-    assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
-
-    # check output of parallel evaluation
-    W0 = W.function([FF], threads=2)
-    dW = W.gradient([FF], threads=2)
-    DW = W.jacobian([FF], threads=2)
-
-    assert W0[0].shape == (3, 3, 8, 1000)
-    assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
-    assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
-
+    for fun in [lambda x: x[0], lambda x: x]:
+        
+        W = MaterialTensor(x=[F], fun=fun)
+    
+        W0 = W.function([FF])
+        dW = W.gradient([FF])
+        DW = W.jacobian([FF])
+    
+        # dW and DW are always lists...
+        assert W0[0].shape == (3, 3, 8, 1000)
+        assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
+        assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
+    
+        # check output of parallel evaluation
+        W0 = W.function([FF], threads=2)
+        dW = W.gradient([FF], threads=2)
+        DW = W.jacobian([FF], threads=2)
+    
+        assert W0[0].shape == (3, 3, 8, 1000)
+        assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
+    
     # init Material
     pp = np.random.rand(8, 1000)
     W = MaterialTensor(x=[p], fun=lambda x: x[0], compress=True)
@@ -99,8 +100,24 @@ def test_tensor():
     pp = np.random.rand(1, 1, 8, 1000)
     W = MaterialTensor(x=[p], fun=lambda x: x[0])
     W0 = W.function([pp], threads=2)
-
+    
     assert W0[0].shape == (1, 1, 8, 1000)
+    
+    # init mixed Material
+    W = MaterialTensor(x=[F, p], fun=lambda x: x, triu=True)
+    P = W.function([FF, pp])
+    A = W.gradient([FF, pp])
+    
+    assert len(P) == 2
+    assert len(A) == 3
+    
+    # init mixed Material
+    W = MaterialTensor(x=[F, p], fun=lambda x: x, triu=False)
+    P = W.function([FF, pp])
+    A = W.gradient([FF, pp])
+    
+    assert len(P) == 2
+    assert len(A) == 4
 
 
 if __name__ == "__main__":
