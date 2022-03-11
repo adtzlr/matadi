@@ -194,6 +194,45 @@ c) the sign of the resulting stretch from a small superposed force in one direct
 ## Hints and usage in FEM modules
 For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-strain relation). Also, please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead). Contrary to [casADi](https://web.casadi.org/), the gradient of the eigenvalue function is stabilized by a perturbation of the diagonal components.
 
+### Example for a Neo-Hookean material model as (u/p)-formulation
+The (u/p)-formulation is created by an instance of `MaterialTensor`. The argument `triu=True` (default behavior) returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`.
+
+```python
+from matadi import MaterialTensor, Variable
+from matadi.math import det, dev, inv
+
+F = Variable("F", 3, 3)
+p = Variable("p")
+z = Variable("z", 5, 16)
+
+
+def nh_up(x, C10=0.5, bulk=5000):
+    """Neo-Hookean material model as (u/p) formulation 
+    with some random (unused) state variables."""
+    
+    F, p, z = x
+    
+    J = det(F)
+    C = F.T @ F
+    
+    S = 2 * C10 * dev(J ** (-2 / 3) * C) @ inv(C) + p * J * inv(C)
+    constraint = (J - 1) - p / bulk
+    
+    return F @ S, constraint, z
+
+NH = MaterialTensor(x=[F, p, z], fun=nh_up, triu=True, statevars=1)
+
+defgrad = np.random.rand(3, 3, 5, 100) - 0.5
+pressure = np.random.rand(1, 5, 100)
+statevars = np.random.rand(5, 16, 5, 100)
+
+for a in range(3):
+    defgrad[a, a] += 1.0
+
+dWdF, dWdp, statevars_new = NH.function([defgrad, pressure, statevars])
+d2WdFdF, d2WdFdp, d2Wdpdp = NH.gradient([defgrad, pressure, statevars])
+```
+
 Simple examples for using `matadi` with [`scikit-fem`](https://github.com/adtzlr/matadi/discussions/14#) as well as with [`felupe`](https://github.com/adtzlr/matadi/discussions/22) are shown in the Discussion section.
 
 ## References
