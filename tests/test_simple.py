@@ -1,7 +1,7 @@
 import numpy as np
 
 from matadi import Variable, Material, MaterialTensor
-from matadi.math import det, transpose, trace, invariants, sqrt
+from matadi.math import det, transpose, trace, invariants, sqrt, dev
 
 
 def neohooke(x, mu=1.0, bulk=200.0):
@@ -60,15 +60,18 @@ def test_tensor():
     # variables
     F = Variable("F", 3, 3)
     p = Variable("p", 1, 1)
+    z = Variable("z", 5, 16)
 
     # data
     FF = np.random.rand(3, 3, 8, 1000)
+    pp = np.random.rand(8, 1000)
+    zz = np.random.rand(5, 16, 8, 1000)
 
     for a in range(3):
         FF[a, a] += 1
 
     # init Material
-    for fun in [lambda x: x[0], lambda x: x]:
+    for fun in [lambda x: dev(x[0]), lambda x: x]:
         
         W = MaterialTensor(x=[F], fun=fun)
     
@@ -90,20 +93,19 @@ def test_tensor():
         assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
     
     # init Material
-    pp = np.random.rand(8, 1000)
+    pp = np.random.rand(1, 1, 8, 1000)
+    
     W = MaterialTensor(x=[p], fun=lambda x: x[0], compress=True)
     W0 = W.function([pp], threads=2)
 
     assert W0[0].shape == (8, 1000)
 
-    # init Material
-    pp = np.random.rand(1, 1, 8, 1000)
     W = MaterialTensor(x=[p], fun=lambda x: x[0])
-    W0 = W.function([pp], threads=2)
+    W0 = W.function([pp])
     
     assert W0[0].shape == (1, 1, 8, 1000)
     
-    # init mixed Material
+    # init mixed Material with upper triangle gradient
     W = MaterialTensor(x=[F, p], fun=lambda x: x, triu=True)
     P = W.function([FF, pp])
     A = W.gradient([FF, pp])
@@ -111,13 +113,21 @@ def test_tensor():
     assert len(P) == 2
     assert len(A) == 3
     
-    # init mixed Material
+    # init mixed Material with full gradient
     W = MaterialTensor(x=[F, p], fun=lambda x: x, triu=False)
     P = W.function([FF, pp])
     A = W.gradient([FF, pp])
     
     assert len(P) == 2
     assert len(A) == 4
+    
+    # init mixed Material with upper triangle gradient and state variables
+    W = MaterialTensor(x=[F, p, z], fun=lambda x: x, triu=True, statevars=1)
+    P = W.function([FF, pp, zz])
+    A = W.gradient([FF, pp, zz])
+    
+    assert len(P) == 3
+    assert len(A) == 3
 
 
 if __name__ == "__main__":
