@@ -17,10 +17,16 @@ class Function:
         self.kwargs = kwargs
 
         # generate function
-        self._f = self._fun(self.x, *self.args, **self.kwargs)
+        f = self._fun(self.x, *self.args, **self.kwargs)
+
+        # check if function is list or tuple
+        if isinstance(f, list) or isinstance(f, tuple):
+            self._f = f
+        else:
+            self._f = [f]
 
         # generate casADi function objects
-        self._function = ca.Function("f", self.x, [self._f])
+        self._function = ca.Function("f", self.x, self._f)
 
         # generate indices
         self._idx_function = [()]
@@ -47,10 +53,16 @@ class FunctionTensor:
         self.kwargs = kwargs
 
         # generate function
-        self._f = self._fun(self.x, *self.args, **self.kwargs)
+        f = self._fun(self.x, *self.args, **self.kwargs)
+
+        # check if function is list or tuple
+        if isinstance(f, list) or isinstance(f, tuple):
+            self._f = f
+        else:
+            self._f = [f]
 
         # generate casADi function objects
-        self._function = ca.Function("f", self.x, [self._f])
+        self._function = ca.Function("f", self.x, self._f)
 
         # generate indices
         self._idx_function = [y.shape for y in x]
@@ -180,7 +192,7 @@ class Material(Function):
 
 
 class MaterialTensor(FunctionTensor):
-    def __init__(self, x, fun, args=(), kwargs={}, compress=False):
+    def __init__(self, x, fun, args=(), kwargs={}, compress=False, triu=True):
 
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
@@ -189,14 +201,27 @@ class MaterialTensor(FunctionTensor):
         self.v = [Variable("v%d" % a, *x.shape) for a, x in enumerate(self.x)]
 
         # generate gradient and gradient-vector-product
-        self._g = [ca.jacobian(self._f, x) for x in self.x]
-        self._gvp = [ca.jtimes(self._f, x, v) for x, v in zip(self.x, self.v)]
+        self._g = [ca.jacobian(f, x) for x in self.x for f in self._f]
+        self._gvp = [
+            ca.jtimes(f, x, v) for x, v in zip(self.x, self.v) for f in self._f
+        ]
 
         # alias
         self.jacobian = self.gradient
 
+        # store only upper-triangle entries of gradients
+        if triu:
+            i, j = np.triu_indices(len(self.x))
+            a = (
+                np.arange(len(self.x) ** 2)
+                .reshape(len(self.x), len(self.x))[i, j]
+                .ravel()
+            )
+            self._g = [self._g[b] for b in a]
+            self._gvp = [self._gvp[b] for b in a]
+
         # generate casADi function objects
-        self._function = ca.Function("f", self.x, [self._f])
+        self._function = ca.Function("f", self.x, self._f)
         self._gradient = ca.Function("g", self.x, self._g)
         self._gradient_vector_product = ca.Function(
             "gvp", [*self.x, *self.v], self._gvp
@@ -216,7 +241,11 @@ class MaterialTensor(FunctionTensor):
             for j in range(len(self._idx_function)):
                 b = self._idx_function[j]
 
-                self._idx_gradient.append((*a, *b))
+                if triu:
+                    if j >= i:
+                        self._idx_gradient.append((*a, *b))
+                else:
+                    self._idx_gradient.append((*a, *b))
 
     def gradient(self, x, threads=cpu_count()):
         "Return list of gradients."
