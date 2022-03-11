@@ -65,14 +65,16 @@ class FunctionTensor:
         self._function = ca.Function("f", self.x, self._f)
 
         # generate indices
-        self._idx_function = [y.shape for y in x]
+        # self._idx_x = [y.shape for y in self.x]
+        self._idx_function = [y.shape for y in self._f]
+        self._idx_x = self._idx_function[: len(self.x)]
 
     def function(self, x, threads=cpu_count()):
         "Return the function."
         return apply(
             x,
             fun=self._function,
-            x_shape=self._idx_function,
+            x_shape=self._idx_x,
             fun_shape=self._idx_function,
             threads=threads,
         )
@@ -192,18 +194,25 @@ class Material(Function):
 
 
 class MaterialTensor(FunctionTensor):
-    def __init__(self, x, fun, args=(), kwargs={}, compress=False, triu=True):
+    def __init__(
+        self, x, fun, args=(), kwargs={}, compress=False, triu=True, statevars=0
+    ):
 
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
+
+        # no. of active variables
+        n = len(self.x) - statevars
 
         # generate vector for gradient-vector-product
         self.v = [Variable("v%d" % a, *x.shape) for a, x in enumerate(self.x)]
 
         # generate gradient and gradient-vector-product
-        self._g = [ca.jacobian(f, x) for x in self.x for f in self._f]
+        self._g = [ca.jacobian(f, x) for x in self.x[:n] for f in self._f[:n]]
         self._gvp = [
-            ca.jtimes(f, x, v) for x, v in zip(self.x, self.v) for f in self._f
+            ca.jtimes(f, x, v)
+            for x, v in zip(self.x[:n], self.v[:n])
+            for f in self._f[:n]
         ]
 
         # alias
@@ -211,10 +220,10 @@ class MaterialTensor(FunctionTensor):
 
         # store only upper-triangle entries of gradients
         if triu:
-            i, j = np.triu_indices(len(self.x))
+            i, j = np.triu_indices(len(self.x[:n]))
             a = (
-                np.arange(len(self.x) ** 2)
-                .reshape(len(self.x), len(self.x))[i, j]
+                np.arange(len(self.x[:n]) ** 2)
+                .reshape(len(self.x[:n]), len(self.x[:n]))[i, j]
                 .ravel()
             )
             self._g = [self._g[b] for b in a]
@@ -233,12 +242,13 @@ class MaterialTensor(FunctionTensor):
         if compress:
             for i in range(len(self._idx_function)):
                 if np.all(np.array(self._idx_function[i]) == 1):
+                    self._idx_x[i] = ()
                     self._idx_function[i] = ()
 
-        for i in range(len(self._idx_function)):
+        for i in range(len(self._idx_function[:n])):
             a = self._idx_function[i]
 
-            for j in range(len(self._idx_function)):
+            for j in range(len(self._idx_function[:n])):
                 b = self._idx_function[j]
 
                 if triu:
@@ -252,7 +262,7 @@ class MaterialTensor(FunctionTensor):
         return apply(
             x,
             fun=self._gradient,
-            x_shape=self._idx_function,
+            x_shape=self._idx_x,
             fun_shape=self._idx_gradient,
             threads=threads,
         )
@@ -262,7 +272,7 @@ class MaterialTensor(FunctionTensor):
         return apply(
             x,
             fun=self._gradient_vector_product,
-            x_shape=self._idx_function,
+            x_shape=self._idx_x,
             fun_shape=self._idx_function * len(self._gvp),
             threads=threads,
         )
