@@ -65,8 +65,9 @@ class FunctionTensor:
         self._function = ca.Function("f", self.x, self._f)
 
         # generate indices
-        self._idx_x = [y.shape for y in self.x]
+        # self._idx_x = [y.shape for y in self.x]
         self._idx_function = [y.shape for y in self._f]
+        self._idx_x = self._idx_function[: len(self.x)]
 
     def function(self, x, threads=cpu_count()):
         "Return the function."
@@ -193,11 +194,13 @@ class Material(Function):
 
 
 class MaterialTensor(FunctionTensor):
-    def __init__(self, x, fun, args=(), kwargs={}, compress=False, triu=True, statevars=0):
+    def __init__(
+        self, x, fun, args=(), kwargs={}, compress=False, triu=True, statevars=0
+    ):
 
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
-        
+
         # no. of active variables
         n = len(self.x) - statevars
 
@@ -207,7 +210,9 @@ class MaterialTensor(FunctionTensor):
         # generate gradient and gradient-vector-product
         self._g = [ca.jacobian(f, x) for x in self.x[:n] for f in self._f[:n]]
         self._gvp = [
-            ca.jtimes(f, x, v) for x, v in zip(self.x[:n], self.v[:n]) for f in self._f[:n]
+            ca.jtimes(f, x, v)
+            for x, v in zip(self.x[:n], self.v[:n])
+            for f in self._f[:n]
         ]
 
         # alias
@@ -237,6 +242,7 @@ class MaterialTensor(FunctionTensor):
         if compress:
             for i in range(len(self._idx_function)):
                 if np.all(np.array(self._idx_function[i]) == 1):
+                    self._idx_x[i] = ()
                     self._idx_function[i] = ()
 
         for i in range(len(self._idx_function[:n])):
