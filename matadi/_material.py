@@ -103,11 +103,11 @@ class Material(Function):
         # generate list of diagonal hessian entries and gradients
         # (including vector-products)
         for x, v, u in zip(self.x, self.v, self.u):
-            _h, _g = ca.hessian(self._f, x)
+            _h, _g = ca.hessian(self._f[0], x)
             _h_diag.append(_h)
             self._g.append(_g)
 
-            _gvp = ca.jtimes(self._f, x, v)
+            _gvp = ca.jtimes(self._f[0], x, v)
             _hvp = ca.jtimes(_gvp, x, u)
             self._gvp.append(_gvp)
             _hvp_diag.append(_hvp)
