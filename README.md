@@ -195,7 +195,7 @@ c) the sign of the resulting stretch from a small superposed force in one direct
 For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-strain relation). Also, please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead). Contrary to [casADi](https://web.casadi.org/), the gradient of the eigenvalue function is stabilized by a perturbation of the diagonal components.
 
 ### Example for a Neo-Hookean material model as (u/p)-formulation
-The (u/p)-formulation is created by an instance of `MaterialTensor`. The argument `triu=True` (default behavior) returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`.
+The (u/p)-formulation is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`.
 
 ```python
 from matadi import MaterialTensor, Variable
