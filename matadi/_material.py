@@ -29,15 +29,15 @@ class Function:
         self._function = ca.Function("f", self.x, self._f)
 
         # generate indices
-        self._idx_function = [()]
-        self._idx_gradient = [y.shape for y in x]
+        self._idx_x = [y.shape for y in x]
+        self._idx_function = [y.shape for y in self._f]
 
     def function(self, x, threads=cpu_count()):
         "Return the function."
         return apply(
             x,
             fun=self._function,
-            x_shape=self._idx_gradient,
+            x_shape=self._idx_x,
             fun_shape=self._idx_function,
             threads=threads,
         )
@@ -65,7 +65,6 @@ class FunctionTensor:
         self._function = ca.Function("f", self.x, self._f)
 
         # generate indices
-        # self._idx_x = [y.shape for y in self.x]
         self._idx_function = [y.shape for y in self._f]
         self._idx_x = self._idx_function[: len(self.x)]
 
@@ -81,10 +80,16 @@ class FunctionTensor:
 
 
 class Material(Function):
-    def __init__(self, x, fun, args=(), kwargs={}, compress=False):
+    def __init__(
+        self, x, fun, args=(), kwargs={}, compress=False, triu=True, statevars=0
+    ):
 
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
+
+        # no. of active variables
+        n = len(self.x) - statevars
+        self._idx_gradient = self._idx_x[:n]
 
         _h_diag = []
         _hvp_diag = []
@@ -104,7 +109,7 @@ class Material(Function):
 
         # generate list of diagonal hessian entries and gradients
         # (including vector-products)
-        for x, v, u in zip(self.x, self.v, self.u):
+        for x, v, u in zip(self.x[:n], self.v[:n], self.u[:n]):
             _h, _g = ca.hessian(self._f[0], x)
             _h_diag.append(_h)
             self._g.append(_g)
@@ -116,8 +121,8 @@ class Material(Function):
 
         # generate upper-triangle of hessian (-vector-products)
         for i, (g, gvp) in enumerate(zip(self._g, self._gvp)):
-            for j, (x, u) in enumerate(zip(self.x, self.u)):
-                if j >= i:
+            for j, (x, u) in enumerate(zip(self.x[:n], self.u[:n])):
+                if triu and j >= i or not triu:
                     if i != j:
                         self._h.append(ca.jacobian(g, x))
                         self._hvp.append(ca.jtimes(gvp, x, u))
@@ -139,6 +144,10 @@ class Material(Function):
         self._idx_hessian = []
 
         if compress:
+            for i in range(len(self._idx_function)):
+                if np.all(np.array(self._idx_function[i]) == 1):
+                    self._idx_function[i] = ()
+
             for i in range(len(self._idx_gradient)):
                 if np.all(np.array(self._idx_gradient[i]) == 1):
                     self._idx_gradient[i] = ()
@@ -149,7 +158,7 @@ class Material(Function):
             for j in range(len(self._idx_gradient)):
                 b = self._idx_gradient[j]
 
-                if j >= i:
+                if triu and j >= i or not triu:
                     self._idx_hessian.append((*a, *b))
 
     def gradient(self, x, threads=cpu_count()):
