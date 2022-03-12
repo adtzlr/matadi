@@ -30,14 +30,14 @@ def test_simple():
         FF[a, a] += 1
 
     # init Material
-    W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0},)
+    W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0})
 
     W0 = W.function([FF])
     dW = W.gradient([FF])
     DW = W.hessian([FF])
 
     # dW and DW are always lists...
-    assert W0[0].shape == (8, 1000)
+    assert W0[0].shape == (1, 1, 8, 1000)
     assert dW[0].shape == (3, 3, 8, 1000)
     assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
 
@@ -46,9 +46,15 @@ def test_simple():
     dW = W.gradient([FF], threads=2)
     DW = W.hessian([FF], threads=2)
 
-    assert W0[0].shape == (8, 1000)
+    assert W0[0].shape == (1, 1, 8, 1000)
     assert dW[0].shape == (3, 3, 8, 1000)
     assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
+
+    # init Material with compress
+    W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0}, compress=True)
+    W0 = W.function([FF])
+
+    assert W0[0].shape == (8, 1000)
 
 
 def test_tensor():
