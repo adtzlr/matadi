@@ -58,10 +58,7 @@ def library():
             "U": 9.94,
             "q": 0.567,
         },
-        matadi.models.linear_elastic: {
-            "mu": 1.0,
-            "lmbda": 2.0,
-        },
+        matadi.models.linear_elastic: {"mu": 1.0, "lmbda": 2.0,},
     }
 
     return database

@@ -18,7 +18,7 @@ def test_fiber():
         M = MaterialHyperelastic(model, E=1, angle=30, axis=2, k=0)
 
         W0 = M.function([FF])
-        assert W0[0].shape == (2,)
+        assert W0[0].shape == (1, 1, 2)
 
         # init Material
         M = MaterialHyperelastic(model, E=1, angle=30, axis=2, bulk=5000)
@@ -27,19 +27,9 @@ def test_fiber():
         dW = M.gradient([FF])
         DW = M.hessian([FF])
 
-        assert W0[0].shape == (2,)
-        assert dW[0].shape == (
-            3,
-            3,
-            2,
-        )
-        assert DW[0].shape == (
-            3,
-            3,
-            3,
-            3,
-            2,
-        )
+        assert W0[0].shape == (1, 1, 2)
+        assert dW[0].shape == (3, 3, 2,)
+        assert DW[0].shape == (3, 3, 3, 3, 2,)
 
 
 def test_hgo():
@@ -72,19 +62,9 @@ def test_hgo():
         dW = M.gradient([FF])
         DW = M.hessian([FF])
 
-        assert W0[0].shape == (2,)
-        assert dW[0].shape == (
-            3,
-            3,
-            2,
-        )
-        assert DW[0].shape == (
-            3,
-            3,
-            3,
-            3,
-            2,
-        )
+        assert W0[0].shape == (1, 1, 2)
+        assert dW[0].shape == (3, 3, 2,)
+        assert DW[0].shape == (3, 3, 3, 3, 2,)
 
 
 if __name__ == "__main__":
