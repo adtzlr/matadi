@@ -2,7 +2,7 @@ from functools import wraps
 from copy import deepcopy
 
 from .. import Variable
-from ..math import det, cof, trace
+from ..math import det, cof, trace, gradient
 
 
 def isochoric_volumetric_split(fun):
@@ -56,9 +56,10 @@ def displacement_pressure_split(fun):
             f = [f]
             
         P = f[0]
-        P_vol = trace(P @ F) / det(F)
+        P_vol = trace(P @ F.T) / det(F) / 3
+        K = trace(gradient(P_vol, F) @ F.T) / det(F) / 3
 
-        return [P - (P_vol - p) * cof(F), P_vol - p, *f[1:]]
+        return [P - (P_vol - p) * cof(F), (P_vol - p) / K, *f[1:]]
 
     apply_up.p = p
 
