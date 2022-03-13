@@ -58,7 +58,7 @@ def displacement_pressure_split(fun):
         P = f[0]
         P_vol = trace(P @ F) / det(F)
 
-        return P - (P_vol - p) * cof(F), P_vol - p, *f[1:]
+        return [P - (P_vol - p) * cof(F), P_vol - p, *f[1:]]
 
     apply_up.p = p
 
