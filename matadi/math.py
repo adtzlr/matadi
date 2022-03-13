@@ -61,6 +61,8 @@ from casadi import (
     vertsplit,
     horzsplit,
     reshape,
+    gradient,
+    hessian,
 )
 
 eye = SX.eye
