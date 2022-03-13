@@ -49,10 +49,16 @@ def displacement_pressure_split(fun):
 
         F = args[0][0]
 
-        P = fun(*args, **kwargs)
+        f = fun(*args, **kwargs)
+        
+        # check if function is list or tuple
+        if not (isinstance(f, list) or isinstance(f, tuple)):
+            f = [f]
+            
+        P = f[0]
         P_vol = trace(P @ F) / det(F)
 
-        return P - (P_vol - p) * cof(F), P_vol - p
+        return P - (P_vol - p) * cof(F), P_vol - p, *f[1:]
 
     apply_up.p = p
 
