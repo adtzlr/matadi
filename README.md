@@ -202,24 +202,25 @@ import numpy as np
 
 from matadi.models import displacement_pressure_split
 from matadi import MaterialTensor, Variable
-from matadi.math import det, dev, inv
+from matadi.math import trace, det, log, gradient
 
 F = Variable("F", 3, 3)
 z = Variable("z", 5, 16)
 
 @displacement_pressure_split
-def fun(x, C10=0.5, bulk=5000):
-    """Neo-Hookean material model formulation
+def fun(x, C10=0.5, bulk=50):
+    """Compressible Neo-Hookean material model formulation
     with some random (unused) state variables."""
-    
+
     F, z = x[0], x[-1]
     
     J = det(F)
     C = F.T @ F
+    I1 = trace(C)
     
-    S = 2 * C10 * dev(J ** (-2 / 3) * C) @ inv(C) + bulk * (J - 1) * J * inv(C)
+    W = C10 * (I1 - 3) - 2 * C10 * log(J) + bulk * (J - 1) ** 2 / 2
     
-    return F @ S, z
+    return gradient(W, F), z
 
 p = fun.p
 NH = MaterialTensor(x=[F, p, z], fun=fun, triu=True, statevars=1)
