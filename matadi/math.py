@@ -107,3 +107,8 @@ def dev(T):
     dim = T.shape[0]
 
     return T - trace(T) / dim * eye(dim)
+
+
+def ddot(A, B):
+
+    return trace(transpose(A) @ B)

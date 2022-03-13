@@ -1,6 +1,7 @@
 from ._helpers import (
     isochoric_volumetric_split,
     volumetric,
+    displacement_pressure_split,
 )
 
 from ._hyperelasticity_isotropic import (

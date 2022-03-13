@@ -1,7 +1,8 @@
 from functools import wraps
 from copy import deepcopy
 
-from ..math import det
+from .. import Variable
+from ..math import det, cof, trace
 
 
 def isochoric_volumetric_split(fun):
@@ -33,3 +34,32 @@ def isochoric_volumetric_split(fun):
 
 def volumetric(J, bulk):
     return bulk * (J - 1) ** 2 / 2
+
+
+def displacement_pressure_split(fun):
+    """Apply the (u/p)-framework on top of a material formulation (a function 
+    of the deformation gradient which returns the first Piola-Kirchhoff stress)
+    . The additional hydrostatic stress variable `p` is attached as an 
+    attribute `fun.p` to the augmented function."""
+
+    p = Variable("p")
+
+    @wraps(fun)
+    def apply_up(*args, **kwargs):
+
+        F = args[0][0]
+
+        f = fun(*args, **kwargs)
+        
+        # check if function is list or tuple
+        if not (isinstance(f, list) or isinstance(f, tuple)):
+            f = [f]
+            
+        P = f[0]
+        P_vol = trace(P @ F) / det(F)
+
+        return [P - (P_vol - p) * cof(F), P_vol - p, *f[1:]]
+
+    apply_up.p = p
+
+    return apply_up

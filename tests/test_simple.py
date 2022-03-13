@@ -1,7 +1,7 @@
 import numpy as np
 
 from matadi import Variable, Material, MaterialTensor
-from matadi.math import det, transpose, trace, invariants, sqrt, dev
+from matadi.math import det, transpose, trace, invariants, sqrt, dev, ddot
 
 
 def neohooke(x, mu=1.0, bulk=200.0):
@@ -83,7 +83,7 @@ def test_tensor():
         FF[a, a] += 1
 
     # init Material
-    for fun in [lambda x: dev(x[0]), lambda x: x]:
+    for fun in [lambda x: dev(x[0]) + ddot(x[0], x[0]), lambda x: x]:
 
         W = MaterialTensor(x=[F], fun=fun)
 
