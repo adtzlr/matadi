@@ -198,29 +198,31 @@ For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-str
 The (u/p)-formulation is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity.
 
 ```python
+import numpy as np
+
+from matadi.models import displacement_pressure_split
 from matadi import MaterialTensor, Variable
 from matadi.math import det, dev, inv
 
 F = Variable("F", 3, 3)
-p = Variable("p")
 z = Variable("z", 5, 16)
 
-
-def nh_up(x, C10=0.5, bulk=5000):
-    """Neo-Hookean material model as (u/p) formulation 
+@displacement_pressure_split
+def fun(x, C10=0.5, bulk=5000):
+    """Neo-Hookean material model formulation
     with some random (unused) state variables."""
     
-    F, p, z = x
+    F, z = x[0], x[-1]
     
     J = det(F)
     C = F.T @ F
     
-    S = 2 * C10 * dev(J ** (-2 / 3) * C) @ inv(C) + p * J * inv(C)
-    constraint = (J - 1) - p / bulk
+    S = 2 * C10 * dev(J ** (-2 / 3) * C) @ inv(C) + bulk * (J - 1) * J * inv(C)
     
-    return F @ S, constraint, z
+    return F @ S, z
 
-NH = MaterialTensor(x=[F, p, z], fun=nh_up, triu=True, statevars=1)
+p = fun.p
+NH = MaterialTensor(x=[F, p, z], fun=fun, triu=True, statevars=1)
 
 defgrad = np.random.rand(3, 3, 5, 100) - 0.5
 pressure = np.random.rand(1, 5, 100)
