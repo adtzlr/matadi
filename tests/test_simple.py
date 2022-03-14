@@ -19,6 +19,10 @@ def neohooke(x, mu=1.0, bulk=200.0):
     return mu * (I1_iso - 3) + bulk * (J - 1) ** 2 / 2
 
 
+def nh_aslist(x, mu=1.0, bulk=200.0):
+    return [neohooke(x, mu, bulk)]
+
+
 def test_simple():
 
     # variables
@@ -30,6 +34,7 @@ def test_simple():
         FF[a, a] += 1
 
     # init Material
+    W = Material(x=[F], fun=nh_aslist, kwargs={"mu": 1.0, "bulk": 10.0})
     W = Material(x=[F], fun=neohooke, kwargs={"mu": 1.0, "bulk": 10.0})
 
     W0 = W.function([FF])
