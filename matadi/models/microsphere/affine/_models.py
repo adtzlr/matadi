@@ -1,5 +1,5 @@
-from ..._helpers import isochoric_volumetric_split
-from ....math import transpose, sum1, diag, sqrt, inv, det
+from ..._helpers import isochoric_volumetric_split, displacement_pressure_split
+from ....math import transpose, sum1, diag, sqrt, inv, det, reshape, dev
 from ..quadrature._bazant_oh import BazantOh
 
 
@@ -28,3 +28,41 @@ def microsphere_affine_tube(F, f, kwargs, quadrature=BazantOh(n=21)):
     affine_areastretch = sqrt(diag(r.T @ Cs @ r))
 
     return sum1(f(affine_areastretch, **kwargs) * w)
+
+
+@displacement_pressure_split
+def microsphere_affine_force(x, fun, *args, **kwargs):
+    """Micro-sphere model: Forces of affine stretch model as first Piola-
+    Kirchhoff stress tensor embedded into a (u/p)-framework."""
+    
+    # sphere quadrature
+    sphere = BazantOh(n=21)
+    
+    # extract current and initial deformation gradient and state variables
+    F = x[0]
+    Fn = x[-2]
+    statevars_n = x[-1]
+    
+    # volume ratios
+    J  = det(F)
+    Jn = det(Fn)
+    
+    # unimodular part of current and initial right Cauchy-Green deformation tensor
+    C  = F.T @ F 
+    CG  = J  ** (-2 / 3) * (C)
+    CGn = Jn ** (-2 / 3) * (Fn.T @ Fn)
+    
+    # affine stretches
+    lam_n = sqrt(diag(sphere.points.T @ CGn @ sphere.points))
+    lam   = sqrt(diag(sphere.points.T @ CG  @ sphere.points))
+    
+    bulk = kwargs.pop("bulk")
+    
+    # fiber forces and state variable update
+    f, statevars = fun(lam, lam_n, statevars_n, *args, **kwargs)
+    
+    # Second Piola-Kirchhoff stress tensor
+    SG = reshape(sum1(f / lam * sphere.weights * sphere.bases), 3, 3)
+    S = dev(SG @ CG) @ inv(C) + bulk * (J - 1) * J * inv(C)
+
+    return F @ S, statevars
