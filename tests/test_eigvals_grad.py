@@ -37,7 +37,7 @@ def test_eigvals():
     # check function
     f = FF[:, :, 0, 0]
     c = f.T @ f
-    assert np.isclose(WW[0][0, 0], (np.linalg.eigvals(c).sum() - 3) / 2)
+    assert np.isclose(WW[0][0, 0, 0, 0], (np.linalg.eigvals(c).sum() - 3) / 2)
 
     # check gradient
     assert np.allclose(dW[0][:, :, 0, 0], FF[:, :, 0, 0])

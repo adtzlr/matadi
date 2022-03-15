@@ -18,6 +18,9 @@ class BazantOh:
         }
 
         self.points, self.weights = schemes[n]()
+        self.bases = np.einsum("i...,j...->...ij", self.points, self.points).reshape(
+            -1, 9
+        )
 
     def _scheme_21(self):
         "2x21-point scheme (degree 9, orthogonal symmetries)."

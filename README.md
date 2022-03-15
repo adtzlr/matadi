@@ -5,7 +5,7 @@ Material Definition with Automatic Differentiation (AD)
 
 [![PyPI version shields.io](https://img.shields.io/pypi/v/matadi.svg)](https://pypi.python.org/pypi/matadi/) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) ![Made with love in Graz (Austria)](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20in-Graz%20(Austria)-0c674a) [![codecov](https://codecov.io/gh/adtzlr/matadi/branch/main/graph/badge.svg?token=2EY2U4ZL35)](https://codecov.io/gh/adtzlr/matadi) [![DOI](https://zenodo.org/badge/408564756.svg)](https://zenodo.org/badge/latestdoi/408564756) ![Codestyle black](https://img.shields.io/badge/code%20style-black-black) ![GitHub Repo stars](https://img.shields.io/github/stars/adtzlr/matadi?logo=github) ![PyPI - Downloads](https://img.shields.io/pypi/dm/matadi)
 
-matADi is a simple Python module which acts as a wrapper on top of [casADi](https://web.casadi.org/) [[1](https://doi.org/10.1007/s12532-018-0139-4)] for easy definitions of hyperelastic strain energy functions. [Gradients](https://en.wikipedia.org/wiki/Gradient) (stresses) and [hessians](https://en.wikipedia.org/wiki/Hessian_matrix) (elasticity tensors) are carried out by casADi's powerful and fast [**Automatic Differentiation (AD)**](https://en.wikipedia.org/wiki/Automatic_differentiation) capabilities. It is designed to handle inputs with trailing axes which is especially useful for the application in Python-based finite element modules like [scikit-fem](https://scikit-fem.readthedocs.io/en/latest/) or [FElupe](https://github.com/adtzlr/felupe). Mixed-field formulations are supported as well as single-field formulations.
+matADi is a Python module for the definition of a constitutive hyperelastic material formulation by a strain energy density function. Both [gradient](https://en.wikipedia.org/wiki/Gradient) (stress) and [hessian](https://en.wikipedia.org/wiki/Hessian_matrix) (elasticity tensor) are carried out by [**Automatic Differentiation (AD)**](https://en.wikipedia.org/wiki/Automatic_differentiation) using [casADi](https://web.casadi.org/) [[1](https://doi.org/10.1007/s12532-018-0139-4)] as a backend. A high-level interface for hyperelastic materials based on the deformation gradient exists. Several isotropic hyperelastic material formulations like the Neo-Hookean or the Ogden model are included in the model library. Gradient and hessian methods allow input data with trailing axes which is especially useful for Python-based finite element modules, e.g. [scikit-fem](https://scikit-fem.readthedocs.io/en/latest/) or [FElupe](https://github.com/adtzlr/felupe). Mixed-field formulations suitable for nearly-incompressible material behavior are supported as well as single-field formulations based on the deformation gradient. A numerical lab is included to run, plot and analyze homogenous uniaxial, equi-biaxial, planar shear and simple shear load cases.
 
 ## Installation
 Install `matADi` from PyPI via pip.
@@ -63,7 +63,7 @@ P = Mat.gradient([defgrad])[0]
 A = Mat.hessian([defgrad])[0]
 ```
 
-In a similar way, gradient-vector-products and hessian-vector-products are accesible via **gradient_vector_product** and **hessian_vector_product** methods, respectively.
+In a similar way, gradient-vector-products and hessian-vector-products are accessible via **gradient_vector_product** and **hessian_vector_product** methods, respectively.
 
 ```python
 v = np.random.rand(3, 3, 5, 100) - 0.5
@@ -101,7 +101,7 @@ P_upJ = NH_upJ.gradient([defgrad, pressure, volratio])
 A_upJ = NH_upJ.hessian([defgrad, pressure, volratio])
 ```
 
-The output of `NH_upJ.gradient([defgrad, pressure, volratio])` is a list with gradients of the functional as `[dWdF, dWdp, dWdJ]`. Hessian entries are provided as list of the upper triangle entries, e.g. `NH_upJ.hessian([defgrad, pressure, volratio])` returns `[d2WdFdF, d2WdFdp, d2WdFdJ, d2Wdpdp, d2WdpdJ, d2WdJdJ]`.
+The output of `NH_upJ.gradient([defgrad, pressure, volratio])` is a list with gradients of the functional as `[dWdF, dWdp, dWdJ]`. Hessian entries are provided as a list of upper triangle entries, e.g. `NH_upJ.hessian([defgrad, pressure, volratio])` returns `[d2WdFdF, d2WdFdp, d2WdFdJ, d2Wdpdp, d2WdpdJ, d2WdJdJ]`.
 
 Available [isotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py):
 - [Linear Elastic](https://en.wikipedia.org/wiki/Linear_elasticity) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L5-L7))
@@ -152,7 +152,7 @@ NH = MaterialHyperelastic(nh, C10=0.5, bulk=200.0)
 ```
 
 ## Lab
-In matADi's `Lab` :lab_coat: numeric experiments on homogenous loadcases can be performed. Let's take the non-affine micro-sphere material model suitable for rubber elasticity with parameters from [[2](https://doi.org/10.1016/j.jmps.2004.03.011), Fig. 19] and run **uniaxial**, **biaxial** and **planar shear** tests.
+In matADi's `Lab` :lab_coat: numeric experiments on homogenous loadcases on compressible or nearly-incompressible material formulations are performed. For incompressible materials use `LabIncompressible` instead. Let's take the non-affine micro-sphere material model suitable for rubber elasticity with parameters from [[2](https://doi.org/10.1016/j.jmps.2004.03.011), Fig. 19] and run **uniaxial**, **biaxial** and **planar shear** tests.
 
 ```python
 from matadi import Lab, MaterialHyperelastic
@@ -192,7 +192,51 @@ b) the monotonic increasing slope of force per undeformed area vs. stretch and
 c) the sign of the resulting stretch from a small superposed force in one direction.
 
 ## Hints and usage in FEM modules
-For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-strain relation). Please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead).
+For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-strain relation). Also, please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead). Contrary to [casADi](https://web.casadi.org/), the gradient of the eigenvalue function is stabilized by a perturbation of the diagonal components.
+
+### Example for a Neo-Hookean material model as (u/p)-formulation
+The (u/p)-formulation is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity.
+
+```python
+import numpy as np
+
+from matadi.models import displacement_pressure_split
+from matadi import MaterialTensor, Variable
+from matadi.math import trace, det, log, gradient
+
+F = Variable("F", 3, 3)
+z = Variable("z", 5, 16)
+
+@displacement_pressure_split
+def fun(x, C10=0.5, bulk=50):
+    """Compressible Neo-Hookean material model formulation
+    with some random (unused) state variables."""
+
+    F, z = x[0], x[-1]
+    
+    J = det(F)
+    C = F.T @ F
+    I1 = trace(C)
+    
+    W = C10 * (I1 - 3) - 2 * C10 * log(J) + bulk * (J - 1) ** 2 / 2
+    
+    return gradient(W, F), z
+
+p = fun.p
+NH = MaterialTensor(x=[F, p, z], fun=fun, triu=True, statevars=1)
+
+defgrad = np.random.rand(3, 3, 5, 100) - 0.5
+pressure = np.random.rand(1, 5, 100)
+statevars = np.random.rand(5, 16, 5, 100)
+
+for a in range(3):
+    defgrad[a, a] += 1.0
+
+dWdF, dWdp, statevars_new = NH.function([defgrad, pressure, statevars])
+d2WdFdF, d2WdFdp, d2Wdpdp = NH.gradient([defgrad, pressure, statevars])
+```
+
+**Hint**: *The state variable concept is also implemented for the `Material` class.*
 
 Simple examples for using `matadi` with [`scikit-fem`](https://github.com/adtzlr/matadi/discussions/14#) as well as with [`felupe`](https://github.com/adtzlr/matadi/discussions/22) are shown in the Discussion section.
 

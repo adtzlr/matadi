@@ -61,6 +61,8 @@ from casadi import (
     vertsplit,
     horzsplit,
     reshape,
+    gradient,
+    hessian,
 )
 
 eye = SX.eye
@@ -100,3 +102,15 @@ def sym(T):
 def dot(A, B):
 
     return _dot(transpose(A), B)
+
+
+def dev(T):
+
+    dim = T.shape[0]
+
+    return T - trace(T) / dim * eye(dim)
+
+
+def ddot(A, B):
+
+    return trace(transpose(A) @ B)
