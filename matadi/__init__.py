@@ -15,6 +15,8 @@ from ._material import (
 from . import models
 from . import math
 from ._templates import (
+    TwoFieldVariation,
+    TwoFieldVariationPlaneStrain,
     ThreeFieldVariation,
     ThreeFieldVariationPlaneStrain,
     MaterialHyperelastic,
