@@ -58,7 +58,10 @@ def library():
             "U": 9.94,
             "q": 0.567,
         },
-        matadi.models.linear_elastic: {"mu": 1.0, "lmbda": 2.0,},
+        matadi.models.linear_elastic: {
+            "mu": 1.0,
+            "lmbda": 2.0,
+        },
     }
 
     return database
@@ -91,6 +94,7 @@ def test_models():
 
         HM = matadi.MaterialHyperelastic(model, **kwargs)
         HM_mixed = matadi.ThreeFieldVariation(HM)
+        HM_mixed2 = matadi.TwoFieldVariation(HM)
 
         W = HM.function([FF])
         P = HM.gradient([FF], threads=1)
@@ -147,6 +151,38 @@ def test_models():
         assert np.allclose(dWdpdJ, DW[4])
         assert np.allclose(dWdJdJ, DW[5])
 
+        W = HM_mixed2.function([FF, pp])
+        P = HM_mixed2.gradient([FF, pp])
+        A = HM_mixed2.hessian([FF, pp])
+
+        assert len(W) == 1
+        assert len(P) == 2
+        assert len(A) == 3
+
+        dW = HM_mixed2.gradient_vector_product([FF, pp], [dF, dp])
+        DW = HM_mixed2.hessian_vector_product([FF, pp], [dF, dp], [DF, Dp])
+
+        dWF = np.einsum("ij...,ij...->...", P[0], dF)
+        dWp = P[1] * dp
+
+        # exclude van-der-waals model from gvp- and hvp-checks
+        # for two-field-variations due to nan-issues
+        if model not in [md.van_der_waals]:
+            assert np.allclose(dWF, dW[0])
+        assert np.allclose(dWp, dW[1])
+
+        dWdFdF = np.einsum("ij...,ijkl...,kl...->...", dF, A[0], DF)
+        dWdpdp = dp * A[2][0, 0, 0, 0] * Dp
+
+        if model not in [md.van_der_waals]:
+            assert np.allclose(dWdFdF, DW[0])
+        assert np.allclose(dWdpdp, DW[2])
+
+        dWdFdp = np.einsum("ij...,ij...,...->...", dF, A[1][:, :, 0, 0], Dp)
+
+        assert np.allclose(dWdFdp, DW[1])
+        assert np.allclose(dWdpdp, DW[2])
+
     nh = matadi.MaterialHyperelastic(md.neo_hooke, **lib[md.neo_hooke])
     mr = matadi.MaterialHyperelastic(md.mooney_rivlin, **lib[md.mooney_rivlin])
 
@@ -173,6 +209,19 @@ def test_models():
     assert len(W) == 1
     assert len(P) == 3
     assert len(A) == 6
+
+    nh_mixed2 = matadi.TwoFieldVariation(nh)
+    mr_mixed2 = matadi.TwoFieldVariation(mr)
+
+    comp = matadi.MaterialComposite([nh_mixed2, mr_mixed2])
+
+    W = comp.function([FF, pp])
+    P = comp.gradient([FF, pp])
+    A = comp.hessian([FF, pp])
+
+    assert len(W) == 1
+    assert len(P) == 2
+    assert len(A) == 3
 
 
 if __name__ == "__main__":

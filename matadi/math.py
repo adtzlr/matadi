@@ -63,6 +63,7 @@ from casadi import (
     reshape,
     gradient,
     hessian,
+    Function,
 )
 
 eye = SX.eye
