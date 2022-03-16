@@ -1,9 +1,63 @@
-from multiprocessing import cpu_count
-
 import numpy as np
 
 from . import Material, Variable
-from .math import det, horzcat, vertcat, zeros
+from .math import det, horzcat, vertcat, zeros, gradient as grad, trace, eye, Function
+
+
+class TwoFieldVariation:
+    def __init__(self, material):
+        self.material = material
+        p = Variable("p", 1, 1)
+        self.x = [self.material.x[0], p]
+        self.W = Material(self.x, self._fun)
+        self.function = self.W.function
+        self.gradient = self.W.gradient
+        self.hessian = self.W.hessian
+        self.gradient_vector_product = self.W.gradient_vector_product
+        self.hessian_vector_product = self.W.hessian_vector_product
+
+    def _fun(self, x):
+        F, p = x
+        J = det(F)
+        W = self.material.fun(F, **self.material.kwargs)
+        U = self.material.fun(J ** (1 / 3) * eye(3), **self.material.kwargs)
+        dWdF = grad(W, F)
+        dWdJ = trace(dWdF @ F.T) / J / 3
+        d2WdJdJ = trace(grad(dWdJ, F) @ F.T) / J / 3
+        return W - U + 1 / d2WdJdJ * (p * dWdJ - p ** 2 / 2)
+
+
+class TwoFieldVariationPlaneStrain:
+    def __init__(self, material):
+        self.material = material
+        p = Variable("p", 1, 1)
+        self.x = [self.material.x[0], p]
+        self.W = Material(self.x, self._fun)
+        self.function = self.W.function
+        self.gradient = self.W.gradient
+        self.hessian = self.W.hessian
+        self.gradient_vector_product = self.W.gradient_vector_product
+        self.hessian_vector_product = self.W.hessian_vector_product
+
+    def _fun(self, x):
+        F, p = x
+        F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
+        F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
+        J = det(F)
+        W = self.material.fun(F, **self.material.kwargs)
+        U = self.material.fun(J ** (1 / 3) * eye(3), **self.material.kwargs)
+        
+        f = Variable("f", 3, 3)
+        w = self.material.fun(f, **self.material.kwargs)
+        
+        dwdf = grad(w, f)
+        dwdj = trace(dwdf @ f.T) / det(f) / 3
+        d2wdjdj = trace(grad(dwdj, f) @ f.T) / det(f) / 3
+        
+        dWdJ = Function("w", [f], [dwdj])(F)
+        d2WdJdJ = Function("w", [f], [d2wdjdj])(F)
+        
+        return W - U + 1 / d2WdJdJ * (p * dWdJ - p ** 2 / 2)
 
 
 class ThreeFieldVariation:
