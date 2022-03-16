@@ -37,9 +37,9 @@ def volumetric(J, bulk):
 
 
 def displacement_pressure_split(fun):
-    """Apply the (u/p)-framework on top of a material formulation (a function 
+    """Apply the (u/p)-framework on top of a material formulation (a function
     of the deformation gradient which returns the first Piola-Kirchhoff stress)
-    . The additional hydrostatic stress variable `p` is attached as an 
+    . The additional hydrostatic stress variable `p` is attached as an
     attribute `fun.p` to the augmented function."""
 
     p = Variable("p")
@@ -50,11 +50,11 @@ def displacement_pressure_split(fun):
         F = args[0][0]
 
         f = fun(*args, **kwargs)
-        
+
         # check if function is list or tuple
         if not (isinstance(f, list) or isinstance(f, tuple)):
             f = [f]
-            
+
         P = f[0]
         P_vol = trace(P @ F.T) / det(F) / 3
         K = trace(gradient(P_vol, F) @ F.T) / det(F) / 3

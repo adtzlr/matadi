@@ -46,17 +46,17 @@ class TwoFieldVariationPlaneStrain:
         J = det(F)
         W = self.material.fun(F, **self.material.kwargs)
         U = self.material.fun(J ** (1 / 3) * eye(3), **self.material.kwargs)
-        
+
         f = Variable("f", 3, 3)
         w = self.material.fun(f, **self.material.kwargs)
-        
+
         dwdf = grad(w, f)
         dwdj = trace(dwdf @ f.T) / det(f) / 3
         d2wdjdj = trace(grad(dwdj, f) @ f.T) / det(f) / 3
-        
+
         dWdJ = Function("w", [f], [dwdj])(F)
         d2WdJdJ = Function("w", [f], [d2wdjdj])(F)
-        
+
         return W - U + 1 / d2WdJdJ * (p * dWdJ - p ** 2 / 2)
 
 
