@@ -23,5 +23,7 @@ from ._hyperelasticity_anisotropic import (
     holzapfel_gasser_ogden,
 )
 
+from ._pseudo_elasticity import ogden_roxburgh
+
 from . import microsphere
 from .microsphere.nonaffine import miehe_goektepe_lulei

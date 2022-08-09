@@ -1,9 +1,14 @@
 import numpy as np
 
 from matadi import Variable, MaterialTensor
-from matadi.models import displacement_pressure_split
+from matadi.models import (
+    displacement_pressure_split,
+    neo_hooke,
+    ogden_roxburgh,
+    volumetric,
+)
 
-from matadi.math import det, dev, inv
+from matadi.math import det, gradient, dev, inv
 
 
 def test_up_state():
@@ -12,13 +17,24 @@ def test_up_state():
     F = Variable("F", 3, 3)
 
     # state variables
-    z = Variable("z", 5, 9)
+    z = Variable("z", 1, 1)
 
     @displacement_pressure_split
-    def fun(x):
-        F, z = x[0], x[-1]
-        C = F.T @ F
-        return det(F) ** (-2 / 3) * dev(C) @ inv(C), z
+    def fun(x, C10=0.5, bulk=5000, r=3, m=1, beta=0):
+        "Strain energy function: Neo-Hooke & Ogden-Roxburgh."
+
+        # split `x` into the deformation gradient and the state variable
+        F, Wmaxn = x[0], x[-1]
+
+        # isochoric and volumetric parts of the hyperelastic strain energy function
+        W = neo_hooke(F, C10)
+        U = volumetric(det(F), bulk)
+
+        # pseudo-elastic softening
+        eta, Wmax = ogden_roxburgh(W, Wmaxn, r, m, beta)
+
+        # softened first Piola-Kirchhoff stress and updated state variable
+        return eta * gradient(W, F) + gradient(U, F), Wmax
 
     # get pressure variable from augmented function
     p = fun.p
@@ -29,7 +45,7 @@ def test_up_state():
 
     FF = np.random.rand(3, 3, 8, 100)
     pp = np.random.rand(1, 8, 100)
-    zz = np.random.rand(5, 9, 8, 100)
+    zz = np.random.rand(1, 1, 8, 100)
 
     for a in range(3):
         FF[a, a] += 1
