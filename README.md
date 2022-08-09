@@ -197,7 +197,7 @@ For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-str
 ### A **Material** with state variables
 A generalized material model with optional state variables for the (u/p)-formulation is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity.
 
-Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pesudo_elasticity.py):
+Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py):
 - [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py#L4-L16))
 
 ```python
