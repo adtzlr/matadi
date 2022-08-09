@@ -197,37 +197,50 @@ For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-str
 ### A **Material** with state variables
 A generalized material model with optional state variables for the (u/p)-formulation is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity.
 
+Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pesudo_elasticity.py):
+- [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py#L4-L16))
+
 ```python
 import numpy as np
 
-from matadi.models import displacement_pressure_split
+from matadi.models import (
+    displacement_pressure_split, neo_hooke, volumetric, ogden_roxburgh
+)
 from matadi import MaterialTensor, Variable
-from matadi.math import trace, det, log, gradient
+from matadi.math import det, gradient
 
 F = Variable("F", 3, 3)
-z = Variable("z", 5, 16)
+z = Variable("z", 1, 1)
 
 @displacement_pressure_split
-def fun(x, C10=0.5, bulk=50):
-    """Compressible Neo-Hookean material model formulation
-    with some random (unused) state variables."""
+def fun(x, C10=0.5, bulk=5000, r=3, m=1, beta=0):
+    "Strain energy function: Neo-Hooke & Ogden-Roxburgh."
+    
+    # split `x` into the deformation gradient and the state variable
+    F, Wmaxn = x[0], x[-1]
+    
+    # isochoric and volumetric parts of the hyperelastic 
+    # strain energy function
+    W = neo_hooke(F, C10)
+    U = volumetric(det(F), bulk)
+    
+    # pseudo-elastic softening function
+    eta, Wmax = ogden_roxburgh(W, Wmaxn, r, m, beta)
+    
+    # first Piola-Kirchhoff stress and updated state variable
+    # for a pseudo-elastic material formulation
+    return eta * gradient(W, F) + gradient(U, F), Wmax
 
-    F, z = x[0], x[-1]
-    
-    J = det(F)
-    C = F.T @ F
-    I1 = trace(C)
-    
-    W = C10 * (I1 - 3) - 2 * C10 * log(J) + bulk * (J - 1) ** 2 / 2
-    
-    return gradient(W, F), z
-
+# get pressure variable from augmented function
 p = fun.p
+
+# Material as a function of `F` and `p`
+# with **one** additional state variable `z`
 NH = MaterialTensor(x=[F, p, z], fun=fun, triu=True, statevars=1)
 
 defgrad = np.random.rand(3, 3, 5, 100) - 0.5
 pressure = np.random.rand(1, 5, 100)
-statevars = np.random.rand(5, 16, 5, 100)
+statevars = np.random.rand(1, 1, 5, 100)
 
 for a in range(3):
     defgrad[a, a] += 1.0
