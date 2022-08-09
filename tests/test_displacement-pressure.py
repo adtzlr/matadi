@@ -1,7 +1,12 @@
 import numpy as np
 
 from matadi import Variable, MaterialTensor
-from matadi.models import displacement_pressure_split, neo_hooke, ogden_roxburgh, volumetric
+from matadi.models import (
+    displacement_pressure_split,
+    neo_hooke,
+    ogden_roxburgh,
+    volumetric,
+)
 
 from matadi.math import det, gradient, dev, inv
 
@@ -17,17 +22,17 @@ def test_up_state():
     @displacement_pressure_split
     def fun(x, C10=0.5, bulk=5000, r=3, m=1, beta=0):
         "Strain energy function: Neo-Hooke & Ogden-Roxburgh."
-        
+
         # split `x` into the deformation gradient and the state variable
         F, Wmaxn = x[0], x[-1]
-        
+
         # isochoric and volumetric parts of the hyperelastic strain energy function
         W = neo_hooke(F, C10)
         U = volumetric(det(F), bulk)
-        
+
         # pseudo-elastic softening
         eta, Wmax = ogden_roxburgh(W, Wmaxn, r, m, beta)
-        
+
         # softened first Piola-Kirchhoff stress and updated state variable
         return eta * gradient(W, F) + gradient(U, F), Wmax
 
