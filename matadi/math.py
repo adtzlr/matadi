@@ -11,6 +11,7 @@ from casadi import (
     cross,
     times,
     eig_symbolic,
+    qr,
     ldl,
     # trig
     sin,
@@ -66,6 +67,8 @@ from casadi import (
     Function,
 )
 
+import numpy as np
+
 eye = SX.eye
 ones = SX.ones
 zeros = SX.zeros
@@ -80,13 +83,16 @@ def invariants(T):
     return I1, I2, I3
 
 
-def eigvals(T, eps=1e-5):
+def eigvals(T, eps=8e-5):
+    
+    np.random.seed(136)
+    
+    D = np.random.rand(3, 3) - 0.5
+    D = D.T @ D
+    D[1, 1] = -D[1, 1] 
+    D[2, 1] = D[1, 2] = -D[1, 2]
 
-    T[0, 0] += eps
-    T[1, 1] -= eps
-
-    wT = eig_symbolic(T)
-
+    wT = eig_symbolic(T + D * eps)
     return wT
 
 
