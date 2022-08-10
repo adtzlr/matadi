@@ -83,7 +83,7 @@ def invariants(T):
     return I1, I2, I3
 
 
-def eigvals(T, eps=5e-5):
+def eigvals(T, eps=8e-5):
     
     np.random.seed(136)
     
