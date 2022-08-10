@@ -59,7 +59,7 @@ def ogden(F, mu, alpha):
     out = 0
     for m, a in zip(mu, alpha):
         wk = wC ** (a / 2)
-        out += m / a * (sum1(wk)[0, 0] - 3)
+        out += 2 * m / a ** 2 * (sum1(wk)[0, 0] - 3)
 
     return out
 
