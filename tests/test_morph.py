@@ -1,9 +1,7 @@
 import numpy as np
 
 from matadi import Variable, MaterialTensor
-from matadi.models import (
-    morph
-)
+from matadi.models import morph
 
 
 def test_up_morph():
@@ -14,10 +12,7 @@ def test_up_morph():
     # state variables
     z = Variable("z", 13, 1)
 
-    kwargs = {
-        "param": [0.035, 0.37, 0.17, 2.4, 0.01, 6.4, 5.5, 0.24],
-        "bulk": 5000
-    }
+    kwargs = {"param": [0.035, 0.37, 0.17, 2.4, 0.01, 6.4, 5.5, 0.24], "bulk": 5000}
 
     p = morph.p
     M = MaterialTensor(x=[F, p, z], fun=morph, triu=True, statevars=1, kwargs=kwargs)
