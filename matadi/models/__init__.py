@@ -28,3 +28,5 @@ from ._misc import morph
 
 from . import microsphere
 from .microsphere.nonaffine import miehe_goektepe_lulei
+
+from ._templates import NeoHookeOgdenRoxburgh, Morph

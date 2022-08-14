@@ -252,7 +252,7 @@ dWdF, dWdp, statevars_new = NH.function([defgrad, pressure, statevars])
 d2WdFdF, d2WdFdp, d2Wdpdp = NH.gradient([defgrad, pressure, statevars])
 ```
 
-**Hint**: *The state variable concept is also implemented for the `Material` class.*
+**Hint**: *The above Neo-Hooke as well as the MORPH material model formulation within the u/p-framework are available as template-materials in `matadi.models` as `NeoHookeOgdenRoxburgh()`and `Morph()`. The state variable concept is also implemented for the `Material` class.*
 
 Simple examples for using `matadi` with [`scikit-fem`](https://github.com/adtzlr/matadi/discussions/14#) as well as with [`felupe`](https://github.com/adtzlr/matadi/discussions/22) are shown in the Discussion section.
 
