@@ -35,7 +35,7 @@ def test_up_state():
         C_2D = vertcat(C_3D[0, 0], C_3D[1, 0], C_3D[0, 1], C_3D[1, 1]).reshape((2, 2))
         
         C_6 = asvoigt(C_3D)
-        C_4 = asvoigt(C_3D)
+        C_4 = asvoigt(C_2D)
         
         C_from_C_6 = astensor(C_6)
         C_2D_from_C_4 = astensor(C_4)
