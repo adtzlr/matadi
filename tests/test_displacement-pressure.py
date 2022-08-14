@@ -8,7 +8,11 @@ from matadi.models import (
     volumetric,
 )
 
-from matadi.math import det, gradient, dev, inv
+from matadi.math import (
+    det, gradient, dev, inv, asvoigt, astensor, vertcat, triu, zeros
+)
+
+import pytest
 
 
 def test_up_state():
@@ -25,6 +29,26 @@ def test_up_state():
 
         # split `x` into the deformation gradient and the state variable
         F, Wmaxn = x[0], x[-1]
+        
+        # (begin) test `asvoigt()` and `astensor()`
+        C_3D = F.T @ F
+        C_2D = vertcat(C_3D[0, 0], C_3D[1, 0], C_3D[0, 1], C_3D[1, 1]).reshape((2, 2))
+        
+        C_6 = asvoigt(C_3D)
+        C_4 = asvoigt(C_2D)
+        
+        C_from_C_6 = astensor(C_6)
+        C_2D_from_C_4 = astensor(C_4)
+        
+        assert C_3D[0, 1] == C_from_C_6[0, 1]
+        assert C_2D[0, 1] == C_2D_from_C_4[0, 1]
+        
+        with pytest.raises(ValueError):
+            asvoigt(C_6)
+            
+        with pytest.raises(ValueError):
+            astensor(C_3D)
+        # (end) test `asvoigt()` and `astensor()`
 
         # isochoric and volumetric parts of the hyperelastic strain energy function
         W = neo_hooke(F, C10)
