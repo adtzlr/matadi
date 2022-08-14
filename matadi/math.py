@@ -86,12 +86,12 @@ def invariants(T):
 
 
 def eigvals(T, eps=8e-5):
-    
+
     np.random.seed(136)
-    
+
     D = np.random.rand(3, 3) - 0.5
     D = D.T @ D
-    D[1, 1] = -D[1, 1] 
+    D[1, 1] = -D[1, 1]
     D[2, 1] = D[1, 2] = -D[1, 2]
 
     wT = eig_symbolic(T + D * eps)
@@ -135,7 +135,7 @@ def mexp(C, eps=8e-5):
     "Exponential Function of a Matrix."
     w = eigvals(C, eps=eps)
     I = SX.eye(3)
-    
+
     M1 = (C - w[1] * I) * (C - w[2] * I) / (w[0] - w[1]) / (w[0] - w[2])
     M2 = (C - w[2] * I) * (C - w[0] * I) / (w[1] - w[2]) / (w[1] - w[0])
     M3 = (C - w[0] * I) * (C - w[1] * I) / (w[2] - w[0]) / (w[2] - w[1])
@@ -144,40 +144,40 @@ def mexp(C, eps=8e-5):
 
 
 def asvoigt(A, scale=1):
-    
+
     if A.shape == (3, 3):
         return vertcat(
-            A[0, 0], 
-            A[1, 1], 
-            A[2, 2], 
-            A[0, 1] * scale, 
-            A[1, 2] * scale, 
+            A[0, 0],
+            A[1, 1],
+            A[2, 2],
+            A[0, 1] * scale,
+            A[1, 2] * scale,
             A[0, 2] * scale,
         )
-    
+
     elif A.shape == (2, 2):
         return vertcat(
-            A[0, 0], 
-            A[1, 1], 
-            A[0, 1] * scale, 
+            A[0, 0],
+            A[1, 1],
+            A[0, 1] * scale,
         )
-    
+
     else:
         raise ValueError("Unknown shape of input.")
 
 
 def astensor(A, scale=1):
-    
+
     if A.shape == (6, 1):
         A0 = vertcat(A[0] / scale, A[3] / scale, A[5])
         A1 = vertcat(A[3] / scale, A[1], A[4] / scale)
         A2 = vertcat(A[5] / scale, A[4] / scale, A[2])
         return horzcat(A0, A1, A2)
-    
+
     elif A.shape == (3, 1):
         A0 = vertcat(A[0], A[2] / scale)
         A1 = vertcat(A[2] / scale, A[1])
         return horzcat(A0, A1)
-    
+
     else:
         raise ValueError("Unknown shape of input.")

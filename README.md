@@ -17,7 +17,7 @@ pip install matadi
 ## Usage
 First, a symbolic variable on which our strain energy function will be based on has to be created.
 
-**Note**: *A variable of matADi is an instance of a symbolic variable of casADi (`casadi.SX.sym`). Most of `matadi.math` functions are simple links to (symbolic) casADi-functions.*
+**Note**: *A variable of matADi is an instance of a symbolic variable of casADi (`casadi.SX.sym`). Most (but not all) of `matadi.math` functions are simple links to (symbolic) casADi-functions.*
 
 ```python
 from matadi import Variable, Material
@@ -199,6 +199,9 @@ A generalized material model with optional state variables for the (u/p)-formula
 
 Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py):
 - [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py#L4-L16))
+
+Included [other material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py):
+- [MORPH](https://doi.org/10.1016/S0749-6419(02)00091-8) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py#L19-L75))
 
 ```python
 import numpy as np
