@@ -17,7 +17,7 @@ from ..math import (
 
 
 def morph(x, p1, p2, p3, p4, p5, p6, p7, p8):
-    "MORPH consitututive material formulation."
+    "MORPH consitutive material formulation."
 
     # split input into the deformation gradient and the vector of state variables
     F, statevars = x[0], x[-1]
