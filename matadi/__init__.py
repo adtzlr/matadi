@@ -24,6 +24,7 @@ from ._templates import (
     MaterialHyperelasticPlaneStrain,
     MaterialHyperelasticPlaneStressIncompressible,
     MaterialHyperelasticPlaneStressLinearElastic,
+    MaterialTensorGeneral,
 )
 from ._lab_compressible import (
     LabCompressible,

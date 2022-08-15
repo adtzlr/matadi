@@ -3,11 +3,10 @@ from ._hyperelasticity_isotropic import neo_hooke
 from ._pseudo_elasticity import ogden_roxburgh
 from ._helpers import volumetric, displacement_pressure_split
 from ..math import det, gradient
-from .._material import MaterialTensor
-from .. import Variable
+from .._templates import MaterialTensorGeneral
 
 
-class NeoHookeOgdenRoxburgh(MaterialTensor):
+class NeoHookeOgdenRoxburgh(MaterialTensorGeneral):
     "Neo-Hooke and Ogden-Roxburgh material formulations within the u/p framework."
 
     def __init__(self, C10=0.5, r=3, m=1, beta=0, bulk=5000):
@@ -29,16 +28,10 @@ class NeoHookeOgdenRoxburgh(MaterialTensor):
             # for a pseudo-elastic material formulation
             return eta * gradient(W, F) + gradient(U, F), Wmax
 
-        F = Variable("F", 3, 3)
-        p = fun.p
-        z = Variable("z", 1, 1)
-
-        kwargs = {"C10": C10, "r": r, "m": m, "beta": beta, "bulk": bulk}
-
-        super().__init__(x=[F, p, z], fun=fun, triu=True, statevars=1, kwargs=kwargs)
+        super().__init__(fun=fun, nstatevars=1, C10=C10, r=r, m=m, beta=beta, bulk=bulk)
 
 
-class Morph(MaterialTensor):
+class Morph(MaterialTensorGeneral):
     "MORPH consitutive material formulation within the u/p framework."
 
     def __init__(
@@ -64,20 +57,16 @@ class Morph(MaterialTensor):
 
             return P + gradient(U, F), statevars
 
-        F = Variable("F", 3, 3)
-        p = fun.p
-        z = Variable("z", 13, 1)
-
-        kwargs = {
-            "p1": p1,
-            "p2": p2,
-            "p3": p3,
-            "p4": p4,
-            "p5": p5,
-            "p6": p6,
-            "p7": p7,
-            "p8": p8,
-            "bulk": bulk,
-        }
-
-        super().__init__(x=[F, p, z], fun=fun, triu=True, statevars=1, kwargs=kwargs)
+        super().__init__(
+            fun=fun,
+            nstatevars=13,
+            p1=p1,
+            p2=p2,
+            p3=p3,
+            p4=p4,
+            p5=p5,
+            p6=p6,
+            p7=p7,
+            p8=p8,
+            bulk=bulk,
+        )

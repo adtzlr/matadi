@@ -43,7 +43,7 @@ def morph(x, p1, p2, p3, p4, p5, p6, p7, p8):
     CT = tresca(CG)
     LT = tresca(L)
 
-    # maximum historical von mises invariant of CG
+    # maximum historical tresca invariant of (distortional part of) C
     CTS = if_else(CT > CTSn, CT, CTSn)
 
     # stable normalizations: L / LT and CT / CTS
