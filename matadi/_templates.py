@@ -188,9 +188,12 @@ class MaterialComposite:
 
 
 class MaterialTensorGeneral(MaterialTensor):
-    def __init__(self, fun, nstatevars=1, x=[Variable("F", 3, 3)], triu=True, **kwargs):
+    def __init__(self, fun, nstatevars=1, x=None, triu=True, **kwargs):
         """A (first Piola-Kirchhoff stress) tensor-based material definition with
         ``n`` state variables."""
+
+        if x is None:
+            x = [Variable("F", 3, 3)]
 
         try:
             # displacement-pressure split
