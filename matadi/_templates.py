@@ -1,6 +1,6 @@
 import numpy as np
 
-from . import Material, Variable
+from . import Material, MaterialTensor, Variable
 from .math import det, horzcat, vertcat, zeros, gradient as grad, trace, eye, Function
 
 
@@ -185,3 +185,20 @@ class MaterialComposite:
     def hessian(self, x, **kwargs):
         hess = [m.hessian(x, **kwargs) for m in self.materials]
         return [np.sum([h[a] for h in hess], 0) for a in range(len(hess[0]))]
+
+
+class MaterialTensorGeneral(MaterialTensor):
+    def __init__(self, fun, nstatevars=1, x=[Variable("F", 3, 3)], triu=True, **kwargs):
+        """A (first Piola-Kirchhoff stress) tensor-based material definition with
+        ``n`` state variables."""
+
+        try:
+            # displacement-pressure split
+            x.append(fun.p)
+        except:
+            pass
+
+        # add state variables
+        x.append(Variable("z", nstatevars, 1))
+
+        super().__init__(x=x, fun=fun, triu=triu, statevars=1, kwargs=kwargs)
