@@ -69,8 +69,6 @@ from casadi import (
     Function,
 )
 
-import numpy as np
-
 eye = SX.eye
 ones = SX.ones
 zeros = SX.zeros
@@ -85,17 +83,11 @@ def invariants(T):
     return I1, I2, I3
 
 
-def eigvals(T, eps=8e-5):
+def eigvals(T, eps=1e-4):
 
-    np.random.seed(136)
+    D = DM([[1, 0, 0], [0, -1, 0], [0, 0, 0]])
 
-    D = np.random.rand(3, 3) - 0.5
-    D = D.T @ D
-    D[1, 1] = -D[1, 1]
-    D[2, 1] = D[1, 2] = -D[1, 2]
-
-    wT = eig_symbolic(T + D * eps)
-    return wT
+    return eig_symbolic(T + D * eps)
 
 
 def cof(T):

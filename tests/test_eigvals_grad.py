@@ -1,7 +1,7 @@
 import numpy as np
 
 from matadi import Variable, Material, MaterialTensor
-from matadi.math import transpose, eigvals, sum1, trace, cof, inv, det, SX
+from matadi.math import transpose, eigvals, sum1, trace, cof, inv, det, SX, mexp
 
 
 def fun(x):
@@ -9,7 +9,12 @@ def fun(x):
     return (sum1(eigvals(transpose(F) @ F))[0, 0] - 3) / 2
 
 
-def test_eigvals():
+def fun_mexp(x):
+    F = x[0]
+    return trace(mexp(transpose(F) @ F))[0, 0]
+
+
+def test_eigvals(w):
 
     # variables
     F = Variable("F", 3, 3)
@@ -21,8 +26,8 @@ def test_eigvals():
         FF[a, a] += 1
 
     # input with repeated equal eigenvalues
-    FF[:, :, 0, 1] = np.diag(2.4 * np.ones(3))
-    FF[:, :, 0, 2] = np.diag([2.4, 1.2, 2.4])
+    FF[:, :, 0, 1] = np.diag(w * np.ones(3))
+    FF[:, :, 0, 2] = np.diag([w, w * 1.01, w])
 
     # init Material
     W = Material(x=[F], fun=fun)
@@ -61,7 +66,6 @@ def test_eigvals_single():
     # init Material
     W = Material(x=[F], fun=fun)
 
-    WW = W.function([FF])
     WW = W.function([FF])
     dW = W.gradient([FF])
     DW = W.hessian([FF])
@@ -114,7 +118,33 @@ def test_cof():
     assert np.allclose(dW[0][:, :, :, :, 0, 0], Eye4)
 
 
+def test_mexp(w):
+
+    # variables
+    F = Variable("F", 3, 3)
+
+    # data
+    FF = np.diag([w * 1.01, w, w])
+    FF = FF.reshape(3, 3, 1, 1)
+
+    # init Material
+    W = Material(x=[F], fun=fun_mexp)
+
+    WW = W.function([FF])
+    dW = W.gradient([FF])
+    DW = W.hessian([FF])
+
+    assert not np.any(np.isnan(WW))
+    assert not np.any(np.isnan(dW))
+    assert not np.any(np.isnan(DW))
+
+
 if __name__ == "__main__":
-    test_eigvals()
+
+    # test several repeated principal stretches
+    for w in [1, 1.1, 0.1, 2.4, 12]:
+        test_eigvals(w)
+        test_mexp(w)
+
     test_eigvals_single()
     test_cof()
