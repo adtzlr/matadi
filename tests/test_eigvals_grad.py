@@ -14,45 +14,48 @@ def fun_mexp(x):
     return trace(mexp(transpose(F) @ F))[0, 0]
 
 
-def test_eigvals(w):
+def test_eigvals():
+    
+    # test several repeated principal stretches
+    for w in [1, 1.1, 0.1, 2.4, 12]:
 
-    # variables
-    F = Variable("F", 3, 3)
-
-    # data
-    np.random.seed(2345537)
-    FF = np.random.rand(3, 3, 5, 100)
-    for a in range(3):
-        FF[a, a] += 1
-
-    # input with repeated equal eigenvalues
-    FF[:, :, 0, 1] = np.diag(w * np.ones(3))
-    FF[:, :, 0, 2] = np.diag([w, w * 1.01, w])
-
-    # init Material
-    W = Material(x=[F], fun=fun)
-
-    WW = W.function([FF])
-    dW = W.gradient([FF])
-    DW = W.hessian([FF])
-
-    Eye = np.eye(3)
-    Eye4 = np.einsum("ij,kl->ikjl", Eye, Eye)
-
-    # check function
-    f = FF[:, :, 0, 0]
-    c = f.T @ f
-    assert np.isclose(WW[0][0, 0, 0, 0], (np.linalg.eigvals(c).sum() - 3) / 2)
-
-    # check gradient
-    assert np.allclose(dW[0][:, :, 0, 0], FF[:, :, 0, 0])
-    assert np.allclose(dW[0][:, :, 0, 1], FF[:, :, 0, 1])
-    assert np.allclose(dW[0][:, :, 0, 2], FF[:, :, 0, 2])
-
-    # check hessian
-    assert np.allclose(DW[0][:, :, :, :, 0, 0], Eye4)
-    assert np.allclose(DW[0][:, :, :, :, 0, 1], Eye4)
-    assert np.allclose(DW[0][:, :, :, :, 0, 2], Eye4)
+        # variables
+        F = Variable("F", 3, 3)
+    
+        # data
+        np.random.seed(2345537)
+        FF = np.random.rand(3, 3, 5, 100)
+        for a in range(3):
+            FF[a, a] += 1
+    
+        # input with repeated equal eigenvalues
+        FF[:, :, 0, 1] = np.diag(w * np.ones(3))
+        FF[:, :, 0, 2] = np.diag([w, w * 1.01, w])
+    
+        # init Material
+        W = Material(x=[F], fun=fun)
+    
+        WW = W.function([FF])
+        dW = W.gradient([FF])
+        DW = W.hessian([FF])
+    
+        Eye = np.eye(3)
+        Eye4 = np.einsum("ij,kl->ikjl", Eye, Eye)
+    
+        # check function
+        f = FF[:, :, 0, 0]
+        c = f.T @ f
+        assert np.isclose(WW[0][0, 0, 0, 0], (np.linalg.eigvals(c).sum() - 3) / 2)
+    
+        # check gradient
+        assert np.allclose(dW[0][:, :, 0, 0], FF[:, :, 0, 0])
+        assert np.allclose(dW[0][:, :, 0, 1], FF[:, :, 0, 1])
+        assert np.allclose(dW[0][:, :, 0, 2], FF[:, :, 0, 2])
+    
+        # check hessian
+        assert np.allclose(DW[0][:, :, :, :, 0, 0], Eye4)
+        assert np.allclose(DW[0][:, :, :, :, 0, 1], Eye4)
+        assert np.allclose(DW[0][:, :, :, :, 0, 2], Eye4)
 
 
 def test_eigvals_single():
@@ -118,33 +121,35 @@ def test_cof():
     assert np.allclose(dW[0][:, :, :, :, 0, 0], Eye4)
 
 
-def test_mexp(w):
+def test_mexp():
+    
+    # test several repeated principal stretches
+    for w in [1, 1.1, 0.1, 2.4, 12]:
 
-    # variables
-    F = Variable("F", 3, 3)
-
-    # data
-    FF = np.diag([w * 1.01, w, w])
-    FF = FF.reshape(3, 3, 1, 1)
-
-    # init Material
-    W = Material(x=[F], fun=fun_mexp)
-
-    WW = W.function([FF])
-    dW = W.gradient([FF])
-    DW = W.hessian([FF])
-
-    assert not np.any(np.isnan(WW))
-    assert not np.any(np.isnan(dW))
-    assert not np.any(np.isnan(DW))
+        # variables
+        F = Variable("F", 3, 3)
+    
+        # data
+        FF = np.diag([w * 1.01, w, w])
+        FF = FF.reshape(3, 3, 1, 1)
+    
+        # init Material
+        W = Material(x=[F], fun=fun_mexp)
+    
+        WW = W.function([FF])
+        dW = W.gradient([FF])
+        DW = W.hessian([FF])
+    
+        assert not np.any(np.isnan(WW))
+        assert not np.any(np.isnan(dW))
+        assert not np.any(np.isnan(DW))
 
 
 if __name__ == "__main__":
 
     # test several repeated principal stretches
-    for w in [1, 1.1, 0.1, 2.4, 12]:
-        test_eigvals(w)
-        test_mexp(w)
+    test_eigvals()
+    test_mexp()
 
     test_eigvals_single()
     test_cof()
