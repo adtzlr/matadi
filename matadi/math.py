@@ -74,6 +74,16 @@ ones = SX.ones
 zeros = SX.zeros
 
 
+def zeros_like(T):
+    
+    return zeros(T.shape)
+
+
+def ones_like(T):
+    
+    return ones(T.shape)
+
+
 def invariants(T):
 
     I1 = trace(T)
