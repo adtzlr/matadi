@@ -19,7 +19,7 @@ def test_microsphere_force():
     umat = MaterialTensor(
         x=[F, affine.force.p, Zn],
         fun=affine.force,
-        kwargs={"fun": nh, "mu": 1.0, "bulk": 5000},
+        kwargs={"f": nh, "mu": 1.0, "bulk": 5000},
         statevars=1,
         triu=True,
     )

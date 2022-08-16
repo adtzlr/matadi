@@ -188,9 +188,9 @@ class MaterialComposite:
 
 
 class MaterialTensorGeneral(MaterialTensor):
-    def __init__(self, fun, nstatevars=1, x=None, triu=True, **kwargs):
+    def __init__(self, fun, statevars_shape=(1, 1), x=None, triu=True, **kwargs):
         """A (first Piola-Kirchhoff stress) tensor-based material definition with
-        ``n`` state variables."""
+        state variables of a given shape."""
 
         if x is None:
             x = [Variable("F", 3, 3)]
@@ -202,6 +202,6 @@ class MaterialTensorGeneral(MaterialTensor):
             pass
 
         # add state variables
-        x.append(Variable("z", nstatevars, 1))
+        x.append(Variable("z", *statevars_shape))
 
         super().__init__(x=x, fun=fun, triu=triu, statevars=1, kwargs=kwargs)

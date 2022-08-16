@@ -31,7 +31,7 @@ def microsphere_affine_tube(F, f, kwargs, quadrature=BazantOh(n=21)):
 
 
 @displacement_pressure_split
-def microsphere_affine_force(x, fun, *args, **kwargs):
+def microsphere_affine_force(x, f, *args, **kwargs):
     """Micro-sphere model: Forces of affine stretch model as first Piola-
     Kirchhoff stress tensor embedded into a (u/p)-framework."""
 
@@ -55,7 +55,7 @@ def microsphere_affine_force(x, fun, *args, **kwargs):
     bulk = kwargs.pop("bulk")
 
     # fiber forces and state variable update
-    f, statevars = fun(lam, statevars_n, *args, **kwargs)
+    f, statevars = f(lam, statevars_n, *args, **kwargs)
 
     # Second Piola-Kirchhoff stress tensor
     SG = reshape(sum1(f / lam * sphere.weights * sphere.bases), 3, 3)
