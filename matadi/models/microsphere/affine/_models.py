@@ -40,26 +40,22 @@ def microsphere_affine_force(x, fun, *args, **kwargs):
 
     # extract current and initial deformation gradient and state variables
     F = x[0]
-    Fn = x[-2]
     statevars_n = x[-1]
 
     # volume ratios
     J = det(F)
-    Jn = det(Fn)
 
     # unimodular part of current and initial right Cauchy-Green deformation tensor
     C = F.T @ F
     CG = J ** (-2 / 3) * (C)
-    CGn = Jn ** (-2 / 3) * (Fn.T @ Fn)
 
     # affine stretches
-    lam_n = sqrt(diag(sphere.points.T @ CGn @ sphere.points))
     lam = sqrt(diag(sphere.points.T @ CG @ sphere.points))
 
     bulk = kwargs.pop("bulk")
 
     # fiber forces and state variable update
-    f, statevars = fun(lam, lam_n, statevars_n, *args, **kwargs)
+    f, statevars = fun(lam, statevars_n, *args, **kwargs)
 
     # Second Piola-Kirchhoff stress tensor
     SG = reshape(sum1(f / lam * sphere.weights * sphere.bases), 3, 3)
