@@ -2,7 +2,7 @@ import numpy as np
 
 from matadi import MaterialTensorGeneral
 from matadi.models import NeoHookeOgdenRoxburgh, Morph, neo_hooke, volumetric
-from matadi.math import det, gradient
+from matadi.math import det, gradient, ones_like, zeros_like
 
 
 def fun(x, C10=0.5, bulk=5000):
@@ -12,13 +12,17 @@ def fun(x, C10=0.5, bulk=5000):
 
     W = neo_hooke(F, C10)
     U = volumetric(J, bulk)
+    
+    statevars_old = x[-1]
+    statevars_new = ones_like(statevars_old) # only for testing
+    statevars_new = zeros_like(statevars_old)
 
-    return gradient(W, F) + gradient(U, F), x[-1]
+    return gradient(W, F) + gradient(U, F), statevars_new
 
 
 def test_u_templates():
 
-    Custom = MaterialTensorGeneral(fun, nstatevars=1)
+    Custom = MaterialTensorGeneral(fun, statevars_shape=(1, 1))
 
     # Material as a function of `F` and `p`
     # with additional state variables `z`
