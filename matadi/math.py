@@ -63,6 +63,7 @@ from casadi import (
     horzcat,
     vertsplit,
     horzsplit,
+    repmat,
     reshape,
     gradient,
     hessian,
