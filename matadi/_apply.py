@@ -1,6 +1,10 @@
 import numpy as np
 
 
+def _casadi_to_array(g, shape):
+    return np.array(g.elements()).reshape(*shape, order="F")
+
+
 def apply(x, fun, x_shape, fun_shape, threads=1):
     "Helper function for the calculation of fun(x)."
 
@@ -41,4 +45,4 @@ def apply(x, fun, x_shape, fun_shape, threads=1):
         if fun_shape == [()]:
             fun_shape = [(1,)]
 
-    return [np.array(o).reshape(*f, *ax, order="F") for o, f in zip(out, fun_shape)]
+    return [_casadi_to_array(o, (*f, *ax)) for o, f in zip(out, fun_shape)]
