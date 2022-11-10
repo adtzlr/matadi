@@ -104,7 +104,7 @@ def test_models():
         DW = HM.hessian_vector_product([FF], [dF], [DF])
 
         assert len(W) == 1
-        assert len(P) == 1
+        assert len(P) == 1 + 1
         assert len(A) == 1
 
         dW_check = np.einsum("ij...,ij...->...", P[0], dF)
@@ -118,7 +118,7 @@ def test_models():
         A = HM_mixed.hessian([FF, pp, JJ])
 
         assert len(W) == 1
-        assert len(P) == 3
+        assert len(P) == 3 + 1
         assert len(A) == 6
 
         dW = HM_mixed.gradient_vector_product([FF, pp, JJ], [dF, dp, dJ])
@@ -156,7 +156,7 @@ def test_models():
         A = HM_mixed2.hessian([FF, pp])
 
         assert len(W) == 1
-        assert len(P) == 2
+        assert len(P) == 2 + 1
         assert len(A) == 3
 
         dW = HM_mixed2.gradient_vector_product([FF, pp], [dF, dp])
@@ -194,7 +194,7 @@ def test_models():
     A = comp.hessian([FF])
 
     assert len(W) == 1
-    assert len(P) == 1
+    assert len(P) == 1 + 1
     assert len(A) == 1
 
     nh_mixed = matadi.ThreeFieldVariation(nh)
@@ -207,7 +207,7 @@ def test_models():
     A = comp.hessian([FF, pp, JJ])
 
     assert len(W) == 1
-    assert len(P) == 3
+    assert len(P) == 3 + 1
     assert len(A) == 6
 
     nh_mixed2 = matadi.TwoFieldVariation(nh)
@@ -220,7 +220,7 @@ def test_models():
     A = comp.hessian([FF, pp])
 
     assert len(W) == 1
-    assert len(P) == 2
+    assert len(P) == 2 + 1
     assert len(A) == 3
 
 

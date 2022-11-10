@@ -103,7 +103,7 @@ class LabCompressible:
             dl = (np.linalg.inv(B) @ df)[0]
 
             # check volume ratio
-            J = stretch ** 2 * stretch_3
+            J = stretch**2 * stretch_3
 
             # check slope of force
             Q = self.material.gradient([G])[0][0, 0]

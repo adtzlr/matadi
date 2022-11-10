@@ -7,7 +7,7 @@ def langevin(stretch, mu, N):
     Langevin function is defined by a Padé approximation."""
 
     x = stretch / sqrt(N)
-    L = x * (3 - x ** 2) / (1 - x ** 2)
+    L = x * (3 - x**2) / (1 - x**2)
 
     return mu * N * (x * L + log(L / sinh(L)))
 
@@ -22,14 +22,14 @@ def langevin2(stretch, mu, N):
     w.r.t. the stretch gives a real-valued result for the region of interest
     `N > stretch ** 2`."""
 
-    return mu * (stretch ** 2 / 2 - N * log(stretch ** 2 - N))
+    return mu * (stretch**2 / 2 - N * log(stretch**2 - N))
 
 
 def gauss(stretch, mu):
     """Gaussian model given by the free energy
     of a single chain as a function of the stretch."""
 
-    return 3 * mu / 2 * (stretch ** 2 - 1)
+    return 3 * mu / 2 * (stretch**2 - 1)
 
 
 def linear(stretch, mu):

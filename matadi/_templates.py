@@ -11,20 +11,22 @@ class TwoFieldVariation:
         self.x = [self.material.x[0], p]
         self.W = Material(self.x, self._fun)
         self.function = self.W.function
-        self.gradient = self.W.gradient
         self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun(self, x):
-        F, p = x
+        F, p = x[:2]
         J = det(F)
         W = self.material.fun(F, **self.material.kwargs)
         U = self.material.fun(J ** (1 / 3) * eye(3), **self.material.kwargs)
         dWdF = grad(W, F)
         dWdJ = trace(dWdF @ F.T) / J / 3
         d2WdJdJ = trace(grad(dWdJ, F) @ F.T) / J / 3
-        return W - U + 1 / d2WdJdJ * (p * dWdJ - p ** 2 / 2)
+        return W - U + 1 / d2WdJdJ * (p * dWdJ - p**2 / 2)
+
+    def gradient(self, x, *args, **kwargs):
+        return [*self.W.gradient(x, *args, **kwargs), None]
 
 
 class TwoFieldVariationPlaneStrain:
@@ -34,13 +36,12 @@ class TwoFieldVariationPlaneStrain:
         self.x = [self.material.x[0], p]
         self.W = Material(self.x, self._fun)
         self.function = self.W.function
-        self.gradient = self.W.gradient
         self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun(self, x):
-        F, p = x
+        F, p = x[:2]
         F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
         F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
         J = det(F)
@@ -57,7 +58,10 @@ class TwoFieldVariationPlaneStrain:
         dWdJ = Function("w", [f], [dwdj])(F)
         d2WdJdJ = Function("w", [f], [d2wdjdj])(F)
 
-        return W - U + 1 / d2WdJdJ * (p * dWdJ - p ** 2 / 2)
+        return W - U + 1 / d2WdJdJ * (p * dWdJ - p**2 / 2)
+
+    def gradient(self, x, *args, **kwargs):
+        return [*self.W.gradient(x, *args, **kwargs), None]
 
 
 class ThreeFieldVariation:
@@ -68,16 +72,18 @@ class ThreeFieldVariation:
         self.x = [self.material.x[0], p, J]
         self.W = Material(self.x, self._fun)
         self.function = self.W.function
-        self.gradient = self.W.gradient
         self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun(self, x):
-        F, p, J = x
+        F, p, J = x[:3]
         detF = det(F)
         Fmod = (J / detF) ** (1 / 3) * F
         return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
+
+    def gradient(self, x, *args, **kwargs):
+        return [*self.W.gradient(x, *args, **kwargs), None]
 
 
 class ThreeFieldVariationPlaneStrain:
@@ -88,18 +94,20 @@ class ThreeFieldVariationPlaneStrain:
         self.x = [self.material.x[0], p, J]
         self.W = Material(self.x, self._fun)
         self.function = self.W.function
-        self.gradient = self.W.gradient
         self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun(self, x):
-        F, p, J = x
+        F, p, J = x[:3]
         F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
         F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
         detF = det(F)
         Fmod = (J / detF) ** (1 / 3) * F
         return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
+
+    def gradient(self, x, *args, **kwargs):
+        return [*self.W.gradient(x, *args, **kwargs), None]
 
 
 class MaterialHyperelastic:
@@ -110,13 +118,15 @@ class MaterialHyperelastic:
         self.kwargs = kwargs
         self.W = Material(self.x, self._fun_wrapper, kwargs=self.kwargs)
         self.function = self.W.function
-        self.gradient = self.W.gradient
         self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun_wrapper(self, x, **kwargs):
         return self.fun(x[0], **kwargs)
+
+    def gradient(self, x, *args, **kwargs):
+        return [*self.W.gradient(x, *args, **kwargs), None]
 
 
 class MaterialHyperelasticPlaneStrain:
@@ -127,7 +137,6 @@ class MaterialHyperelasticPlaneStrain:
         self.kwargs = kwargs
         self.W = Material(self.x, self._fun_wrapper, kwargs=self.kwargs)
         self.function = self.W.function
-        self.gradient = self.W.gradient
         self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
@@ -136,6 +145,9 @@ class MaterialHyperelasticPlaneStrain:
         F = horzcat(vertcat(x[0], zeros(1, 2)), zeros(3, 1))
         F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
         return self.fun(F, **kwargs)
+
+    def gradient(self, x, *args, **kwargs):
+        return [*self.W.gradient(x, *args, **kwargs), None]
 
 
 class MaterialHyperelasticPlaneStressIncompressible(MaterialHyperelasticPlaneStrain):
@@ -179,8 +191,9 @@ class MaterialComposite:
         return [np.sum([f[a] for f in fun], 0) for a in range(len(fun[0]))]
 
     def gradient(self, x, **kwargs):
-        grad = [m.gradient(x, **kwargs) for m in self.materials]
-        return [np.sum([g[a] for g in grad], 0) for a in range(len(grad[0]))]
+        grad = [m.gradient(x, **kwargs)[: len(x)] for m in self.materials]
+        res = [np.sum([g[a] for g in grad], 0) for a in range(len(grad[0]))]
+        return [*res, None]
 
     def hessian(self, x, **kwargs):
         hess = [m.hessian(x, **kwargs) for m in self.materials]
