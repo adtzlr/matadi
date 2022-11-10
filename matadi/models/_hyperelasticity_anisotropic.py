@@ -32,12 +32,12 @@ def fiber(F, E, angle, k=1, axis=2, compression=False):
     if k == 0:
         strain = log(stretch)
     else:
-        strain = 1 / k * (stretch ** k - 1)
+        strain = 1 / k * (stretch**k - 1)
 
     if not compression:
         strain = if_else(strain < 0, 0, strain)
 
-    return E * strain ** 2 / 2
+    return E * strain**2 / 2
 
 
 @isochoric_volumetric_split

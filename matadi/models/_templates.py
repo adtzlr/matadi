@@ -28,7 +28,9 @@ class NeoHookeOgdenRoxburgh(MaterialTensorGeneral):
             # for a pseudo-elastic material formulation
             return eta * gradient(W, F) + gradient(U, F), Wmax
 
-        super().__init__(fun=fun, statevars_shape=(1, 1), C10=C10, r=r, m=m, beta=beta, bulk=bulk)
+        super().__init__(
+            fun=fun, statevars_shape=(1, 1), C10=C10, r=r, m=m, beta=beta, bulk=bulk
+        )
 
 
 class Morph(MaterialTensorGeneral):

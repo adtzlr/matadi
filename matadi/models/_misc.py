@@ -51,7 +51,7 @@ def morph(x, p1, p2, p3, p4, p5, p6, p7, p8):
     CT_CTS = if_else(CTS > 0, CT / CTS, CT)
 
     # MORPH deformation-dependent material parameters
-    f = lambda x: 1 / sqrt(1 + x ** 2)
+    f = lambda x: 1 / sqrt(1 + x**2)
     a = p1 + p2 * f(p3 * CTS)
     b = p4 * f(p3 * CTS)
     c = p5 * CTS * (1 - f(CTS / p6))

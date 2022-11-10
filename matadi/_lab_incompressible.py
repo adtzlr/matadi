@@ -21,7 +21,7 @@ class LabIncompressible:
 
     def _bx(self, stretch):
         "Principal stretches of incompressible equi-biaxial load case."
-        return stretch, stretch, 1 / stretch ** 2
+        return stretch, stretch, 1 / stretch**2
 
     def _ps(self, stretch):
         "Principal stretches of incompressible planar shear load case."

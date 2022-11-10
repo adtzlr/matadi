@@ -76,19 +76,19 @@ zeros = SX.zeros
 
 
 def zeros_like(T):
-    
+
     return zeros(T.shape)
 
 
 def ones_like(T):
-    
+
     return ones(T.shape)
 
 
 def invariants(T):
 
     I1 = trace(T)
-    I2 = (I1 ** 2 - trace(T @ T)) / 2
+    I2 = (I1**2 - trace(T @ T)) / 2
     I3 = det(T)
 
     return I1, I2, I3

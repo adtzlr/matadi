@@ -12,9 +12,9 @@ def fun(x, C10=0.5, bulk=5000):
 
     W = neo_hooke(F, C10)
     U = volumetric(J, bulk)
-    
+
     statevars_old = x[-1]
-    statevars_new = ones_like(statevars_old) # only for testing
+    statevars_new = ones_like(statevars_old)  # only for testing
     statevars_new = zeros_like(statevars_old)
 
     return gradient(W, F) + gradient(U, F), statevars_new
