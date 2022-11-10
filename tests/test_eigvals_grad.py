@@ -109,15 +109,13 @@ def test_cof():
     Eye = np.eye(3)
     Eye4 = np.einsum("ij,kl->ikjl", Eye, Eye)
 
-    WW = W.function([FF])
-    dW = W.gradient([FF])
-    DW = W.jacobian([FF])
+    WW = W.gradient([FF])
+    dW = W.hessian([FF])
 
     dW_gvp = W.gradient_vector_product([FF, dF])
 
     assert np.allclose(np.einsum("ij...,ij...->...", dW[0], dF), dW_gvp)
 
-    assert np.allclose(dW, DW)
     assert np.allclose(dW[0][:, :, :, :, 0, 0], Eye4)
 
 

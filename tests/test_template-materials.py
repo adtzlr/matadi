@@ -34,8 +34,8 @@ def test_u_templates():
         for a in range(3):
             FF[a, a] += 1
 
-        P = M.function([FF, zz])  # stress, constraint, statevars_new
-        A = M.gradient([FF, zz])
+        P = M.gradient([FF, zz])  # stress, constraint, statevars_new
+        A = M.hessian([FF, zz])
 
         assert len(P) == 2
         assert len(A) == 1
@@ -54,8 +54,8 @@ def test_up_templates():
         for a in range(3):
             FF[a, a] += 1
 
-        P = M.function([FF, pp, zz])  # stress, constraint, statevars_new
-        A = M.gradient([FF, pp, zz])
+        P = M.gradient([FF, pp, zz])  # stress, constraint, statevars_new
+        A = M.hessian([FF, pp, zz])
 
         assert len(P) == 3
         assert len(A) == 3

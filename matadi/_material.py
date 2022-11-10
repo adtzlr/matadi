@@ -209,6 +209,7 @@ class MaterialTensor(FunctionTensor):
 
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
+        self.gradient = self.function
 
         # no. of active variables
         n = len(self.x) - statevars
@@ -223,9 +224,6 @@ class MaterialTensor(FunctionTensor):
             for x, v in zip(self.x[:n], self.v[:n])
             for f in self._f[:n]
         ]
-
-        # alias
-        self.jacobian = self.gradient
 
         # store only upper-triangle entries of gradients
         if triu:
@@ -266,7 +264,7 @@ class MaterialTensor(FunctionTensor):
                 else:
                     self._idx_gradient.append((*a, *b))
 
-    def gradient(self, x, threads=cpu_count()):
+    def hessian(self, x, threads=cpu_count()):
         "Return list of gradients."
         return apply(
             x,

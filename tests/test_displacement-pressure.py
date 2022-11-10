@@ -71,8 +71,8 @@ def test_up_state():
         for a in range(3):
             FF[a, a] += 1
 
-        P = M.function([FF, pp, zz])  # stress, constraint, statevars_new
-        A = M.gradient([FF, pp, zz])
+        P = M.gradient([FF, pp, zz])  # stress, constraint, statevars_new
+        A = M.hessian([FF, pp, zz])
 
         assert len(P) == 3
         assert len(A) == 3
@@ -122,8 +122,8 @@ def test_up_basic():
     for a in range(3):
         FF[a, a] += 1
 
-    P = M.function([FF, pp])  # stress, constraint
-    A = M.gradient([FF, pp])
+    P = M.gradient([FF, pp])  # stress, constraint
+    A = M.hessian([FF, pp])
 
     assert len(P) == 2
     assert len(A) == 3
