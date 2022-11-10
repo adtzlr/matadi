@@ -117,16 +117,20 @@ class MaterialHyperelastic:
         self.fun = fun
         self.kwargs = kwargs
         self.W = Material(self.x, self._fun_wrapper, kwargs=self.kwargs)
-        self.function = self.W.function
-        self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
     def _fun_wrapper(self, x, **kwargs):
         return self.fun(x[0], **kwargs)
 
+    def function(self, x, *args, **kwargs):
+        return self.W.function(x[:1], *args, **kwargs)
+
     def gradient(self, x, *args, **kwargs):
-        return [*self.W.gradient(x, *args, **kwargs), None]
+        return [*self.W.gradient(x[:1], *args, **kwargs), None]
+
+    def hessian(self, x, *args, **kwargs):
+        return self.W.hessian(x[:1], *args, **kwargs)
 
 
 class MaterialHyperelasticPlaneStrain:
@@ -136,8 +140,6 @@ class MaterialHyperelasticPlaneStrain:
         self.fun = fun
         self.kwargs = kwargs
         self.W = Material(self.x, self._fun_wrapper, kwargs=self.kwargs)
-        self.function = self.W.function
-        self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
@@ -146,8 +148,14 @@ class MaterialHyperelasticPlaneStrain:
         F[2, 2] = 1  # fixed thickness ratio `h / H = 1`
         return self.fun(F, **kwargs)
 
+    def function(self, x, *args, **kwargs):
+        return self.W.function(x[:1], *args, **kwargs)
+
     def gradient(self, x, *args, **kwargs):
-        return [*self.W.gradient(x, *args, **kwargs), None]
+        return [*self.W.gradient(x[:1], *args, **kwargs), None]
+
+    def hessian(self, x, *args, **kwargs):
+        return self.W.hessian(x[:1], *args, **kwargs)
 
 
 class MaterialHyperelasticPlaneStressIncompressible(MaterialHyperelasticPlaneStrain):
@@ -178,25 +186,28 @@ class MaterialHyperelasticPlaneStressLinearElastic(MaterialHyperelasticPlaneStra
 
 class MaterialComposite:
     def __init__(self, materials):
-        "Composite Material as a sum of a list of materials."
+        "Composite Material as a sum of a list of hyperelastic materials."
         self.materials = materials
         self.fun = self.composite
+
+        # get number of variables defined in the first material
+        self._n = len(self.materials[0].x)
 
     def composite(self):
         "Dummy function for plot title."
         return
 
     def function(self, x, **kwargs):
-        fun = [m.function(x, **kwargs) for m in self.materials]
+        fun = [m.function(x[: self._n], **kwargs) for m in self.materials]
         return [np.sum([f[a] for f in fun], 0) for a in range(len(fun[0]))]
 
     def gradient(self, x, **kwargs):
-        grad = [m.gradient(x, **kwargs)[: len(x)] for m in self.materials]
+        grad = [m.gradient(x[: self._n], **kwargs)[: len(x)] for m in self.materials]
         res = [np.sum([g[a] for g in grad], 0) for a in range(len(grad[0]))]
         return [*res, None]
 
     def hessian(self, x, **kwargs):
-        hess = [m.hessian(x, **kwargs) for m in self.materials]
+        hess = [m.hessian(x[: self._n], **kwargs) for m in self.materials]
         return [np.sum([h[a] for h in hess], 0) for a in range(len(hess[0]))]
 
 
