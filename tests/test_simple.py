@@ -92,19 +92,15 @@ def test_tensor():
 
         W = MaterialTensor(x=[F], fun=fun)
 
-        W0 = W.function([FF])
-        dW = W.gradient([FF])
-        DW = W.jacobian([FF])
-
+        W0 = W.gradient([FF])
+        dW = W.hessian([FF])
         # dW and DW are always lists...
         assert W0[0].shape == (3, 3, 8, 1000)
         assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
-        assert DW[0].shape == (3, 3, 3, 3, 8, 1000)
 
         # check output of parallel evaluation
-        W0 = W.function([FF], threads=2)
-        dW = W.gradient([FF], threads=2)
-        DW = W.jacobian([FF], threads=2)
+        W0 = W.gradient([FF], threads=2)
+        dW = W.hessian([FF], threads=2)
 
         assert W0[0].shape == (3, 3, 8, 1000)
         assert dW[0].shape == (3, 3, 3, 3, 8, 1000)
@@ -113,37 +109,37 @@ def test_tensor():
     pp = np.random.rand(8, 1000)
 
     W = MaterialTensor(x=[p], fun=lambda x: x[0], compress=True)
-    W0 = W.function([pp], threads=2)
+    W0 = W.gradient([pp], threads=2)
 
     assert W0[0].shape == (8, 1000)
 
     pp = np.random.rand(1, 1, 8, 1000)
 
     W = MaterialTensor(x=[p], fun=lambda x: x[0])
-    W0 = W.function([pp])
+    W0 = W.gradient([pp])
 
     assert W0[0].shape == (1, 1, 8, 1000)
 
     # init mixed Material with upper triangle gradient
     W = MaterialTensor(x=[F, p], fun=lambda x: x, triu=True)
-    P = W.function([FF, pp])
-    A = W.gradient([FF, pp])
+    P = W.gradient([FF, pp])
+    A = W.hessian([FF, pp])
 
     assert len(P) == 2
     assert len(A) == 3
 
     # init mixed Material with full gradient
     W = MaterialTensor(x=[F, p], fun=lambda x: x, triu=False)
-    P = W.function([FF, pp])
-    A = W.gradient([FF, pp])
+    P = W.gradient([FF, pp])
+    A = W.hessian([FF, pp])
 
     assert len(P) == 2
     assert len(A) == 4
 
     # init mixed Material with upper triangle gradient and state variables
     W = MaterialTensor(x=[F, p, z], fun=lambda x: [*x, z], triu=True, statevars=1)
-    P = W.function([FF, pp, zz])
-    A = W.gradient([FF, pp, zz])
+    P = W.gradient([FF, pp, zz])
+    A = W.hessian([FF, pp, zz])
 
     assert len(P) == 4
     assert len(A) == 3
