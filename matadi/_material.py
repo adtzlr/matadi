@@ -225,9 +225,6 @@ class MaterialTensor(FunctionTensor):
             for f in self._f[:n]
         ]
 
-        # alias
-        self.jacobian = self.gradient
-
         # store only upper-triangle entries of gradients
         if triu:
             i, j = np.triu_indices(len(self.x[:n]))
