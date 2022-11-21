@@ -20,11 +20,11 @@ def fun(x, C10=0.5, bulk=5000):
     return gradient(W, F) + gradient(U, F), statevars_new
 
 
-def test_u_templates():
+def test_templates():
 
     Custom = MaterialTensorGeneral(fun, statevars_shape=(1, 1))
 
-    # Material as a function of `F` and `p`
+    # Material as a function of `F`
     # with additional state variables `z`
     for M in [Custom]:
 
@@ -41,26 +41,25 @@ def test_u_templates():
         assert len(A) == 1
 
 
-def test_up_templates():
+def test_templates_models():
 
-    # Material as a function of `F` and `p`
+    # Material as a function of `F`
     # with additional state variables `z`
     for M in [NeoHookeOgdenRoxburgh(), Morph()]:
 
         FF = (np.random.rand(3, 3, 8, 100) - 0.5) / 2
-        pp = np.random.rand(1, 8, 100)
         zz = np.random.rand(*M.x[-1].shape, 8, 100)
 
         for a in range(3):
             FF[a, a] += 1
 
-        P = M.gradient([FF, pp, zz])  # stress, constraint, statevars_new
-        A = M.hessian([FF, pp, zz])
+        P = M.gradient([FF, zz])  # stress, constraint, statevars_new
+        A = M.hessian([FF, zz])
 
-        assert len(P) == 3
-        assert len(A) == 3
+        assert len(P) == 2
+        assert len(A) == 1
 
 
 if __name__ == "__main__":
-    test_u_templates()
-    test_up_templates()
+    test_templates()
+    test_templates_models()
