@@ -252,7 +252,7 @@ dWdF, dWdp, statevars_new = NH.gradient([defgrad, pressure, statevars])
 d2WdFdF, d2WdFdp, d2Wdpdp = NH.hessian([defgrad, pressure, statevars])
 ```
 
-**Hint**: *The above Neo-Hooke as well as the MORPH material model formulation, both within the u/p-framework, are available as ready-to-go materials in `matadi.models` as [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).*
+**Hint**: *The Neo-Hooke as well as the MORPH material model formulation are available as ready-to-go materials in `matadi.models` as [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).*
 
 **Hint**: *The state variable concept is also implemented for the `Material` class.*
 
