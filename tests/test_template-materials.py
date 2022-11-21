@@ -24,7 +24,7 @@ def test_templates():
 
     Custom = MaterialTensorGeneral(fun, statevars_shape=(1, 1))
 
-    # Material as a function of `F` and `p`
+    # Material as a function of `F`
     # with additional state variables `z`
     for M in [Custom]:
 
