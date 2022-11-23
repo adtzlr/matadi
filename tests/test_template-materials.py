@@ -1,7 +1,13 @@
 import numpy as np
 
 from matadi import MaterialTensorGeneral
-from matadi.models import NeoHookeOgdenRoxburgh, Morph, Viscoelastic, neo_hooke, volumetric
+from matadi.models import (
+    NeoHookeOgdenRoxburgh,
+    Morph,
+    Viscoelastic,
+    neo_hooke,
+    volumetric,
+)
 from matadi.math import det, gradient, ones_like, zeros_like
 
 
