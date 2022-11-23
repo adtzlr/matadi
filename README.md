@@ -252,7 +252,7 @@ dWdF, dWdp, statevars_new = NH.gradient([defgrad, pressure, statevars])
 d2WdFdF, d2WdFdp, d2Wdpdp = NH.hessian([defgrad, pressure, statevars])
 ```
 
-The Neo-Hooke, the MORPH and the Finite-Strain-Viscoelastic [4] material model formulations are available as ready-to-go materials in `matadi.models` as:
+The Neo-Hooke, the MORPH and the Finite-Strain-Viscoelastic [[4](https://doi.org/10.1016/j.cma.2013.07.004)] material model formulations are available as ready-to-go materials in `matadi.models` as:
 
 * [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py), 
 * [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and
