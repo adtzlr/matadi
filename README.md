@@ -200,6 +200,10 @@ A generalized material model with optional state variables for the (u/p)-formula
 Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py):
 - [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py#L4-L16))
 
+
+Included [viscoelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_viscoelasticity.py):
+- [Finite-Strain-Viscoelastic](https://doi.org/10.1016/j.cma.2013.07.004) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_viscoelasticity.py#L4-L18))
+
 Included [other material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py):
 - [MORPH](https://doi.org/10.1016/S0749-6419(02)00091-8) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py#L19-L75))
 
