@@ -1,5 +1,6 @@
 from ._misc import morph
 from ._hyperelasticity_isotropic import neo_hooke
+from ._viscoelasticity import finite_strain_viscoelastic
 from ._pseudo_elasticity import ogden_roxburgh
 from ..math import gradient
 from .._templates import MaterialTensorGeneral
@@ -25,9 +26,7 @@ class NeoHookeOgdenRoxburgh(MaterialTensorGeneral):
             # for a pseudo-elastic material formulation
             return eta * gradient(W, F), Wmax
 
-        super().__init__(
-            fun=fun, statevars_shape=(1, 1), C10=C10, r=r, m=m, beta=beta
-        )
+        super().__init__(fun=fun, statevars_shape=(1, 1), C10=C10, r=r, m=m, beta=beta)
 
 
 class Morph(MaterialTensorGeneral):
@@ -61,4 +60,26 @@ class Morph(MaterialTensorGeneral):
             p6=p6,
             p7=p7,
             p8=p8,
+        )
+
+
+class Viscoelastic(MaterialTensorGeneral):
+    "Finite strain viscoelastic material formulation."
+
+    def __init__(
+        self,
+        mu=1,
+        eta=1,
+        dtime=1,
+    ):
+        def fun(x, mu, eta, dtime):
+            P, statevars = finite_strain_viscoelastic(x, mu, eta, dtime)
+            return P, statevars
+
+        super().__init__(
+            fun=fun,
+            statevars_shape=(6, 1),
+            mu=mu,
+            eta=eta,
+            dtime=dtime,
         )
