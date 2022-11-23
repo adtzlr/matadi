@@ -23,10 +23,12 @@ from ._hyperelasticity_anisotropic import (
     holzapfel_gasser_ogden,
 )
 
+from ._viscoelasticity import finite_strain_viscoelastic
+
 from ._pseudo_elasticity import ogden_roxburgh
 from ._misc import morph
 
 from . import microsphere
 from .microsphere.nonaffine import miehe_goektepe_lulei
 
-from ._templates import NeoHookeOgdenRoxburgh, Morph
+from ._templates import NeoHookeOgdenRoxburgh, Morph, Viscoelastic

@@ -195,10 +195,14 @@ c) the sign of the resulting stretch from a small superposed force in one direct
 For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-strain relation). Also, please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead). Contrary to [casADi](https://web.casadi.org/), the gradient of the eigenvalue function is stabilized by a perturbation of the diagonal components.
 
 ### A **Material** with state variables
-A generalized material model with optional state variables for the (u/p)-formulation is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity. For consistency, the methods `gradient` and `hessian` of a tensor-based material refer to the gradient and hessian of the strain energy function.
+A generalized material model with optional state variables, optionally for the (u/p)-formulation, is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity. For consistency, the methods `gradient` and `hessian` of a tensor-based material refer to the gradient and hessian of the strain energy function.
 
 Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py):
 - [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py#L4-L16))
+
+
+Included [viscoelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_viscoelasticity.py):
+- [Finite-Strain-Viscoelastic](https://doi.org/10.1016/j.cma.2013.07.004) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_viscoelasticity.py#L4-L18))
 
 Included [other material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py):
 - [MORPH](https://doi.org/10.1016/S0749-6419(02)00091-8) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py#L19-L75))
@@ -252,7 +256,11 @@ dWdF, dWdp, statevars_new = NH.gradient([defgrad, pressure, statevars])
 d2WdFdF, d2WdFdp, d2Wdpdp = NH.hessian([defgrad, pressure, statevars])
 ```
 
-**Hint**: *The Neo-Hooke as well as the MORPH material model formulation are available as ready-to-go materials in `matadi.models` as [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).*
+The Neo-Hooke, the MORPH and the Finite-Strain-Viscoelastic [[4](https://doi.org/10.1016/j.cma.2013.07.004)] material model formulations are available as ready-to-go materials in `matadi.models` as:
+
+* [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py), 
+* [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and
+* [`Viscoelastic()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).
 
 **Hint**: *The state variable concept is also implemented for the `Material` class.*
 
@@ -265,3 +273,4 @@ Simple examples for using `matadi` with [`scikit-fem`](https://github.com/adtzlr
 
 [3] J. C. Simo, R. L. Taylor, and K. S. Pister, *Variational and projection methods for the volume constraint in finite deformation elasto-plasticity*, Computer Methods in Applied Mechanics and Engineering, vol. 51, no. 1–3, pp. 177–208, Sep. 1985, [![DOI:10.1016/0045-7825(85)90033-7](https://zenodo.org/badge/DOI/10.1016/0045-7825(85)90033-7.svg)](https://doi.org/10.1016/0045-7825(85)90033-7)
 
+[4] A. V. Shutov, R. Landgraf, and J. Ihlemann, *An explicit solution for implicit time stepping in multiplicative finite strain viscoelasticity*, Computer Methods in Applied Mechanics and Engineering, vol. 265. Elsevier BV, pp. 213–225, Oct. 2013, [![DOI:10.1016/j.cma.2013.07.004](https://zenodo.org/badge/DOI/10.1016/j.cma.2013.07.004.svg)](https://doi.org/10.1016/j.cma.2013.07.004)
