@@ -1,7 +1,7 @@
 import numpy as np
 
 from matadi import MaterialTensorGeneral
-from matadi.models import NeoHookeOgdenRoxburgh, Morph, neo_hooke, volumetric
+from matadi.models import NeoHookeOgdenRoxburgh, Morph, Viscoelastic, neo_hooke, volumetric
 from matadi.math import det, gradient, ones_like, zeros_like
 
 
@@ -45,7 +45,7 @@ def test_templates_models():
 
     # Material as a function of `F`
     # with additional state variables `z`
-    for M in [NeoHookeOgdenRoxburgh(), Morph()]:
+    for M in [NeoHookeOgdenRoxburgh(), Morph(), Viscoelastic()]:
 
         FF = (np.random.rand(3, 3, 8, 100) - 0.5) / 2
         zz = np.random.rand(*M.x[-1].shape, 8, 100)
