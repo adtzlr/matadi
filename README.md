@@ -252,7 +252,11 @@ dWdF, dWdp, statevars_new = NH.gradient([defgrad, pressure, statevars])
 d2WdFdF, d2WdFdp, d2Wdpdp = NH.hessian([defgrad, pressure, statevars])
 ```
 
-**Hint**: *The Neo-Hooke as well as the MORPH material model formulation are available as ready-to-go materials in `matadi.models` as [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).*
+The Neo-Hooke, the MORPH and the Finite-Strain-Viscoelastic [4] material model formulations are available as ready-to-go materials in `matadi.models` as:
+
+* [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py), 
+* [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and
+* [`Viscoelastic()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).
 
 **Hint**: *The state variable concept is also implemented for the `Material` class.*
 
@@ -265,3 +269,4 @@ Simple examples for using `matadi` with [`scikit-fem`](https://github.com/adtzlr
 
 [3] J. C. Simo, R. L. Taylor, and K. S. Pister, *Variational and projection methods for the volume constraint in finite deformation elasto-plasticity*, Computer Methods in Applied Mechanics and Engineering, vol. 51, no. 1–3, pp. 177–208, Sep. 1985, [![DOI:10.1016/0045-7825(85)90033-7](https://zenodo.org/badge/DOI/10.1016/0045-7825(85)90033-7.svg)](https://doi.org/10.1016/0045-7825(85)90033-7)
 
+[4] A. V. Shutov, R. Landgraf, and J. Ihlemann, *An explicit solution for implicit time stepping in multiplicative finite strain viscoelasticity*, Computer Methods in Applied Mechanics and Engineering, vol. 265. Elsevier BV, pp. 213–225, Oct. 2013, [![DOI:10.1016/j.cma.2013.07.004](https://zenodo.org/badge/DOI/10.1016/j.cma.2013.07.004.svg)](https://doi.org/10.1016/j.cma.2013.07.004)
