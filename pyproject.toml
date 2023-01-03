@@ -47,7 +47,7 @@ requires-python = ">=3.7"
 dependencies = ["casadi", "numpy"]
 
 [project.optional-dependencies]
-tests = ["matplotlib", "scipy"]
+all = ["matplotlib", "scipy"]
 
 [tool.setuptools.dynamic]
 version = {attr = "matadi.__about__.__version__"}
