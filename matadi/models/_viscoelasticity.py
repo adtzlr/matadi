@@ -1,4 +1,4 @@
-from ..math import det, inv, trace, gradient, astensor, asvoigt
+from ..math import astensor, asvoigt, det, gradient, inv, trace
 
 
 def finite_strain_viscoelastic(x, mu, eta, dtime):

@@ -1,5 +1,5 @@
-from ..._helpers import isochoric_volumetric_split, displacement_pressure_split
-from ....math import transpose, sum1, diag, sqrt, inv, det, reshape, dev
+from ....math import det, dev, diag, inv, reshape, sqrt, sum1, transpose
+from ..._helpers import displacement_pressure_split, isochoric_volumetric_split
 from ..quadrature._bazant_oh import BazantOh
 
 

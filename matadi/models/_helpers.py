@@ -1,8 +1,8 @@
-from functools import wraps
 from copy import deepcopy
+from functools import wraps
 
 from .. import Variable
-from ..math import det, cof, trace, gradient
+from ..math import cof, det, gradient, trace
 
 
 def isochoric_volumetric_split(fun):

@@ -1,6 +1,7 @@
-import numpy as np
-import matplotlib.pyplot as plt
 from collections import namedtuple
+
+import matplotlib.pyplot as plt
+import numpy as np
 from scipy.optimize import root
 
 

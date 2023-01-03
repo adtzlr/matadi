@@ -1,34 +1,24 @@
+from . import microsphere
 from ._helpers import (
+    displacement_pressure_split,
     isochoric_volumetric_split,
     volumetric,
-    displacement_pressure_split,
 )
-
+from ._hyperelasticity_anisotropic import fiber, fiber_family, holzapfel_gasser_ogden
 from ._hyperelasticity_isotropic import (
-    linear_elastic,
-    saint_venant_kirchhoff,
-    neo_hooke,
-    mooney_rivlin,
-    yeoh,
-    third_order_deformation,
-    ogden,
     arruda_boyce,
     extended_tube,
+    linear_elastic,
+    mooney_rivlin,
+    neo_hooke,
+    ogden,
+    saint_venant_kirchhoff,
+    third_order_deformation,
     van_der_waals,
+    yeoh,
 )
-
-from ._hyperelasticity_anisotropic import (
-    fiber,
-    fiber_family,
-    holzapfel_gasser_ogden,
-)
-
-from ._viscoelasticity import finite_strain_viscoelastic
-
-from ._pseudo_elasticity import ogden_roxburgh
 from ._misc import morph
-
-from . import microsphere
+from ._pseudo_elasticity import ogden_roxburgh
+from ._templates import Morph, NeoHookeOgdenRoxburgh, Viscoelastic
+from ._viscoelasticity import finite_strain_viscoelastic
 from .microsphere.nonaffine import miehe_goektepe_lulei
-
-from ._templates import NeoHookeOgdenRoxburgh, Morph, Viscoelastic
