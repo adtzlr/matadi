@@ -1,6 +1,7 @@
 import numpy as np
 
-from . import Material, MaterialTensor, Variable
+from . import Variable
+from ._material import Material, MaterialTensor
 from .math import Function, det, eye
 from .math import gradient as grad
 from .math import horzcat, trace, vertcat, zeros
