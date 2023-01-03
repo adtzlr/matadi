@@ -1,4 +1,4 @@
-from ..math import fmax, erf
+from ..math import erf, fmax
 
 
 def ogden_roxburgh(W, Wmaxn, r, m, beta):

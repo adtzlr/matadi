@@ -1,19 +1,19 @@
-from ._hyperelasticity_isotropic import neo_hooke
 from ..math import (
-    det,
-    inv,
-    dev,
-    sym,
-    sqrt,
-    if_else,
-    vertsplit,
-    vertcat,
-    asvoigt,
     astensor,
-    tresca,
-    mexp,
+    asvoigt,
+    det,
+    dev,
     gradient,
+    if_else,
+    inv,
+    mexp,
+    sqrt,
+    sym,
+    tresca,
+    vertcat,
+    vertsplit,
 )
+from ._hyperelasticity_isotropic import neo_hooke
 
 
 def morph(x, p1, p2, p3, p4, p5, p6, p7, p8):

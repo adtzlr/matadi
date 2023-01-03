@@ -1,5 +1,5 @@
+from ..math import det, dot, eigvals, eye, log, sqrt, sum1, sym, trace, transpose
 from ._helpers import isochoric_volumetric_split
-from ..math import dot, det, transpose, trace, eigvals, sum1, log, sqrt, eye, sym
 
 
 def linear_elastic(F, mu, lmbda):

@@ -1,10 +1,10 @@
 from multiprocessing import cpu_count
 
-import numpy as np
 import casadi as ca
+import numpy as np
 
-from ._apply import apply
 from . import Variable
+from ._apply import apply
 
 
 class Function:

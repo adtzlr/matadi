@@ -1,7 +1,10 @@
 import numpy as np
 
-from . import Material, MaterialTensor, Variable
-from .math import det, horzcat, vertcat, zeros, gradient as grad, trace, eye, Function
+from . import Variable
+from ._material import Material, MaterialTensor
+from .math import Function, det, eye
+from .math import gradient as grad
+from .math import horzcat, trace, vertcat, zeros
 
 
 class TwoFieldVariation:

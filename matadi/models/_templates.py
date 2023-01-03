@@ -1,9 +1,9 @@
-from ._misc import morph
-from ._hyperelasticity_isotropic import neo_hooke
-from ._viscoelasticity import finite_strain_viscoelastic
-from ._pseudo_elasticity import ogden_roxburgh
-from ..math import gradient
 from .._templates import MaterialTensorGeneral
+from ..math import gradient
+from ._hyperelasticity_isotropic import neo_hooke
+from ._misc import morph
+from ._pseudo_elasticity import ogden_roxburgh
+from ._viscoelasticity import finite_strain_viscoelastic
 
 
 class NeoHookeOgdenRoxburgh(MaterialTensorGeneral):

@@ -1,7 +1,7 @@
+from ....math import det, diag, inv, sqrt, sum1, transpose
 from ..._helpers import isochoric_volumetric_split
-from ....math import transpose, sum1, diag, sqrt, inv, det
-from ..quadrature._bazant_oh import BazantOh
 from .._chain import langevin, linear
+from ..quadrature._bazant_oh import BazantOh
 
 
 @isochoric_volumetric_split
