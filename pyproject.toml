@@ -1,9 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.isort]
+profile = "black"
+
 [project]
 name = "matadi"
-version = "0.1.14"
+authors = [
+  {email = "a.dutzler@gmail.com"},
+  {name = "Andreas Dutzler"}
+]
 description = "Material Definition with Automatic Differentiation"
 readme = "README.md"
-requires-python = ">=3.6"
 license = {file = "LICENSE"}
 keywords = [
   "python", 
@@ -16,12 +25,6 @@ keywords = [
   "hyperelasticity", 
   "constitutive-model"
 ]
-
-authors = [
-  {email = "a.dutzler@gmail.com"},
-  {name = "Andreas Dutzler"}
-]
-
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Programming Language :: Python",
@@ -30,32 +33,25 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.6",
   "Programming Language :: Python :: 3.7",
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
   "Topic :: Scientific/Engineering",
   "Topic :: Scientific/Engineering :: Mathematics",
   "Topic :: Utilities"
 ]
-
-dependencies = [
-  "casadi",
-  "numpy"
-]
+dynamic = ["version"]
+requires-python = ">=3.7"
+dependencies = ["casadi", "numpy"]
 
 [project.optional-dependencies]
-all = [
-    "matplotlib",
-    "scipy"
-]
+tests = ["matplotlib", "scipy"]
+
+[tool.setuptools.dynamic]
+version = {attr = "matadi.__about__.__version__"}
 
 [project.urls]
-homepage = "https://github.com/adtzlr/matadi"
-code = "https://github.com/adtzlr/matadi"
-issues = "https://github.com/adtzlr/matadi/issues"
-
-[build-system]
-requires = ["setuptools>=42", "wheel"]
-build-backend = "setuptools.build_meta"
+Code = "https://github.com/adtzlr/matadi"
+Issues = "https://github.com/adtzlr/matadi/issues"
