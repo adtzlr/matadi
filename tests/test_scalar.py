@@ -1,7 +1,7 @@
 import numpy as np
 
-from matadi import Variable, Material
-from matadi.math import det, transpose, trace
+from matadi import Material, Variable
+from matadi.math import det, trace, transpose
 
 
 def test_scalar():

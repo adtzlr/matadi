@@ -1,8 +1,8 @@
 import numpy as np
 
-from matadi import Variable, MaterialHyperelastic
+from matadi import MaterialHyperelastic, Variable
+from matadi.math import det, invariants, sqrt, trace, transpose
 from matadi.models import fiber, fiber_family, holzapfel_gasser_ogden
-from matadi.math import det, transpose, trace, invariants, sqrt
 
 
 def test_fiber():

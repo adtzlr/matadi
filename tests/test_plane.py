@@ -7,7 +7,7 @@ from matadi import (
     ThreeFieldVariationPlaneStrain,
     TwoFieldVariationPlaneStrain,
 )
-from matadi.models import neo_hooke, linear_elastic
+from matadi.models import linear_elastic, neo_hooke
 
 
 def pre():

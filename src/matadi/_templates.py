@@ -13,8 +13,6 @@ class TwoFieldVariation:
         p = Variable("p", 1, 1)
         self.x = [self.material.x[0], p]
         self.W = Material(self.x, self._fun)
-        self.function = self.W.function
-        self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
@@ -28,8 +26,14 @@ class TwoFieldVariation:
         d2WdJdJ = trace(grad(dWdJ, F) @ F.T) / J / 3
         return W - U + 1 / d2WdJdJ * (p * dWdJ - p**2 / 2)
 
+    def function(self, x, *args, **kwargs):
+        return self.W.function(x[:2], *args, **kwargs)
+
     def gradient(self, x, *args, **kwargs):
-        return [*self.W.gradient(x, *args, **kwargs), None]
+        return [*self.W.gradient(x[:2], *args, **kwargs), None]
+
+    def hessian(self, x, *args, **kwargs):
+        return self.W.hessian(x[:2], *args, **kwargs)
 
 
 class TwoFieldVariationPlaneStrain:
@@ -38,8 +42,6 @@ class TwoFieldVariationPlaneStrain:
         p = Variable("p", 1, 1)
         self.x = [self.material.x[0], p]
         self.W = Material(self.x, self._fun)
-        self.function = self.W.function
-        self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
@@ -63,8 +65,14 @@ class TwoFieldVariationPlaneStrain:
 
         return W - U + 1 / d2WdJdJ * (p * dWdJ - p**2 / 2)
 
+    def function(self, x, *args, **kwargs):
+        return self.W.function(x[:2], *args, **kwargs)
+
     def gradient(self, x, *args, **kwargs):
-        return [*self.W.gradient(x, *args, **kwargs), None]
+        return [*self.W.gradient(x[:2], *args, **kwargs), None]
+
+    def hessian(self, x, *args, **kwargs):
+        return self.W.hessian(x[:2], *args, **kwargs)
 
 
 class ThreeFieldVariation:
@@ -74,8 +82,6 @@ class ThreeFieldVariation:
         J = Variable("J", 1, 1)
         self.x = [self.material.x[0], p, J]
         self.W = Material(self.x, self._fun)
-        self.function = self.W.function
-        self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
@@ -85,8 +91,14 @@ class ThreeFieldVariation:
         Fmod = (J / detF) ** (1 / 3) * F
         return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
 
+    def function(self, x, *args, **kwargs):
+        return self.W.function(x[:3], *args, **kwargs)
+
     def gradient(self, x, *args, **kwargs):
-        return [*self.W.gradient(x, *args, **kwargs), None]
+        return [*self.W.gradient(x[:3], *args, **kwargs), None]
+
+    def hessian(self, x, *args, **kwargs):
+        return self.W.hessian(x[:3], *args, **kwargs)
 
 
 class ThreeFieldVariationPlaneStrain:
@@ -96,8 +108,6 @@ class ThreeFieldVariationPlaneStrain:
         J = Variable("J", 1, 1)
         self.x = [self.material.x[0], p, J]
         self.W = Material(self.x, self._fun)
-        self.function = self.W.function
-        self.hessian = self.W.hessian
         self.gradient_vector_product = self.W.gradient_vector_product
         self.hessian_vector_product = self.W.hessian_vector_product
 
@@ -109,8 +119,14 @@ class ThreeFieldVariationPlaneStrain:
         Fmod = (J / detF) ** (1 / 3) * F
         return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
 
+    def function(self, x, *args, **kwargs):
+        return self.W.function(x[:3], *args, **kwargs)
+
     def gradient(self, x, *args, **kwargs):
-        return [*self.W.gradient(x, *args, **kwargs), None]
+        return [*self.W.gradient(x[:3], *args, **kwargs), None]
+
+    def hessian(self, x, *args, **kwargs):
+        return self.W.hessian(x[:3], *args, **kwargs)
 
 
 class MaterialHyperelastic:
