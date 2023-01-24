@@ -28,10 +28,10 @@ class TwoFieldVariation:
 
     def function(self, x, *args, **kwargs):
         return self.W.function(x[:2], *args, **kwargs)
-    
+
     def gradient(self, x, *args, **kwargs):
         return [*self.W.gradient(x[:2], *args, **kwargs), None]
-    
+
     def hessian(self, x, *args, **kwargs):
         return self.W.hessian(x[:2], *args, **kwargs)
 
@@ -67,10 +67,10 @@ class TwoFieldVariationPlaneStrain:
 
     def function(self, x, *args, **kwargs):
         return self.W.function(x[:2], *args, **kwargs)
-    
+
     def gradient(self, x, *args, **kwargs):
         return [*self.W.gradient(x[:2], *args, **kwargs), None]
-    
+
     def hessian(self, x, *args, **kwargs):
         return self.W.hessian(x[:2], *args, **kwargs)
 
@@ -90,13 +90,13 @@ class ThreeFieldVariation:
         detF = det(F)
         Fmod = (J / detF) ** (1 / 3) * F
         return self.material.fun(Fmod, **self.material.kwargs) + p * (detF - J)
-    
+
     def function(self, x, *args, **kwargs):
         return self.W.function(x[:3], *args, **kwargs)
-    
+
     def gradient(self, x, *args, **kwargs):
         return [*self.W.gradient(x[:3], *args, **kwargs), None]
-    
+
     def hessian(self, x, *args, **kwargs):
         return self.W.hessian(x[:3], *args, **kwargs)
 
@@ -121,10 +121,10 @@ class ThreeFieldVariationPlaneStrain:
 
     def function(self, x, *args, **kwargs):
         return self.W.function(x[:3], *args, **kwargs)
-    
+
     def gradient(self, x, *args, **kwargs):
         return [*self.W.gradient(x[:3], *args, **kwargs), None]
-    
+
     def hessian(self, x, *args, **kwargs):
         return self.W.hessian(x[:3], *args, **kwargs)
 

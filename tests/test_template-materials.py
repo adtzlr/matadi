@@ -1,14 +1,14 @@
 import numpy as np
 
 from matadi import MaterialTensorGeneral
+from matadi.math import det, gradient, ones_like, zeros_like
 from matadi.models import (
-    NeoHookeOgdenRoxburgh,
     Morph,
+    NeoHookeOgdenRoxburgh,
     Viscoelastic,
     neo_hooke,
     volumetric,
 )
-from matadi.math import det, gradient, ones_like, zeros_like
 
 
 def fun(x, C10=0.5, bulk=5000):

@@ -1,17 +1,15 @@
 import numpy as np
+import pytest
 
-from matadi import Variable, MaterialTensor
+from matadi import MaterialTensor, Variable
+from matadi.math import astensor, asvoigt, det, dev, gradient, inv, triu, vertcat, zeros
 from matadi.models import (
     displacement_pressure_split,
+    morph,
     neo_hooke,
     ogden_roxburgh,
-    morph,
     volumetric,
 )
-
-from matadi.math import det, gradient, dev, inv, asvoigt, astensor, vertcat, triu, zeros
-
-import pytest
 
 
 @displacement_pressure_split

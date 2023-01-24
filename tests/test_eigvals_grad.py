@@ -1,7 +1,7 @@
 import numpy as np
 
-from matadi import Variable, Material, MaterialTensor
-from matadi.math import transpose, eigvals, sum1, trace, cof, inv, det, SX, mexp
+from matadi import Material, MaterialTensor, Variable
+from matadi.math import SX, cof, det, eigvals, inv, mexp, sum1, trace, transpose
 
 
 def fun(x):

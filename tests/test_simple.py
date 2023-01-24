@@ -1,7 +1,7 @@
 import numpy as np
 
-from matadi import Variable, Material, MaterialTensor
-from matadi.math import det, transpose, trace, invariants, sqrt, dev, ddot
+from matadi import Material, MaterialTensor, Variable
+from matadi.math import ddot, det, dev, invariants, sqrt, trace, transpose
 
 
 def neohooke(x, mu=1.0, bulk=200.0):

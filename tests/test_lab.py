@@ -1,10 +1,9 @@
-from matadi import MaterialHyperelastic, Lab, LabCompressible, LabIncompressible
-import matadi.models as md
-from matadi.models import neo_hooke, extended_tube, van_der_waals, mooney_rivlin
-
 import matplotlib.pyplot as plt
-
 import pytest
+
+import matadi.models as md
+from matadi import Lab, LabCompressible, LabIncompressible, MaterialHyperelastic
+from matadi.models import extended_tube, mooney_rivlin, neo_hooke, van_der_waals
 
 
 def library():
