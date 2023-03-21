@@ -103,31 +103,31 @@ A_upJ = NH_upJ.hessian([defgrad, pressure, volratio])
 
 The output of `NH_upJ.gradient([defgrad, pressure, volratio])` is a list with gradients of the functional as `[dWdF, dWdp, dWdJ]`. Hessian entries are provided as a list of upper triangle entries, e.g. `NH_upJ.hessian([defgrad, pressure, volratio])` returns `[d2WdFdF, d2WdFdp, d2WdFdJ, d2Wdpdp, d2WdpdJ, d2WdJdJ]`.
 
-Available [isotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py):
-- [Linear Elastic](https://en.wikipedia.org/wiki/Linear_elasticity) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L5-L7))
-- [Saint Venant Kirchhoff](https://en.wikipedia.org/wiki/Hyperelastic_material#Saint_Venant%E2%80%93Kirchhoff_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L10-L14))
-- [Neo-Hooke](https://en.wikipedia.org/wiki/Neo-Hookean_solid) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L17-L21))
-- [Mooney-Rivlin](https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L24-L29))
-- [Yeoh](https://en.wikipedia.org/wiki/Yeoh_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L32-L37))
-- [Third-Order-Deformation (James-Green-Simpson)](https://onlinelibrary.wiley.com/doi/abs/10.1002/app.1975.070190723) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L40-L51))
-- [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L54-L64))
-- [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L67-L80))
-- [Extended-Tube](https://meridian.allenpress.com/rct/article-abstract/72/4/602/92819/An-Extended-Tube-Model-for-Rubber-Elasticity?redirectedFrom=fulltext) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L83-L91))
-- [Van-der-Waals (Kilian)](https://doi.org/10.1016/0032-3861(81)90200-7) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_isotropic.py#L94-L103))
+Available [isotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py):
+- [Linear Elastic](https://en.wikipedia.org/wiki/Linear_elasticity) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L5-L7))
+- [Saint Venant Kirchhoff](https://en.wikipedia.org/wiki/Hyperelastic_material#Saint_Venant%E2%80%93Kirchhoff_model) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L10-L14))
+- [Neo-Hooke](https://en.wikipedia.org/wiki/Neo-Hookean_solid) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L17-L21))
+- [Mooney-Rivlin](https://en.wikipedia.org/wiki/Mooney%E2%80%93Rivlin_solid) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L24-L29))
+- [Yeoh](https://en.wikipedia.org/wiki/Yeoh_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L32-L37))
+- [Third-Order-Deformation (James-Green-Simpson)](https://onlinelibrary.wiley.com/doi/abs/10.1002/app.1975.070190723) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L40-L51))
+- [Ogden](https://en.wikipedia.org/wiki/Ogden_(hyperelastic_model)) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L54-L64))
+- [Arruda-Boyce](https://en.wikipedia.org/wiki/Arruda%E2%80%93Boyce_model) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L67-L80))
+- [Extended-Tube](https://meridian.allenpress.com/rct/article-abstract/72/4/602/92819/An-Extended-Tube-Model-for-Rubber-Elasticity?redirectedFrom=fulltext) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L83-L91))
+- [Van-der-Waals (Kilian)](https://doi.org/10.1016/0032-3861(81)90200-7) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_isotropic.py#L94-L103))
 
-Available [anisotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py):
-- Fiber ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L17-L35))
-- Fiber-family (+/- combination of single Fiber) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L38-L45))
-- [Holzapfel Gasser Ogden](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2005.0073) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_hyperelasticity_anisotropic.py#L48-L77))
+Available [anisotropic hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_anisotropic.py):
+- Fiber ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_anisotropic.py#L17-L35))
+- Fiber-family (+/- combination of single Fiber) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_anisotropic.py#L38-L45))
+- [Holzapfel Gasser Ogden](https://royalsocietypublishing.org/doi/full/10.1098/rsif.2005.0073) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_hyperelasticity_anisotropic.py#L48-L77))
 
-Available [micro-sphere hyperelastic frameworks](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
-- [affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L6-L16))
-- [affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/affine/_models.py#L19-L30))
-- [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L7-L17))
-- [non-affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L20-L32))
+Available [micro-sphere hyperelastic frameworks](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
+- [affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere/affine/_models.py#L6-L16))
+- [affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere/affine/_models.py#L19-L30))
+- [non-affine stretch](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere/nonaffine/_models.py#L7-L17))
+- [non-affine tube](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere/nonaffine/_models.py#L20-L32))
 
-Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
-- [Miehe Göktepe Lulei](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/microsphere/nonaffine/_models.py#L35-L49))
+Available [micro-sphere hyperelastic material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere) (Miehe, Göktepe, Lulei) [[2](https://doi.org/10.1016/j.jmps.2004.03.011)]:
+- [Miehe Göktepe Lulei](https://doi.org/10.1016/j.jmps.2004.03.011) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/microsphere/nonaffine/_models.py#L35-L49))
 
 Any user-defined isotropic hyperelastic strain energy density function may be passed as the `fun` argument of `MaterialHyperelastic` by using the following template:
 
@@ -137,7 +137,7 @@ def fun(F, **kwargs):
     return W
 ```
 
-In order to apply the above material model only on the isochoric part of the deformation gradient [[3](https://doi.org/10.1016/0045-7825(85)90033-7)], use the decorator [`@isochoric_volumetric_split`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L7-L31). If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
+In order to apply the above material model only on the isochoric part of the deformation gradient [[3](https://doi.org/10.1016/0045-7825(85)90033-7)], use the decorator [`@isochoric_volumetric_split`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_helpers.py#L7-L31). If the keyword `bulk` is passed, an additional [volumetric strain energy function](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_helpers.py#L34-L35) is added to the base material formulation.
 
 ```python
 from matadi.models import isochoric_volumetric_split
@@ -197,15 +197,15 @@ For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-str
 ### A **Material** with state variables
 A generalized material model with optional state variables, optionally for the (u/p)-formulation, is created by an instance of `MaterialTensor`. If the argument `triu` is set to `True` the gradient method returns only the upper triangle entries of the gradient components. If some of the input variables are internal state variables the number of these variables have to be passed to the optional argument `statevars`. While the hyperelastic material classes are defined by a strain energy function, this one is defined by the first Piola-Kirchhoff stress tensor. Internally, state variables are equal to default variables but they are excluded from gradient calculations. State variables may also be used as placeholders for additional quantities, e.g. the initial deformation gradient at the beginning of an increment or the time increment. Hence, it is a very flexible class not restricted to hyperelasticity. For consistency, the methods `gradient` and `hessian` of a tensor-based material refer to the gradient and hessian of the strain energy function.
 
-Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py):
-- [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_pseudo_elasticity.py#L4-L16))
+Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_pseudo_elasticity.py):
+- [Ogden-Roxburgh](https://doi.org/10.1098%2Frspa.1999.0431) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_pseudo_elasticity.py#L4-L16))
 
 
-Included [viscoelastic material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_viscoelasticity.py):
-- [Finite-Strain-Viscoelastic](https://doi.org/10.1016/j.cma.2013.07.004) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_viscoelasticity.py#L4-L18))
+Included [viscoelastic material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_viscoelasticity.py):
+- [Finite-Strain-Viscoelastic](https://doi.org/10.1016/j.cma.2013.07.004) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_viscoelasticity.py#L4-L18))
 
-Included [other material models](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py):
-- [MORPH](https://doi.org/10.1016/S0749-6419(02)00091-8) ([code](https://github.com/adtzlr/matadi/blob/main/matadi/models/_misc.py#L19-L75))
+Included [other material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_misc.py):
+- [MORPH](https://doi.org/10.1016/S0749-6419(02)00091-8) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_misc.py#L19-L75))
 
 ```python
 import numpy as np
@@ -258,9 +258,9 @@ d2WdFdF, d2WdFdp, d2Wdpdp = NH.hessian([defgrad, pressure, statevars])
 
 The Neo-Hooke, the MORPH and the Finite-Strain-Viscoelastic [[4](https://doi.org/10.1016/j.cma.2013.07.004)] material model formulations are available as ready-to-go materials in `matadi.models` as:
 
-* [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py), 
-* [`Morph()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py) and
-* [`Viscoelastic()`](https://github.com/adtzlr/matadi/blob/main/matadi/models/_templates.py).
+* [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py), 
+* [`Morph()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py) and
+* [`Viscoelastic()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py).
 
 **Hint**: *The state variable concept is also implemented for the `Material` class.*
 
