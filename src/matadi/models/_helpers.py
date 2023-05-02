@@ -1,8 +1,11 @@
 from copy import deepcopy
 from functools import wraps
 
-from .. import Variable
+import casadi
+
 from ..math import cof, det, gradient, trace
+
+Variable = casadi.SX.sym
 
 
 def isochoric_volumetric_split(fun):

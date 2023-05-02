@@ -1,6 +1,7 @@
 import casadi
-from .__about__ import __version__
+
 from . import math, models
+from .__about__ import __version__
 from ._lab_compressible import LabCompressible
 from ._lab_compressible import LabCompressible as Lab
 from ._lab_incompressible import LabIncompressible
