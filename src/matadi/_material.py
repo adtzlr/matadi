@@ -4,8 +4,7 @@ import casadi as ca
 import numpy as np
 
 from ._apply import apply
-
-Variable = ca.SX.sym
+from ._variable import Variable
 
 
 class Function:

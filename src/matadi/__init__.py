@@ -1,5 +1,3 @@
-import casadi
-
 from . import math, models
 from .__about__ import __version__
 from ._lab_compressible import LabCompressible
@@ -23,12 +21,10 @@ from ._templates import (
     TwoFieldVariation,
     TwoFieldVariationPlaneStrain,
 )
-
-Variable = casadi.SX.sym
+from ._variable import Variable
 
 __all__ = [
     "__version__",
-    "casadi",
     "math",
     "models",
     "LabCompressible",

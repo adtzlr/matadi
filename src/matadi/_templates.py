@@ -1,12 +1,10 @@
-import casadi
 import numpy as np
 
 from ._material import Material, MaterialTensor
+from ._variable import Variable
 from .math import Function, det, eye
 from .math import gradient as grad
 from .math import horzcat, trace, vertcat, zeros
-
-Variable = casadi.SX.sym
 
 
 class TwoFieldVariation:
