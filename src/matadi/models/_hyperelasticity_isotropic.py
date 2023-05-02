@@ -22,7 +22,7 @@ def neo_hooke(F, C10):
 
 
 @isochoric_volumetric_split
-def mooney_rivlin(F, C10, C01):
+def mooney_rivlin(F, C10, C01=0):
     C = transpose(F) @ F
     I1 = trace(C)
     I2 = (trace(C) ** 2 - trace(C @ C)) / 2
@@ -30,7 +30,7 @@ def mooney_rivlin(F, C10, C01):
 
 
 @isochoric_volumetric_split
-def yeoh(F, C10, C20, C30):
+def yeoh(F, C10, C20=0, C30=0):
     J = det(F)
     C = transpose(F) @ F
     I1 = J ** (-2 / 3) * trace(C)
@@ -38,7 +38,7 @@ def yeoh(F, C10, C20, C30):
 
 
 @isochoric_volumetric_split
-def third_order_deformation(F, C10, C01, C11, C20, C30):
+def third_order_deformation(F, C10, C01=0, C11=0, C20=0, C30=0):
     C = transpose(F) @ F
     I1 = trace(C)
     I2 = (trace(C) ** 2 - trace(C @ C)) / 2
