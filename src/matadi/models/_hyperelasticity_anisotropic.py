@@ -1,7 +1,6 @@
 from ..math import (
     DM,
     cos,
-    det,
     exp,
     if_else,
     invariants,

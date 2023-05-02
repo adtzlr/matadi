@@ -96,8 +96,8 @@ def van_der_waals(F, mu, limit, a, beta):
     C = transpose(F) @ F
     I1 = trace(C)
     I2 = (trace(C) ** 2 - trace(C @ C)) / 2
-    I = (1 - beta) * I1 + beta * I2
-    eta = sqrt((I - 3) / (limit**2 - 3))
+    Im = (1 - beta) * I1 + beta * I2
+    eta = sqrt((Im - 3) / (limit**2 - 3))
     return mu * (
-        -(limit**2 - 3) * (log(1 - eta) + eta) - 2 / 3 * a * ((I - 3) / 2) ** (3 / 2)
+        -(limit**2 - 3) * (log(1 - eta) + eta) - 2 / 3 * a * ((Im - 3) / 2) ** (3 / 2)
     )

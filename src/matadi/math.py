@@ -67,6 +67,73 @@ from casadi import (
     vertsplit,
 )
 
+__all__ = [
+    "DM",
+    "MX",
+    "SX",
+    "Function",
+    "acos",
+    "acosh",
+    "adj",
+    "asin",
+    "asinh",
+    "atan",
+    "atan2",
+    "atanh",
+    "ceil",
+    "cofactor",
+    "cos",
+    "cosh",
+    "cross",
+    "det",
+    "diag",
+    "_dot",
+    "eig_symbolic",
+    "erf",
+    "erfinv",
+    "exp",
+    "fabs",
+    "find",
+    "floor",
+    "fmax",
+    "fmin",
+    "gradient",
+    "hessian",
+    "horzcat",
+    "horzsplit",
+    "if_else",
+    "inv",
+    "ldl",
+    "linspace",
+    "log",
+    "logic_and",
+    "logic_not",
+    "logic_or",
+    "mmax",
+    "mmin",
+    "norm_1",
+    "pi",
+    "qr",
+    "repmat",
+    "reshape",
+    "sign",
+    "sin",
+    "sinh",
+    "sqrt",
+    "sum1",
+    "sum2",
+    "sumsqr",
+    "tan",
+    "tanh",
+    "times",
+    "trace",
+    "transpose",
+    "tril",
+    "triu",
+    "vertcat",
+    "vertsplit",
+]
+
 eye = SX.eye
 ones = SX.ones
 zeros = SX.zeros
@@ -134,11 +201,11 @@ def tresca(C):
 def mexp(C, eps=8e-5):
     "Exponential Function of a Matrix."
     w = eigvals(C, eps=eps)
-    I = SX.eye(3)
+    eye = SX.eye(3)
 
-    M1 = (C - w[1] * I) * (C - w[2] * I) / (w[0] - w[1]) / (w[0] - w[2])
-    M2 = (C - w[2] * I) * (C - w[0] * I) / (w[1] - w[2]) / (w[1] - w[0])
-    M3 = (C - w[0] * I) * (C - w[1] * I) / (w[2] - w[0]) / (w[2] - w[1])
+    M1 = (C - w[1] * eye) * (C - w[2] * eye) / (w[0] - w[1]) / (w[0] - w[2])
+    M2 = (C - w[2] * eye) * (C - w[0] * eye) / (w[1] - w[2]) / (w[1] - w[0])
+    M3 = (C - w[0] * eye) * (C - w[1] * eye) / (w[2] - w[0]) / (w[2] - w[1])
 
     return exp(w[0]) * M1 + exp(w[1]) * M2 + exp(w[2]) * M3
 

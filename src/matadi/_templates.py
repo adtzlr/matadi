@@ -241,7 +241,7 @@ class MaterialTensorGeneral(MaterialTensor):
         try:
             # displacement-pressure split
             x.append(fun.p)
-        except:
+        except AttributeError:
             pass
 
         # add state variables

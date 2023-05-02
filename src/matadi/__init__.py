@@ -1,9 +1,5 @@
 import casadi
-
 from .__about__ import __version__
-
-Variable = casadi.SX.sym
-
 from . import math, models
 from ._lab_compressible import LabCompressible
 from ._lab_compressible import LabCompressible as Lab
@@ -27,6 +23,31 @@ from ._templates import (
     TwoFieldVariationPlaneStrain,
 )
 
+Variable = casadi.SX.sym
+
 __all__ = [
     "__version__",
+    "casadi",
+    "math",
+    "models",
+    "LabCompressible",
+    "LabIncompressible",
+    "Lab",
+    "Function",
+    "FunctionScalar",
+    "FunctionTensor",
+    "Material",
+    "MaterialScalar",
+    "MaterialTensor",
+    "MaterialComposite",
+    "MaterialHyperelastic",
+    "MaterialHyperelasticPlaneStrain",
+    "MaterialHyperelasticPlaneStressIncompressible",
+    "MaterialHyperelasticPlaneStressLinearElastic",
+    "MaterialTensorGeneral",
+    "ThreeFieldVariation",
+    "ThreeFieldVariationPlaneStrain",
+    "TwoFieldVariation",
+    "TwoFieldVariationPlaneStrain",
+    "Variable",
 ]
