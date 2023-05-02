@@ -1,7 +1,7 @@
 from copy import deepcopy
 from functools import wraps
 
-from .. import Variable
+from .._variable import Variable
 from ..math import cof, det, gradient, trace
 
 

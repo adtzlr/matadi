@@ -3,8 +3,8 @@ from multiprocessing import cpu_count
 import casadi as ca
 import numpy as np
 
-from . import Variable
 from ._apply import apply
+from ._variable import Variable
 
 
 class Function:

@@ -1,7 +1,7 @@
 import numpy as np
 
-from . import Variable
 from ._material import Material, MaterialTensor
+from ._variable import Variable
 from .math import Function, det, eye
 from .math import gradient as grad
 from .math import horzcat, trace, vertcat, zeros
@@ -241,7 +241,7 @@ class MaterialTensorGeneral(MaterialTensor):
         try:
             # displacement-pressure split
             x.append(fun.p)
-        except:
+        except AttributeError:
             pass
 
         # add state variables
