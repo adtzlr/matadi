@@ -46,7 +46,6 @@ def displacement_pressure_split(fun):
 
     @wraps(fun)
     def apply_up(*args, **kwargs):
-
         F = args[0][0]
 
         f = fun(*args, **kwargs)

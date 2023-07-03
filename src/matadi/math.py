@@ -140,17 +140,14 @@ zeros = SX.zeros
 
 
 def zeros_like(T):
-
     return zeros(T.shape)
 
 
 def ones_like(T):
-
     return ones(T.shape)
 
 
 def invariants(T):
-
     I1 = trace(T)
     I2 = (I1**2 - trace(T @ T)) / 2
     I3 = det(T)
@@ -159,36 +156,30 @@ def invariants(T):
 
 
 def eigvals(T, eps=1e-4):
-
     D = DM([[1, 0, 0], [0, -1, 0], [0, 0, 0]])
 
     return eig_symbolic(T + D * eps)
 
 
 def cof(T):
-
     return det(T) * transpose(inv(T))
 
 
 def sym(T):
-
     return (T + transpose(T)) / 2
 
 
 def dot(A, B):
-
     return _dot(transpose(A), B)
 
 
 def dev(T):
-
     dim = T.shape[0]
 
     return T - trace(T) / dim * eye(dim)
 
 
 def ddot(A, B):
-
     return trace(transpose(A) @ B)
 
 
@@ -211,7 +202,6 @@ def mexp(C, eps=8e-5):
 
 
 def asvoigt(A, scale=1):
-
     if A.shape == (3, 3):
         return vertcat(
             A[0, 0],
@@ -234,7 +224,6 @@ def asvoigt(A, scale=1):
 
 
 def astensor(A, scale=1):
-
     if A.shape == (6, 1):
         A0 = vertcat(A[0] / scale, A[3] / scale, A[5])
         A1 = vertcat(A[3] / scale, A[1], A[4] / scale)

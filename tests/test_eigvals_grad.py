@@ -15,10 +15,8 @@ def fun_mexp(x):
 
 
 def test_eigvals():
-
     # test several repeated principal stretches
     for w in [1, 1.1, 0.1, 2.4, 12]:
-
         # variables
         F = Variable("F", 3, 3)
 
@@ -59,7 +57,6 @@ def test_eigvals():
 
 
 def test_eigvals_single():
-
     # variables
     F = Variable("F", 3, 3)
 
@@ -89,7 +86,6 @@ def test_eigvals_single():
 
 
 def test_cof():
-
     # variables
     F = Variable("F", 3, 3)
 
@@ -120,10 +116,8 @@ def test_cof():
 
 
 def test_mexp():
-
     # test several repeated principal stretches
     for w in [1, 1.1, 0.1, 2.4, 12]:
-
         # variables
         F = Variable("F", 3, 3)
 
@@ -144,7 +138,6 @@ def test_mexp():
 
 
 if __name__ == "__main__":
-
     # test several repeated principal stretches
     test_eigvals()
     test_mexp()

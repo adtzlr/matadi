@@ -5,7 +5,6 @@ from matadi.math import det, trace, transpose
 
 
 def test_scalar():
-
     # variables
     F = Variable("F", 3, 3)
     p = Variable("p", 1)
@@ -63,7 +62,6 @@ def test_scalar():
 
 
 def test_scalar_compress():
-
     # variables
     F = Variable("F", 3, 3)
     p = Variable("p", 1)

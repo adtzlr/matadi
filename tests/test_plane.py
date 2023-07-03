@@ -11,7 +11,6 @@ from matadi.models import linear_elastic, neo_hooke
 
 
 def pre():
-
     FF = np.random.rand(2, 2, 8, 1000)
     for a in range(2):
         FF[a, a] += 1
@@ -20,7 +19,6 @@ def pre():
 
 
 def pre_mixed():
-
     FF = np.random.rand(2, 2, 8, 1000)
     for a in range(2):
         FF[a, a] += 1
@@ -32,7 +30,6 @@ def pre_mixed():
 
 
 def test_plane_strain():
-
     # data
     FF = pre()
 
@@ -56,7 +53,6 @@ def test_plane_strain():
 
 
 def test_plane_strain_mixed():
-
     # data
     FF, pp, JJ = pre_mixed()
 
@@ -96,7 +92,6 @@ def test_plane_strain_mixed():
 
 
 def test_plane_stress_incompr():
-
     # data
     FF = pre()
 
@@ -120,7 +115,6 @@ def test_plane_stress_incompr():
 
 
 def test_plane_stress_linear():
-
     # data
     FF = pre()
 

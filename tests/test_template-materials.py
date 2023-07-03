@@ -12,7 +12,6 @@ from matadi.models import (
 
 
 def fun(x, C10=0.5, bulk=5000):
-
     F = x[0]
     J = det(F)
 
@@ -27,13 +26,11 @@ def fun(x, C10=0.5, bulk=5000):
 
 
 def test_templates():
-
     Custom = MaterialTensorGeneral(fun, statevars_shape=(1, 1))
 
     # Material as a function of `F`
     # with additional state variables `z`
     for M in [Custom]:
-
         FF = (np.random.rand(3, 3, 8, 100) - 0.5) / 2
         zz = np.random.rand(*M.x[-1].shape, 8, 100)
 
@@ -48,11 +45,9 @@ def test_templates():
 
 
 def test_templates_models():
-
     # Material as a function of `F`
     # with additional state variables `z`
     for M in [NeoHookeOgdenRoxburgh(), Morph(), Viscoelastic()]:
-
         FF = (np.random.rand(3, 3, 8, 100) - 0.5) / 2
         zz = np.random.rand(*M.x[-1].shape, 8, 100)
 

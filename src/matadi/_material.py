@@ -9,7 +9,6 @@ from ._variable import Variable
 
 class Function:
     def __init__(self, x, fun, args=(), kwargs={}, compress=False):
-
         self.x = x
         self._fun = fun
 
@@ -45,7 +44,6 @@ class Function:
 
 class FunctionTensor:
     def __init__(self, x, fun, args=(), kwargs={}, compress=False):
-
         self.x = x
         self._fun = fun
 
@@ -83,7 +81,6 @@ class Material(Function):
     def __init__(
         self, x, fun, args=(), kwargs={}, compress=False, triu=True, statevars=0
     ):
-
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
 
@@ -206,7 +203,6 @@ class MaterialTensor(FunctionTensor):
     def __init__(
         self, x, fun, args=(), kwargs={}, compress=False, triu=True, statevars=0
     ):
-
         # init Function
         super().__init__(x=x, fun=fun, args=args, kwargs=kwargs)
         self.gradient = self.function
