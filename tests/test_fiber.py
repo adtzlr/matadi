@@ -6,14 +6,12 @@ from matadi.models import fiber, fiber_family, holzapfel_gasser_ogden
 
 
 def test_fiber():
-
     # data
     FF = np.zeros((3, 3, 2))
     for a in range(3):
         FF[a, a] += 1
 
     for model in [fiber, fiber_family]:
-
         # init Material without bulk
         M = MaterialHyperelastic(model, E=1, angle=30, axis=2, k=0)
 
@@ -43,14 +41,12 @@ def test_fiber():
 
 
 def test_hgo():
-
     # data
     FF = np.zeros((3, 3, 2))
     for a in range(3):
         FF[a, a] += 1
 
     for model in [holzapfel_gasser_ogden]:
-
         # init Material without bulk
         M = MaterialHyperelastic(
             model, c=0.0764, k1=996.6, k2=524.6, kappa=0.2, angle=49.98, axis=2

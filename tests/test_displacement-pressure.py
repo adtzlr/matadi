@@ -45,7 +45,6 @@ def fun_morph(x, p1=0.035, p2=0.37, p3=0.17, p4=2.4, p5=0.01, p6=6.4, p7=5.5, p8
 
 
 def test_up_state():
-
     # deformation gradient
     F = Variable("F", 3, 3)
 
@@ -54,7 +53,6 @@ def test_up_state():
     functions = [fun_nh_or, fun_morph]
 
     for fun, z in zip(functions, statevars):
-
         # get pressure variable from augmented function
         p = fun.p
 
@@ -77,7 +75,6 @@ def test_up_state():
 
 
 def test_up_basic():
-
     # deformation gradient
     F = Variable("F", 3, 3)
 

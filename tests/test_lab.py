@@ -42,7 +42,6 @@ def pre(
     run_kwargs={},
     LabClass=Lab,
 ):
-
     lib = library()
     kwargs = lib[model]
 
@@ -94,9 +93,7 @@ def pre(
 
 
 def test_lab():
-
     for LabClass in [LabIncompressible, LabCompressible, Lab]:
-
         data = pre(neo_hooke, test_without_bulk=True, LabClass=LabClass)
         data = pre(
             neo_hooke,

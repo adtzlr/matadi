@@ -5,10 +5,11 @@ import numpy as np
 
 
 class LabIncompressible:
-    def __init__(self, material):
-
+    def __init__(self, material, title=None):
         self.material = material
-        self.title = self._get_title()
+        self.title = title
+        if title is None:
+            self.title = self._get_title()
 
     def _get_title(self):
         return "Material Formulation: " + "-".join(
@@ -203,9 +204,7 @@ class LabIncompressible:
             data = data[:-1]
 
         for d in data:
-
             if stability:
-
                 stable = np.array(d.stability, dtype=bool)
 
                 unstable_idx = np.arange(len(d.stretch))[~stable]
@@ -226,7 +225,6 @@ class LabIncompressible:
                 )
 
             else:
-
                 ax.plot(d.stretch, d.stress, **lineargs[d.label], label=d.label)
 
         ax.grid()

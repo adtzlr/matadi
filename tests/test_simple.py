@@ -24,7 +24,6 @@ def nh_aslist(x, mu=1.0, bulk=200.0):
 
 
 def test_simple():
-
     # variables
     F = Variable("F", 3, 3)
 
@@ -73,7 +72,6 @@ def test_simple():
 
 
 def test_tensor():
-
     # variables
     F = Variable("F", 3, 3)
     p = Variable("p", 1, 1)
@@ -89,7 +87,6 @@ def test_tensor():
 
     # init Material
     for fun in [lambda x: dev(x[0]) + ddot(x[0], x[0]), lambda x: x]:
-
         W = MaterialTensor(x=[F], fun=fun)
 
         W0 = W.gradient([FF])

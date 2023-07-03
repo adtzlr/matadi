@@ -11,7 +11,6 @@ def nh(stretch, statevars_n, mu=1.0):
 
 
 def test_microsphere_force():
-
     F = Variable("F", 3, 3)
     Fn = Variable("Fn", 3, 3)
     Zn = Variable("Zn", 5, 21)

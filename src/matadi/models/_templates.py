@@ -11,7 +11,6 @@ class NeoHookeOgdenRoxburgh(MaterialTensorGeneral):
 
     def __init__(self, C10=0.5, r=3, m=1, beta=0):
         def fun(x, C10, r, m, beta):
-
             # split `x` into the deformation gradient and the state variable
             F, Wmaxn = x[0], x[-1]
 
@@ -44,7 +43,6 @@ class Morph(MaterialTensorGeneral):
         p8=0.24,
     ):
         def fun(x, p1, p2, p3, p4, p5, p6, p7, p8):
-
             P, statevars = morph(x, p1, p2, p3, p4, p5, p6, p7, p8)
 
             return P, statevars

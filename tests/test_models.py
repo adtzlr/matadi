@@ -68,7 +68,6 @@ def library():
 
 
 def test_models():
-
     # data
     np.random.seed(2345537)
     dF = np.random.rand(3, 3, 5, 100) - 0.5
@@ -88,7 +87,6 @@ def test_models():
     lib = library()
 
     for model, kwargs in lib.items():
-
         if model not in [md.saint_venant_kirchhoff, md.linear_elastic]:
             kwargs["bulk"] = 5000.0
 
