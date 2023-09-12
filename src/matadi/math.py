@@ -140,14 +140,18 @@ zeros = SX.zeros
 
 
 def zeros_like(T):
+    "Return an array of zeros with the same shape and type as a given array."
     return zeros(T.shape)
 
 
 def ones_like(T):
+    "Return an array of ones with the same shape and type as a given array."
     return ones(T.shape)
 
 
 def invariants(T):
+    "Return the three principal invariants."
+
     I1 = trace(T)
     I2 = (I1**2 - trace(T @ T)) / 2
     I3 = det(T)
@@ -156,30 +160,38 @@ def invariants(T):
 
 
 def eigvals(T, eps=1e-4):
+    """Compute the eigenvalues of a 3x3 matrix, perturbed by a small number ``eps`` on
+    the diagonal entries."""
+
+    # perturbation matrix
     D = DM([[1, 0, 0], [0, -1, 0], [0, 0, 0]])
 
     return eig_symbolic(T + D * eps)
 
 
 def cof(T):
+    "Return the cofactor matrix."
     return det(T) * transpose(inv(T))
 
 
 def sym(T):
+    "Return the symmetric part of an array."
     return (T + transpose(T)) / 2
 
 
 def dot(A, B):
+    "Return the single-contraction (dot-) product (matrix multiplication)."
     return _dot(transpose(A), B)
 
 
 def dev(T):
+    "Return the deviatoric part of a matrix."
     dim = T.shape[0]
-
     return T - trace(T) / dim * eye(dim)
 
 
 def ddot(A, B):
+    "Return the double-dot product (the sum of all element-wise products)."
     return trace(transpose(A) @ B)
 
 
@@ -202,6 +214,10 @@ def mexp(C, eps=8e-5):
 
 
 def asvoigt(A, scale=1):
+    """Return a 2x2 or 3x3 symmetric matrix in 3x1 or 6x1 reduced vector (Voigt)
+    storage. Only the upper-triangle part of a given matrix is considered. Optionally,
+    the off-diagonal items are scaled by a given scale factor.
+    """
     if A.shape == (3, 3):
         return vertcat(
             A[0, 0],
@@ -224,6 +240,10 @@ def asvoigt(A, scale=1):
 
 
 def astensor(A, scale=1):
+    """Return a 3x1 or 6x1 vector, which represents a symmetric matrix, in 2x2 or 3x3
+    full matrix storage. Optionally, the off-diagonal items are scaled by a given scale
+    factor.
+    """
     if A.shape == (6, 1):
         A0 = vertcat(A[0] / scale, A[3] / scale, A[5])
         A1 = vertcat(A[3] / scale, A[1], A[4] / scale)
