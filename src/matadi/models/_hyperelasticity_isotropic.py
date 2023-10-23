@@ -8,7 +8,7 @@ def linear_elastic(F, mu, lmbda):
 
 
 def saint_venant_kirchhoff(F, mu, lmbda):
-    C = dot(transpose(F), F)
+    C = transpose(F) @ F
     I1 = trace(C) / 2 - 3 / 2
     I2 = trace(C @ C) / 4 - trace(C) / 2 + 3 / 4
     return mu * I2 + lmbda * I1**2 / 2
