@@ -37,12 +37,13 @@ classifiers = [
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Topic :: Scientific/Engineering",
   "Topic :: Scientific/Engineering :: Mathematics",
   "Topic :: Utilities"
 ]
 dynamic = ["version"]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 dependencies = ["casadi", "numpy"]
 
 [project.optional-dependencies]
