@@ -257,3 +257,29 @@ def astensor(A, scale=1):
 
     else:
         raise ValueError("Unknown shape of input.")
+
+
+def unimodular(T):
+    """
+    Compute the unimodular part of a tensor.
+
+    The unimodular part of a tensor is a modified version of the tensor where
+    the determinant is raised to the power of (-1/3) and multiplied to the tensor.
+    This operation preserves the isochoric (volume-preserving) part of the tensor
+    while removing the volumetric part.
+    """
+    return (det(T) ** (-1 / 3)) * T
+
+
+def sqrtm(C, eps=8e-5):
+    """
+    Compute the matrix square root of a tensor C using eigendecomposition.
+    """
+    w = eigvals(C, eps=eps)
+    eye = SX.eye(3)
+
+    M1 = (C - w[1] * eye) * (C - w[2] * eye) / (w[0] - w[1]) / (w[0] - w[2])
+    M2 = (C - w[2] * eye) * (C - w[0] * eye) / (w[1] - w[2]) / (w[1] - w[0])
+    M3 = (C - w[0] * eye) * (C - w[1] * eye) / (w[2] - w[0]) / (w[2] - w[1])
+
+    return sqrt(w[0]) * M1 + sqrt(w[1]) * M2 + sqrt(w[2]) * M3

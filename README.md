@@ -203,6 +203,7 @@ Included [pseudo-elastic material models](https://github.com/adtzlr/matadi/blob/
 
 Included [viscoelastic material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_viscoelasticity.py):
 - [Finite-Strain-Viscoelastic](https://doi.org/10.1016/j.cma.2013.07.004) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_viscoelasticity.py#L4-L18))
+- [Finite-Strain-Viscoelastic (Mooney-Rivlin)](https://doi.org/10.1002/nme.5724) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_viscoelasticity.py#L21-L51))
 
 Included [other material models](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_misc.py):
 - [MORPH](https://doi.org/10.1016/S0749-6419(02)00091-8) ([code](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_misc.py#L19-L75))
@@ -259,8 +260,9 @@ d2WdFdF, d2WdFdp, d2Wdpdp = NH.hessian([defgrad, pressure, statevars])
 The Neo-Hooke, the MORPH and the Finite-Strain-Viscoelastic [[4](https://doi.org/10.1016/j.cma.2013.07.004)] material model formulations are available as ready-to-go materials in `matadi.models` as:
 
 * [`NeoHookeOgdenRoxburgh()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py), 
-* [`Morph()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py) and
-* [`Viscoelastic()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py).
+* [`Morph()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py),
+* [`Viscoelastic()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py) and
+* [`ViscoelasticMooneyRivlin()`](https://github.com/adtzlr/matadi/blob/main/src/matadi/models/_templates.py).
 
 **Hint**: *The state variable concept is also implemented for the `Material` class.*
 
