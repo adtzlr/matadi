@@ -19,8 +19,13 @@ from ._hyperelasticity_isotropic import (
 )
 from ._misc import morph
 from ._pseudo_elasticity import ogden_roxburgh
-from ._templates import Morph, NeoHookeOgdenRoxburgh, Viscoelastic
-from ._viscoelasticity import finite_strain_viscoelastic
+from ._templates import (
+    Morph,
+    NeoHookeOgdenRoxburgh,
+    Viscoelastic,
+    ViscoelasticMooneyRivlin,
+)
+from ._viscoelasticity import finite_strain_viscoelastic, finite_strain_viscoelastic_mr
 from .microsphere.nonaffine import miehe_goektepe_lulei
 
 __all__ = [
@@ -47,5 +52,6 @@ __all__ = [
     "NeoHookeOgdenRoxburgh",
     "Viscoelastic",
     "finite_strain_viscoelastic",
+    "finite_strain_viscoelastic_mr",
     "miehe_goektepe_lulei",
 ]

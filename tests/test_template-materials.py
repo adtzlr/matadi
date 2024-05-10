@@ -6,6 +6,7 @@ from matadi.models import (
     Morph,
     NeoHookeOgdenRoxburgh,
     Viscoelastic,
+    ViscoelasticMooneyRivlin,
     neo_hooke,
     volumetric,
 )
@@ -47,7 +48,12 @@ def test_templates():
 def test_templates_models():
     # Material as a function of `F`
     # with additional state variables `z`
-    for M in [NeoHookeOgdenRoxburgh(), Morph(), Viscoelastic()]:
+    for M in [
+        NeoHookeOgdenRoxburgh(),
+        Morph(),
+        Viscoelastic(),
+        ViscoelasticMooneyRivlin(),
+    ]:
         FF = (np.random.rand(3, 3, 8, 100) - 0.5) / 2
         zz = np.random.rand(*M.x[-1].shape, 8, 100)
 

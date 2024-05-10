@@ -3,7 +3,7 @@ from ..math import gradient
 from ._hyperelasticity_isotropic import neo_hooke
 from ._misc import morph
 from ._pseudo_elasticity import ogden_roxburgh
-from ._viscoelasticity import finite_strain_viscoelastic, finite_strain_viscoelastic_MR
+from ._viscoelasticity import finite_strain_viscoelastic, finite_strain_viscoelastic_mr
 
 
 class NeoHookeOgdenRoxburgh(MaterialTensorGeneral):
@@ -81,26 +81,27 @@ class Viscoelastic(MaterialTensorGeneral):
             eta=eta,
             dtime=dtime,
         )
-        
-class Viscoelastic_MR(MaterialTensorGeneral):
+
+
+class ViscoelasticMooneyRivlin(MaterialTensorGeneral):
     "Finite strain viscoelastic material formulation with Mooney-Rivlin hyperelasticity."
 
     def __init__(
         self,
-        c10 = 1,
-        c01 = 1,
-        eta = 1,
+        c10=1,
+        c01=1,
+        eta=1,
         dtime=1,
     ):
         def fun(x, c10, c01, eta, dtime):
-            P, statevars = finite_strain_viscoelastic_MR(x, c10, c01, eta, dtime)
+            P, statevars = finite_strain_viscoelastic_mr(x, c10, c01, eta, dtime)
             return P, statevars
 
         super().__init__(
             fun=fun,
             statevars_shape=(6, 1),
-            c10 = c10,
-            c01 = c01,
+            c10=c10,
+            c01=c01,
             eta=eta,
             dtime=dtime,
         )

@@ -1,4 +1,4 @@
-from ..math import astensor, asvoigt, det, gradient, inv, trace, eye, unimodular, sqrtm
+from ..math import astensor, asvoigt, det, eye, gradient, inv, sqrtm, trace, unimodular
 
 
 def finite_strain_viscoelastic(x, mu, eta, dtime):
@@ -18,7 +18,7 @@ def finite_strain_viscoelastic(x, mu, eta, dtime):
     return gradient(mu / 2 * (I1 - 3), F), asvoigt(Ci)
 
 
-def finite_strain_viscoelastic_MR(x, c10, c01, eta, dtime):
+def finite_strain_viscoelastic_mr(x, c10, c01, eta, dtime):
     """
     Finite strain viscoelastic material formulation with Mooney-Rivlin hyperelasticity
     (Shutov 2018) https://doi.org/10.1002/nme.5724
@@ -30,7 +30,8 @@ def finite_strain_viscoelastic_MR(x, c10, c01, eta, dtime):
     # Right cauchy-green deformation tensor
     C = F.T @ F
 
-    # Based on <<TABLE 1: Iteration-free Euler backward method on the reference configuration>>
+    # Based on
+    # <<TABLE 1: Iteration-free Euler backward method on the reference configuration>>
     A = (
         unimodular(sqrtm(inv(C)))
         @ (astensor(Cin) + (dtime / eta) * c10 * unimodular(C))

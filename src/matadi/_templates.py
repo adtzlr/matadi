@@ -204,8 +204,9 @@ class MaterialHyperelasticPlaneStressLinearElastic(MaterialHyperelasticPlaneStra
 
 
 class MaterialComposite:
+    "Composite Material as a sum of a list of hyperelastic materials."
+
     def __init__(self, materials):
-        "Composite Material as a sum of a list of hyperelastic materials."
         self.materials = materials
         self.fun = self.composite
 
@@ -231,10 +232,11 @@ class MaterialComposite:
 
 
 class MaterialTensorGeneral(MaterialTensor):
-    def __init__(self, fun, statevars_shape=(1, 1), x=None, triu=True, **kwargs):
-        """A (first Piola-Kirchhoff stress) tensor-based material definition with
-        state variables of a given shape."""
+    """A (first Piola-Kirchhoff stress) tensor-based material definition with
+    state variables of a given shape.
+    """
 
+    def __init__(self, fun, statevars_shape=(1, 1), x=None, triu=True, **kwargs):
         if x is None:
             x = [Variable("F", 3, 3)]
 
