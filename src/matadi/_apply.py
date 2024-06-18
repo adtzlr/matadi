@@ -29,7 +29,7 @@ def apply(x, fun, x_shape, fun_shape, threads=1):
         parallel = ()
 
     # map function `N` times on reshaped input
-    N = np.product(ax)
+    N = np.prod(ax)
     out = fun.map(N, *parallel)(*y)
 
     if not isinstance(out, tuple):
