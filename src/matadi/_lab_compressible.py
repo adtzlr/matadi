@@ -41,7 +41,7 @@ class LabCompressible:
             # calculate linear solution of stretch 1 resulting from unit load
             dl = np.linalg.inv(B)[0, 0]
 
-            return np.all(dl > 0)
+            return dl > 0
 
         def stress_free(stretches_23, stretch):
             s = stress(stretch, *stretches_23)
@@ -81,7 +81,7 @@ class LabCompressible:
             # calculate linear solution of stretch 1 resulting from unit load
             dl = np.linalg.inv(B)[0, 0]
 
-            return np.all(dl > 0)
+            return dl > 0
 
         def stress_free(stretch_3, stretch):
             return [stress(stretch, *stretch_3)[2, 2]]
@@ -120,7 +120,7 @@ class LabCompressible:
             # calculate linear solution of stretch 1 resulting from unit load
             dl = np.linalg.inv(B)[0, 0]
 
-            return np.all(dl > 0)
+            return dl > 0
 
         def stress_free(stretch_3, stretch):
             return [stress(stretch, *stretch_3)[2, 2]]
