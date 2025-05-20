@@ -25,9 +25,8 @@ class LabCompressible:
             F = np.diag([stretch, stretch_2, stretch_3])
             return self.material.gradient([F])[0]
 
-        def stability(stretch, stretches_23, stretches_23_eps):
+        def stability(stretch, stretches_23):
             F = np.diag([stretch, *stretches_23])
-            G = np.diag([stretch + 1e-6, *stretches_23_eps])
             A = self.material.hessian([F])[0]
 
             # convert hessian to (3, 3) matrix
@@ -38,21 +37,11 @@ class LabCompressible:
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
-            # init unit force in direction 1
-            df = np.zeros(3)
-            df[0] = 1
-
+            # unit force in direction 1
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = (np.linalg.inv(B) @ df)[0]
+            dl = np.linalg.inv(B)[0, 0]
 
-            # check volume ratio
-            J = stretch * stretches_23[0] * stretches_23[1]
-
-            # check slope of force
-            Q = self.material.gradient([G])[0][0, 0]
-            P = self.material.gradient([F])[0][0, 0]
-
-            return True if dl > 0 and J > 0 and (Q - P) > 0 else False
+            return dl > 0
 
         def stress_free(stretches_23, stretch):
             s = stress(stretch, *stretches_23)
@@ -62,18 +51,10 @@ class LabCompressible:
         if not res.success:
             res = root(stress_free, np.ones(2) * 1 / np.sqrt(stretch), args=(stretch,))
 
-        res_eps = root(stress_free, np.ones(2), args=(stretch + 1e-6,))
-        if not res_eps.success:
-            res_eps = root(
-                stress_free,
-                np.ones(2) * 1 / np.sqrt(stretch + 1e-6),
-                args=(stretch + 1e-6,),
-            )
-
         return (
             stress(stretch, *res.x)[0, 0],
             *res.x,
-            stability(stretch, res.x, res_eps.x),
+            stability(stretch, res.x),
         )
 
     def _biaxial(self, stretch):
@@ -84,9 +65,8 @@ class LabCompressible:
             F = np.diag([stretch, stretch, stretch_3])
             return self.material.gradient([F])[0]
 
-        def stability(stretch, stretch_3, stretch_3_eps):
+        def stability(stretch, stretch_3):
             F = np.diag([stretch, stretch, stretch_3])
-            G = np.diag([stretch + 1e-6, stretch + 1e-6, stretch_3_eps])
             A = self.material.hessian([F])[0]
 
             # convert hessian to (3, 3) matrix
@@ -97,21 +77,11 @@ class LabCompressible:
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
-            # init unit force in direction 1
-            df = np.zeros(3)
-            df[0] = 1
-
+            # unit force in direction 1
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = (np.linalg.inv(B) @ df)[0]
+            dl = np.linalg.inv(B)[0, 0]
 
-            # check volume ratio
-            J = stretch**2 * stretch_3
-
-            # check slope of force
-            Q = self.material.gradient([G])[0][0, 0]
-            P = self.material.gradient([F])[0][0, 0]
-
-            return True if dl > 0 and J > 0 and (Q - P) > 0 else False
+            return dl > 0
 
         def stress_free(stretch_3, stretch):
             return [stress(stretch, *stretch_3)[2, 2]]
@@ -119,14 +89,11 @@ class LabCompressible:
         res = root(stress_free, np.ones(1), args=(stretch,))
         stretch_3 = res.x[0]
 
-        res_eps = root(stress_free, np.ones(1), args=(stretch + 1e-6,))
-        stretch_3_eps = res_eps.x[0]
-
         return (
             stress(stretch, stretch_3)[0, 0],
             stretch,
             stretch_3,
-            stability(stretch, stretch_3, stretch_3_eps),
+            stability(stretch, stretch_3),
         )
 
     def _planar(self, stretch):
@@ -137,9 +104,8 @@ class LabCompressible:
             F = np.diag([stretch, 1, stretch_3])
             return self.material.gradient([F])[0]
 
-        def stability(stretch, stretch_3, stretch_3_eps):
+        def stability(stretch, stretch_3):
             F = np.diag([stretch, 1, stretch_3])
-            G = np.diag([stretch + 1e-6, 1, stretch_3_eps])
             A = self.material.hessian([F])[0]
 
             # convert hessian to (3, 3) matrix
@@ -151,20 +117,10 @@ class LabCompressible:
                     B[i, j] = A[(*a, *b)]
 
             # init unit force in direction 1
-            df = np.zeros(3)
-            df[0] = 1
-
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = (np.linalg.inv(B) @ df)[0]
+            dl = np.linalg.inv(B)[0, 0]
 
-            # check volume ratio
-            J = stretch * stretch_3
-
-            # check slope of force
-            Q = self.material.gradient([G])[0][0, 0]
-            P = self.material.gradient([F])[0][0, 0]
-
-            return True if dl > 0 and J > 0 and (Q - P) > 0 else False
+            return dl > 0
 
         def stress_free(stretch_3, stretch):
             return [stress(stretch, *stretch_3)[2, 2]]
@@ -172,14 +128,11 @@ class LabCompressible:
         res = root(stress_free, np.ones(1), args=(stretch,))
         stretch_3 = res.x[0]
 
-        res_eps = root(stress_free, np.ones(1), args=(stretch + 1e-6,))
-        stretch_3_eps = res_eps.x[0]
-
         return (
             stress(stretch, stretch_3)[0, 0],
             1,
             stretch_3,
-            stability(stretch, stretch_3, stretch_3_eps),
+            stability(stretch, stretch_3),
         )
 
     def _shear(self, shear):

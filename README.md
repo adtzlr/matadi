@@ -186,10 +186,7 @@ fig2, ax2 = lab.plot_shear(data)
 
 ![Lab experiments shear(Microsphere)](https://raw.githubusercontent.com/adtzlr/matadi/main/docs/images/plot_shear_lab-microsphere.svg)
 
-Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks whether if 
-a) the volume ratio is greater zero,
-b) the monotonic increasing slope of force per undeformed area vs. stretch and
-c) the sign of the resulting stretch from a small superposed force in one direction.
+Unstable states of deformation can be indicated as dashed lines with the stability argument `lab.plot(data, stability=True)`. This checks whether all incremental stretches due to a small superposed normal force in one direction are positive.
 
 ## Hints and usage in FEM modules
 For tensor-valued material definitions use `MaterialTensor` (e.g. any stress-strain relation). Also, please have a look at [casADi's documentation](https://web.casadi.org/). It is very powerful but unfortunately does not support all the Python stuff you would expect. For example Python's default if-else-statements can't be used in combination with symbolic conditions (use `math.if_else(cond, if_true, if_false)` instead). Contrary to [casADi](https://web.casadi.org/), the gradient of the eigenvalue function is stabilized by a perturbation of the diagonal components.
