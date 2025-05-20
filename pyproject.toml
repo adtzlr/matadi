@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=77.0.3"]
 build-backend = "setuptools.build_meta"
 
 [tool.isort]
@@ -7,13 +7,14 @@ profile = "black"
 
 [project]
 name = "matadi"
-authors = [
-  {email = "a.dutzler@gmail.com"},
-  {name = "Andreas Dutzler"}
-]
 description = "Material Definition with Automatic Differentiation"
+authors = [
+  {name = "Andreas Dutzler", email = "a.dutzler@gmail.com"},
+]
+requires-python = ">=3.9"
 readme = "README.md"
-license = {file = "LICENSE"}
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 keywords = [
   "python", 
   "constitution", 
@@ -43,7 +44,7 @@ classifiers = [
   "Topic :: Utilities"
 ]
 dynamic = ["version"]
-requires-python = ">=3.9"
+
 dependencies = ["casadi", "numpy"]
 
 [project.optional-dependencies]
@@ -53,5 +54,7 @@ all = ["matplotlib", "scipy"]
 version = {attr = "matadi.__about__.__version__"}
 
 [project.urls]
-Code = "https://github.com/adtzlr/matadi"
+Homepage = "https://github.com/adtzlr/matadi"
+Documentation = "https://github.com/adtzlr/matadi"
+Repository = "https://github.com/adtzlr/matadi"
 Issues = "https://github.com/adtzlr/matadi/issues"
