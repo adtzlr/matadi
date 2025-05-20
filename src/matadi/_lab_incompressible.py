@@ -44,7 +44,6 @@ class LabIncompressible:
 
         def stability(stretch):
             F = np.diag([*kinematics(stretch)])
-            G = np.diag([*kinematics(stretch + 1e-6)])
 
             P = self.material.gradient([F])[0]
             A = self.material.hessian([F])[0]
@@ -68,17 +67,10 @@ class LabIncompressible:
                     )
 
             # init unit force in direction 1
-            df = np.zeros(2)
-            df[0] = 1
-
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = (np.linalg.inv(B) @ df)[0]
+            dl = np.linalg.inv(B)[0, 0]
 
-            # check slope of force
-            Q = self.material.gradient([G])[0][0, 0]
-            P = self.material.gradient([F])[0][0, 0]
-
-            return True if dl > 0 and (Q - P) > 0 else False
+            return dl > 0
 
         return (
             stress_free(stretch),
