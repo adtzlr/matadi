@@ -37,11 +37,11 @@ class LabCompressible:
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
-            # unit force in direction 1
+            # unit forces in all directions
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = np.linalg.inv(B)[0, 0]
+            dl = np.diag(np.linalg.inv(B))
 
-            return dl > 0
+            return np.all(dl > 0)
 
         def stress_free(stretches_23, stretch):
             s = stress(stretch, *stretches_23)
@@ -77,11 +77,11 @@ class LabCompressible:
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
-            # unit force in direction 1
+            # unit forces in all directions
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = np.linalg.inv(B)[0, 0]
+            dl = np.diag(np.linalg.inv(B))
 
-            return dl > 0
+            return np.all(dl > 0)
 
         def stress_free(stretch_3, stretch):
             return [stress(stretch, *stretch_3)[2, 2]]
@@ -116,11 +116,11 @@ class LabCompressible:
                 for j, b in enumerate(c):
                     B[i, j] = A[(*a, *b)]
 
-            # init unit force in direction 1
+            # init unit forces in all directions
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = np.linalg.inv(B)[0, 0]
+            dl = np.diag(np.linalg.inv(B))
 
-            return dl > 0
+            return np.all(dl > 0)
 
         def stress_free(stretch_3, stretch):
             return [stress(stretch, *stretch_3)[2, 2]]

@@ -3,6 +3,9 @@ from collections import namedtuple
 import matplotlib.pyplot as plt
 import numpy as np
 
+from ._templates import MaterialHyperelastic
+from .math import det
+
 
 class LabIncompressible:
     def __init__(self, material, title=None):
@@ -47,30 +50,24 @@ class LabIncompressible:
 
             P = self.material.gradient([F])[0]
             A = self.material.hessian([F])[0]
+            d2JdFdF = MaterialHyperelastic(lambda F: det(F)).hessian([F])[0]
 
-            # convert hessian to (3, 3) matrix and take (2, 2) submatrix
-            B = np.zeros((2, 2))
-            delta = np.eye(2)
+            # hydrostatic stress
+            p = -P[-1, -1] * kinematics(stretch)[-1]
 
-            for i in range(2):
-                for j in range(2):
-                    B[i, j] = (
-                        A[i, i, j, j]
-                        - delta[-1, j] / kinematics(stretch)[i] * P[-1, -1]
-                        - kinematics(stretch)[-1]
-                        / kinematics(stretch)[i]
-                        * A[-1, -1, j, j]
-                        + kinematics(stretch)[-1]
-                        / kinematics(stretch)[i] ** 2
-                        * P[-1, -1]
-                        * delta[i, j]
-                    )
+            # convert hessian to (3, 3) matrix
+            B = np.zeros((3, 3))
+            c = [(0, 0), (1, 1), (2, 2)]
+
+            for i, a in enumerate(c):
+                for j, b in enumerate(c):
+                    B[i, j] = (A + p * d2JdFdF)[(*a, *b)]
 
             # init unit force in direction 1
             # calculate linear solution of stretch 1 resulting from unit load
-            dl = np.linalg.inv(B)[0, 0]
+            dl = np.diag(np.linalg.inv(B))
 
-            return dl > 0
+            return np.all(dl > 0)
 
         return (
             stress_free(stretch),
