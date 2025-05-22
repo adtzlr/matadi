@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ._templates import MaterialHyperelastic
-from .math import det
+from .math import det, log
 
 
 class LabIncompressible:
@@ -50,6 +50,10 @@ class LabIncompressible:
 
             P = self.material.gradient([F])[0]
             A = self.material.hessian([F])[0]
+
+            # volumetric parts of strain energy function (required for stability)
+            U = lambda F: 1e6 * log(det(F)) ** 2 / 2
+            Ap = MaterialHyperelastic(U).hessian([F])[0]
             d2JdFdF = MaterialHyperelastic(lambda F: det(F)).hessian([F])[0]
 
             # hydrostatic stress
@@ -57,11 +61,9 @@ class LabIncompressible:
 
             # convert hessian to (3, 3) matrix
             B = np.zeros((3, 3))
-            c = [(0, 0), (1, 1), (2, 2)]
-
-            for i, a in enumerate(c):
-                for j, b in enumerate(c):
-                    B[i, j] = (A + p * d2JdFdF)[(*a, *b)]
+            for i in range(3):
+                for j in range(3):
+                    B[i, j] = (A + Ap + p * d2JdFdF)[i, i, j, j]
 
             # init unit force in direction 1
             # calculate linear solution of stretch 1 resulting from unit load
