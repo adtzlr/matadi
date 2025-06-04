@@ -10,7 +10,6 @@ from ..math import (
     sqrt,
     trace,
     transpose,
-    if_else
 )
 from ._helpers import isochoric_volumetric_split
 
@@ -78,8 +77,8 @@ def holzapfel_gasser_ogden(F, c, k1, k2, kappa, angle, axis=2):
     E6 = kappa * I1 + (1 - 3 * kappa) * I6
 
     # Tension-only fiber response
-    w4 = if_else(E4 > 1, exp(k2 * (E4 - 1)**2) - 1, 0)
-    w6 = if_else(E6 > 1, exp(k2 * (E6 - 1)**2) - 1, 0)
+    w4 = if_else(E4 > 1, exp(k2 * (E4 - 1) ** 2) - 1, 0)
+    w6 = if_else(E6 > 1, exp(k2 * (E6 - 1) ** 2) - 1, 0)
 
     W_aniso = k1 / (2 * k2) * (w4 + w6)
 
