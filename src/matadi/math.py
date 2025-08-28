@@ -201,7 +201,7 @@ def tresca(C):
     return mmax(fabs(wC[[0, 1, 2]] - wC[[1, 2, 0]]))
 
 
-def mexp(C, eps=8e-5):
+def expm(C, eps=8e-5):
     "Exponential Function of a Matrix."
     w = eigvals(C, eps=eps)
     eye = SX.eye(3)
@@ -211,6 +211,9 @@ def mexp(C, eps=8e-5):
     M3 = (C - w[0] * eye) * (C - w[1] * eye) / (w[2] - w[0]) / (w[2] - w[1])
 
     return exp(w[0]) * M1 + exp(w[1]) * M2 + exp(w[2]) * M3
+
+
+mexp = expm
 
 
 def asvoigt(A, scale=1):
@@ -283,3 +286,17 @@ def sqrtm(C, eps=8e-5):
     M3 = (C - w[0] * eye) * (C - w[1] * eye) / (w[2] - w[0]) / (w[2] - w[1])
 
     return sqrt(w[0]) * M1 + sqrt(w[1]) * M2 + sqrt(w[2]) * M3
+
+
+def logm(C, eps=8e-5):
+    """
+    Compute the matrix logarithm of a tensor C using eigendecomposition.
+    """
+    w = eigvals(C, eps=eps)
+    eye = SX.eye(3)
+
+    M1 = (C - w[1] * eye) * (C - w[2] * eye) / (w[0] - w[1]) / (w[0] - w[2])
+    M2 = (C - w[2] * eye) * (C - w[0] * eye) / (w[1] - w[2]) / (w[1] - w[0])
+    M3 = (C - w[0] * eye) * (C - w[1] * eye) / (w[2] - w[0]) / (w[2] - w[1])
+
+    return log(w[0]) * M1 + log(w[1]) * M2 + log(w[2]) * M3

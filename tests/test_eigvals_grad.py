@@ -1,7 +1,19 @@
 import numpy as np
 
 from matadi import Material, MaterialTensor, Variable
-from matadi.math import SX, cof, det, eigvals, inv, mexp, sum1, trace, transpose
+from matadi.math import (
+    SX,
+    cof,
+    det,
+    eigvals,
+    expm,
+    inv,
+    logm,
+    sqrtm,
+    sum1,
+    trace,
+    transpose,
+)
 
 
 def fun(x):
@@ -9,9 +21,19 @@ def fun(x):
     return (sum1(eigvals(transpose(F) @ F))[0, 0] - 3) / 2
 
 
-def fun_mexp(x):
+def fun_expm(x):
     F = x[0]
-    return trace(mexp(transpose(F) @ F))[0, 0]
+    return trace(expm(transpose(F) @ F))[0, 0]
+
+
+def fun_logm(x):
+    F = x[0]
+    return trace(logm(transpose(F) @ F))[0, 0]
+
+
+def fun_sqrtm(x):
+    F = x[0]
+    return trace(sqrtm(transpose(F) @ F))[0, 0]
 
 
 def test_eigvals():
@@ -126,15 +148,16 @@ def test_mexp():
         FF = FF.reshape(3, 3, 1, 1)
 
         # init Material
-        W = Material(x=[F], fun=fun_mexp)
+        for fun in [fun_expm, fun_logm, fun_sqrtm]:
+            W = Material(x=[F], fun=fun)
 
-        WW = W.function([FF])
-        dW = W.gradient([FF])
-        DW = W.hessian([FF])
+            WW = W.function([FF])
+            dW = W.gradient([FF])
+            DW = W.hessian([FF])
 
-        assert not np.any(np.isnan(WW))
-        assert not np.any(np.isnan(dW))
-        assert not np.any(np.isnan(DW))
+            assert not np.any(np.isnan(WW))
+            assert not np.any(np.isnan(dW))
+            assert not np.any(np.isnan(DW))
 
 
 if __name__ == "__main__":
