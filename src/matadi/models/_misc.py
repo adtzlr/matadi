@@ -61,7 +61,7 @@ def morph(x, p1, p2, p3, p4, p5, p6, p7, p8):
     # Hull stress
     SH = (c * mexp(p7 * L_LT * CT_CTS) + p8 * L_LT) @ inv(C)
 
-    # implict euler update of overstress evolution equation
+    # implicit euler update of overstress evolution equation
     SZ = (SZn + b * LT * SH) / (1 + b * LT)
 
     # hyperelastic part of strain energy function
