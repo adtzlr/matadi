@@ -77,23 +77,32 @@ __all__ = [
     "adj",
     "asin",
     "asinh",
+    "asvoigt",
+    "astensor",
     "atan",
     "atan2",
     "atanh",
     "ceil",
     "cofactor",
+    "cof",
     "cos",
     "cosh",
     "cross",
+    "ddot",
     "det",
+    "dev",
     "diag",
     "_dot",
+    "dot",
     "eig_symbolic",
+    "eigvals",
     "erf",
     "erfinv",
     "exp",
+    "expm",
     "fabs",
     "find",
+    "flatten",
     "floor",
     "fmax",
     "fmin",
@@ -103,15 +112,19 @@ __all__ = [
     "horzsplit",
     "if_else",
     "inv",
+    "invariants",
     "ldl",
     "linspace",
     "log",
+    "logm",
     "logic_and",
     "logic_not",
     "logic_or",
+    "mexp",
     "mmax",
     "mmin",
     "norm_1",
+    "ones_like",
     "pi",
     "qr",
     "repmat",
@@ -120,18 +133,23 @@ __all__ = [
     "sin",
     "sinh",
     "sqrt",
+    "sqrtm",
     "sum1",
     "sum2",
     "sumsqr",
+    "sym",
     "tan",
     "tanh",
     "times",
     "trace",
+    "tresca",
     "transpose",
     "tril",
     "triu",
+    "unimodular",
     "vertcat",
     "vertsplit",
+    "zeros_like",
 ]
 
 eye = SX.eye
@@ -263,8 +281,7 @@ def astensor(A, scale=1):
 
 
 def unimodular(T):
-    """
-    Compute the unimodular part of a tensor.
+    """Return the unimodular part of a tensor.
 
     The unimodular part of a tensor is a modified version of the tensor where
     the determinant is raised to the power of (-1/3) and multiplied to the tensor.
@@ -275,9 +292,7 @@ def unimodular(T):
 
 
 def sqrtm(C, eps=8e-5):
-    """
-    Compute the matrix square root of a tensor C using eigendecomposition.
-    """
+    "Return the matrix square root of a tensor C using eigendecomposition."
     w = eigvals(C, eps=eps)
     eye = SX.eye(3)
 
@@ -289,9 +304,7 @@ def sqrtm(C, eps=8e-5):
 
 
 def logm(C, eps=8e-5):
-    """
-    Compute the matrix logarithm of a tensor C using eigendecomposition.
-    """
+    "Return the matrix logarithm of a tensor C using eigendecomposition."
     w = eigvals(C, eps=eps)
     eye = SX.eye(3)
 
@@ -300,3 +313,8 @@ def logm(C, eps=8e-5):
     M3 = (C - w[0] * eye) * (C - w[1] * eye) / (w[2] - w[0]) / (w[2] - w[1])
 
     return log(w[0]) * M1 + log(w[1]) * M2 + log(w[2]) * M3
+
+
+def flatten(T):
+    "Reshape a tensor into a one-dimensional tensor."
+    return T.reshape((-1, 1))

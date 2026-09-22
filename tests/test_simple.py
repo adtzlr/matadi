@@ -1,7 +1,17 @@
 import numpy as np
 
 from matadi import Material, MaterialTensor, Variable
-from matadi.math import ddot, det, dev, invariants, sqrt, trace, transpose
+from matadi.math import (
+    ddot,
+    det,
+    dev,
+    flatten,
+    gradient,
+    invariants,
+    sqrt,
+    trace,
+    transpose,
+)
 
 
 def neohooke(x, mu=1.0, bulk=200.0):
@@ -142,6 +152,34 @@ def test_tensor():
     assert len(A) == 3
 
 
+def test_math():
+
+    def fun_math(x):
+        """Strain energy density function of nearly-incompressible
+        Neo-Hookean isotropic hyperelastic material formulation."""
+
+        F = x[0]
+        C = transpose(F) @ F
+        C1d = flatten(C)
+
+        I1, I2, I3 = invariants(C)
+        J = det(F)
+
+        return gradient(I1, F)
+
+    F = Variable("F", 3, 3)
+    W = MaterialTensor(x=[F], fun=fun_math)
+
+    # data
+    FF = np.random.rand(3, 3, 8, 1000)
+    for a in range(3):
+        FF[a, a] += 1
+
+    P = W.gradient([FF])
+    assert P[0].shape == FF.shape
+
+
 if __name__ == "__main__":
     test_simple()
     test_tensor()
+    test_math()
